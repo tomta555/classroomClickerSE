@@ -9,12 +9,30 @@ var params = jQuery.deparam(window.location.search); //Gets the id from url
 socket.on('connect', function() {
     //Tell server that it is host connection from game view
     socket.emit('player-join-game', params);
-    
-    document.getElementById('answer1').style.visibility = "visible";
-    document.getElementById('answer2').style.visibility = "visible";
-    document.getElementById('answer3').style.visibility = "visible";
-    document.getElementById('answer4').style.visibility = "visible";
+    showAns('b');
 });
+
+function showAns(type){
+    tableAns ='';
+    switch(type){
+        case 'a': 
+        tableAns =`<button onclick = "answerSubmitted(1)" id = "answer1" class = "button"></button>
+        <button onclick = "answerSubmitted(2)" id = "answer2" class = "button"></button>
+        <br>
+        <button onclick = "answerSubmitted(3)" id = "answer3" class = "button"></button>
+        <button onclick = "answerSubmitted(4)" id = "answer4" class = "button"></button>`
+        break;
+        case 'b' : 
+        tableAns =`<button onclick = "answerSubmitted(1)" id = "answer1" class = "button"></button>
+        <button onclick = "answerSubmitted(2)" id = "answer2" class = "button"></button>`
+        break;
+        case 'c' :
+        tableAns =`<button onclick = "answerSubmitted(1)" id = "answer1" class = "button"></button>`
+        break;
+    }
+    document.getElementById('card').innerHTML=tableAns;
+
+}
 
 socket.on('noGameFound', function(){
     window.location.href = '../../';//Redirect user to 'join game' page 

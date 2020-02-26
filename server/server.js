@@ -255,9 +255,11 @@ io.on('connection', (socket) => {
                 dbo.collection("Quizzes").find(query).toArray(function(err, res) {
                     if (err) throw err;
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
+
                     //Checks player answer with correct answer
                     if(num == correctAnswer){
                         player.gameData.score += 100;
+                        // player.answeredQuestion.push({});
                         io.to(game.pin).emit('getTime', socket.id);
                         socket.emit('answerResult', true);
                     }

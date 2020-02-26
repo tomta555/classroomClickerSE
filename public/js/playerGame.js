@@ -3,13 +3,13 @@ var playerAnswered = false;
 var correct = false;
 var name;
 var score = 0;
-var questionType = 1;
 
 var params = jQuery.deparam(window.location.search); //Gets the id from url
 
 socket.on('connect', function() {
     //Tell server that it is host connection from game view
     socket.emit('player-join-game', params);
+    
     switch(questionType){
         case 0:     // Multiple Choice
             document.getElementById('answer1').style.visibility = "visible";

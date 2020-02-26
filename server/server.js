@@ -9,6 +9,7 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 
 
+
 //Import classes
 const {LiveGames} = require('./utils/liveGames');
 const {Players} = require('./utils/players');
@@ -22,6 +23,7 @@ var server = http.createServer(app);
 var io = socketIO(server);
 var games = new LiveGames();
 var players = new Players();
+var Q_type;
 
 //Mongodb setup
 var MongoClient = require('mongodb').MongoClient;
@@ -66,7 +68,6 @@ io.on('connection', (socket) => {
             var query = { id:  parseInt(data.id)};
             dbo.collection('Quizzes').find(query).toArray(function(err, result){
                 if(err) throw err;
-                
                 //A quiz was found with the id passed in url
                 if(result[0] !== undefined){
                     var gamePin = Math.floor(Math.random()*90000) + 10000; //new pin for game
@@ -77,7 +78,7 @@ io.on('connection', (socket) => {
 
                     socket.join(game.pin);//The host is joining a room based on the pin
 
-                    console.log('Game Created with pin:', game.pin); 
+                    console.log('Game Created with pin:', game.pin);
 
                     //Sending game pin to host so they can display it for players to join
                     socket.emit('showGamePin', {
@@ -108,7 +109,7 @@ io.on('connection', (socket) => {
             var gameid = game.gameData['gameid'];
             MongoClient.connect(url, function(err, db){
                 if (err) throw err;
-    
+                
                 var dbo = db.db('classroomClicker');
                 var query = { id:  parseInt(gameid)};
                 dbo.collection("Quizzes").find(query).toArray(function(err, res) {
@@ -120,7 +121,7 @@ io.on('connection', (socket) => {
                     var answer3 = res[0].questions[0].answers[2];
                     var answer4 = res[0].questions[0].answers[3];
                     var correctAnswer = res[0].questions[0].correct;
-                    
+                    Q_type = res[0].questions[0].type;
                     socket.emit('gameQuestions', {
                         q1: question,
                         a1: answer1,
@@ -130,13 +131,14 @@ io.on('connection', (socket) => {
                         correct: correctAnswer,
                         playersInGame: playerData.length
                     });
+                    console.log(Q_type);
+                    // Q_type = "2c";
+                    io.to(game.pin).emit('gameStartedPlayer',Q_type);
+                    game.gameData.questionLive = true;
                     db.close();
                 });
             });
             
-            
-            io.to(game.pin).emit('gameStartedPlayer');
-            game.gameData.questionLive = true;
         }else{
             socket.emit('noGameFound');//No game was found, redirect user
         }

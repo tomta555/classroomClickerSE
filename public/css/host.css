@@ -26,6 +26,11 @@ body {
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
 }
+.icon {
+    display: block;
+    margin-left: 3%;
+    margin-top: 1%;
+}
 #title{
     color:white;
     font-family: 'Raleway', sans-serif;

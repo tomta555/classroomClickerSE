@@ -360,7 +360,7 @@ io.on('connection', (socket) => {
                         var answer3 = res[0].questions[questionNum].answers[2];
                         var answer4 = res[0].questions[questionNum].answers[3];
                         var correctAnswer = res[0].questions[questionNum].correct;
-
+                        Q_type = res[0].questions[questionNum].type;
                         socket.emit('gameQuestions', {
                             q1: question,
                             a1: answer1,
@@ -370,6 +370,7 @@ io.on('connection', (socket) => {
                             correct: correctAnswer,
                             playersInGame: playerData.length
                         });
+                        io.to(game.pin).emit('nextQuestionPlayer',Q_type);
                         db.close();
                     }else{
                         var playersInGame = players.getPlayers(game.hostId);
@@ -453,7 +454,7 @@ io.on('connection', (socket) => {
                 });
             });
         
-        io.to(game.pin).emit('nextQuestionPlayer');
+        
     });
     
     //When the host starts the game

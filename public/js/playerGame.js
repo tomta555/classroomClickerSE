@@ -84,14 +84,10 @@ socket.on('newScore', function(data){
     document.getElementById('scoreText').innerHTML = "Score: " + data;
 });
 
-socket.on('nextQuestionPlayer', function(){
+socket.on('nextQuestionPlayer', function(type){
     correct = false;
     playerAnswered = false;
-    
-    document.getElementById('answer1').style.visibility = "visible";
-    document.getElementById('answer2').style.visibility = "visible";
-    document.getElementById('answer3').style.visibility = "visible";
-    document.getElementById('answer4').style.visibility = "visible";
+    showAns(type);
     document.getElementById('message').style.display = "none";
     document.body.style.backgroundColor = "white";
 });

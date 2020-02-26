@@ -33,6 +33,85 @@ function updateDatabase(){
     
     var quiz = {id: 0, "name": name, "questions": questions};
     socket.emit('newQuiz', quiz);
+};
+
+var questionTable = "";
+function addQuestion(){
+    questionNum += 1;
+    questionTable = document.getElementById('allQuestions').innerHTML;
+    questionTable += `
+    <h3>Question ${questionNum} :</h3>
+
+      <div class="tab">
+        <button class="tablinks${questionNum}" onclick="openTab(event, '4 choices${questionNum}', ${questionNum})">Select 4 choices</button>
+        <button class="tablinks${questionNum}" onclick="openTab(event, '2 choices${questionNum}', ${questionNum})">Select 2 choices</button>
+        <button class="tablinks${questionNum}" onclick="openTab(event, 'Short Answer${questionNum}', ${questionNum})">Select Short Answer</button> 
+        <br>
+        <br>
+      </div>
+      
+      <div id="4 choices${questionNum}" class="tabcontent${questionNum}"><br>
+        <label>Question : </label>
+        <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
+        <br>
+        <br>
+        <label>Answer 1: </label>
+        <input id = "${questionNum}a1" type = "text" autofocus/>
+        <label>Answer 2: </label>
+        <input id = "${questionNum}a2" type = "text" autofocus/>
+        <br>
+        <br>
+        <label>Answer 3: </label>
+        <input id = "${questionNum}a3"  type = "text"autofocus/>
+        <label>Answer 4: </label>
+        <input id = "${questionNum}a4"  type = "text" autofocus/>
+        <br>
+        <br>
+        <label>Correct Answer (1-4) :</label>
+        <input class = "correct" id = "correct${questionNum}"  type = "number" autofocus/>
+      </div>
+      
+      <div id="2 choices${questionNum}" class="tabcontent${questionNum}" style="display:none"><br>
+        <label>Question : </label>
+        <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
+        <br>
+        <br>
+        <label>Answer 1: </label>
+        <input id = "${questionNum}a1" type = "text" autofocus/>
+        <label>Answer 2: </label>
+        <input id = "${questionNum}a2" type = "text" autofocus/>
+        <br>
+        <br>
+        <label>Correct Answer (1-2) :</label>
+        <input class = "correct" id = "correct${questionNum}"  type = "number" autofocus/>
+      </div>
+      
+      <div id="Short Answer${questionNum}" class="tabcontent${questionNum}" style="display:none"><br>
+        <label>Question : </label>
+        <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
+        <br>
+        <br>
+        <label>Correct Answer :</label>
+        <input class = "correct" id = "correct${questionNum}" type = "text" autofocus/>
+        <br>
+        <br>
+      </div>
+    <br>`;
+    document.getElementById('allQuestions').innerHTML = questionTable;
+}
+
+function openTab(evt, quizType,id) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName(`tabcontent${id}`);
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName(`tablinks${id}`);
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(quizType).style.display = "block";
+    evt.currentTarget.className += " active";
 }
 
 function addQuestion4c(){

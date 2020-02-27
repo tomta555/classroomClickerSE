@@ -122,7 +122,7 @@ function nextQuestion(){
 }
 
 function updateTimer(){
-    time = 20000;
+    time = 20;
     timer = setInterval(function(){
         time -= 1;
         document.getElementById('num').textContent = " " + time;

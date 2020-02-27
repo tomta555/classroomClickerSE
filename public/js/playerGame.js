@@ -18,23 +18,24 @@ function showAns(type){
     switch(type){
         case '4c': 
             tableAns =`
-                <button onclick = "answerSubmitted(1)" id = "answer1" class = "button">1</button>
-                <button onclick = "answerSubmitted(2)" id = "answer2" class = "button">2</button>
+                <a onclick = "answerSubmitted(1)" id = "answer1" class = "button4c"><img src="../../img/circle.png"></a>
+                <a onclick = "answerSubmitted(2)" id = "answer2" class = "button4c"><img src="../../img/cross.png"></a>
                 <br>
-                <button onclick = "answerSubmitted(3)" id = "answer3" class = "button">3</button>
-                <button onclick = "answerSubmitted(4)" id = "answer4" class = "button">4</button>`
+                <a onclick = "answerSubmitted(3)" id = "answer3" class = "button4c"><img src="../../img/square.png"></a>
+                <a onclick = "answerSubmitted(4)" id = "answer4" class = "button4c"><img src="../../img/triangle.png"></a>`;
             break;
         case '2c' : 
             tableAns =`
-                <button onclick = "answerSubmitted(1)" id = "answer1" class = "button">1</button>
-                <button onclick = "answerSubmitted(2)" id = "answer2" class = "button">2</button>`
+                <a onclick = "answerSubmitted(1)" id = "answer1" class = "button2c"><img src="../../img/circle.png"></a>
+                <a onclick = "answerSubmitted(2)" id = "answer2" class = "button2c"><img src="../../img/cross.png"></a>`;
             break;
         case 'sa' :
             tableAns =`
+            <h3>Your Answer</h3>
             <form class = "short">
-                <input id = "answer1" class = "shortanswertext"></input>
-                <button onclick = "answerSubmitted(1)" id = "answer1" class = "shortansbutton">Submit</button>
-            </form>`
+                <input id = "answer5" class = "shortanswertext"></input>
+                <button onclick = "answerSubmitted(1)" id = "answer5" class = "shortansbutton">Submit</button>
+            </form>`;
             break;
     }
     document.getElementById('card').innerHTML=tableAns;
@@ -44,6 +45,17 @@ function showAns(type){
 socket.on('noGameFound', function(){
     window.location.href = '../../';//Redirect user to 'join game' page 
 });
+
+function updateTimer(){
+    time = 20;
+    timer = setInterval(function(){
+        time -= 1;
+        document.getElementById('num').textContent = " " + time;
+        if(time == 0){
+            socket.emit('timeUp');
+        }
+    }, 1000);
+}
 
 function answerSubmitted(num){
     if(playerAnswered == false){

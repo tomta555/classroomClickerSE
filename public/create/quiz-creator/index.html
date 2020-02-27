@@ -2,12 +2,55 @@
 <html>
     <head>
         <title>Creator</title>
-        <link rel = "stylesheet" href = "../../css/quizCreator.css">
-        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link rel = "stylesheet" href = "../../css/quizCreator.css"> 
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="../../assets/css/main.css" />
+     
     </head>
-    <body onload = "setBGColor()">
-        <!-- <h1 id = "title">Kahoot Quiz Creator Studio</h1> -->
+    <body>
+      
+    <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="profile.html">profile</a></li>
+				<li><a href="courses.html">courses</a></li>
+				<!-- <li>
+					<a href="#">seafood ></a>
+						<ul>
+							<li><a href="fish.html">fish</a></li>
+							<li><a href="shrimp.html">shrimp</a></li>
+							<li><a href="crab.html">crab</a></li>
+							<li><a href="octopus.html">octopus</a></li>
+							<li><a href="shellfish.html">shellfish</a></li>
+						</ul>	
+				</li>
+				<li>
+					<a href="#">meat dish ></a>
+						<ul>
+							<li><a href="pork.html">pork</a></li>
+							<li><a href="beef.html">beef</a></li>
+							<li><a href="chicken.html">chicken</a></li>
+						</ul>
+				</li> -->
+				<li class="current"><a href="createquiz.html">create quiz</a></li>
+			</ul>
+		</nav>
+
+
+
+    <!-- Header -->
+		<header id="header">
+			<div class="logo container">
+                <div class="form-field">
+                    <label id = "quizTitle">Quiz Title : </label>
+                    <input id = "name" type = "text" name="name" autofocus/>
+                </div>
+                <br>
+			</div>
+    </header>
         
+<<<<<<< HEAD
         <div class="form-field">
             <label id = "quizTitle">Quiz Title</label>
             <input id = "name" type = "text" name="name" autofocus/>
@@ -21,6 +64,39 @@
         <br>
         <button onclick = "addQuestion()">Add another question</button>
         <button onclick = "addShotAns()">Add short answer question</button>
+=======
+    <div class="container">
+      <br>
+        <!-- <div id = "allQuestions"> -->
+            <!-- <div id="question-field">
+                <label>Question 1: </label>
+                <input class = "question" id = "q1" type = "text" autofocus/>
+                <br>
+                <br>
+                <label>Answer 1: </label>
+                <input id = "1a1" type = "text" autofocus/>
+                <label>Answer 2: </label>
+                <input id = "1a2" type = "text" autofocus/>
+                <br>
+                <br>
+                <label>Answer 3: </label>
+                <input id = "1a3"  type = "text"autofocus/>
+                <label>Answer 4: </label>
+                <input id = "1a4"  type = "text" autofocus/>
+                <br>
+                <br>
+                <label>Correct Answer (1-4) :</label>
+                <input class = "correct" id = "correct1"  type = "number" autofocus/>
+            </div> -->
+        <!-- </div> -->
+        <div id = "allQuestions"></div>
+        <button onclick="addQuestion()">Add another question</button>
+        
+        <!-- <button onclick = "addQuestion4c()">Add another question(4 Choise)</button>
+        <button onclick = "addQuestion2c()">Add another question(2 Choise)</button>
+        <button onclick = "addQuestionSA()">Add another question(Short Answer)</button> -->
+
+>>>>>>> d2e311c7890ee18048c788e17648643b288be75b
         <br>
         <br>
         
@@ -31,7 +107,30 @@
         <br>
         
         <button onclick = 'cancelQuiz()'>Cancel quiz and return to quiz selection</button>
+
+            
         
+        </div>
+    
+       
+      
+
+        <!-- tab box -->
+        <!-- <script>
+            // function openTab(evt, quizType) {
+            //   var i, tabcontent, tablinks;
+            //   tabcontent = document.getElementsByClassName("tabcontent");
+            //   for (i = 0; i < tabcontent.length; i++) {
+            //     tabcontent[i].style.display = "none";
+            //   }
+            //   tablinks = document.getElementsByClassName("tablinks");
+            //   for (i = 0; i < tablinks.length; i++) {
+            //     tablinks[i].className = tablinks[i].className.replace(" active", "");
+            //   }
+            //   document.getElementById(quizType).style.display = "block";
+            //   evt.currentTarget.className += " active";
+            // }
+        </script> -->
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/quizCreator.js"></script>
     </body>

@@ -147,7 +147,7 @@ socket.on('questionOver', function (playerData, correct) {
 });
 
 function nextQuestion() {
-
+    if (type_Q == '4c') {
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('square1').style.display = "none";
     document.getElementById('square2').style.display = "none";
@@ -159,6 +159,20 @@ function nextQuestion() {
     document.getElementById('answer3').style.filter = "none";
     document.getElementById('answer4').style.filter = "none";
 
+
+    }
+    else if(type_Q='2C'){
+        document.getElementById('nextQButton').style.display = "none";
+        document.getElementById('square1').style.display = "none";
+        document.getElementById('square2').style.display = "none";
+
+        document.getElementById('answer1').style.filter = "none";
+        document.getElementById('answer2').style.filter = "none";
+
+
+    }else if(type_Q='sa'){
+
+    }
     document.getElementById('playersAnswered').style.display = "block";
     document.getElementById('timerText').style.display = "block";
     document.getElementById('num').innerHTML = " 20";

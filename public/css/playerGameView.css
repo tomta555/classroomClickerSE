@@ -94,29 +94,29 @@ html, body { padding: 0; margin: 0; }
     background-color: rgb(241, 48, 48);}
   #answer1:hover{
     background-color: rgb(172, 35, 35);
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
+    -webkit-transition-duration: 100ms;
+    transition-duration: 100ms;
   }
 #answer2{
     background-color: #4dacc8;}
   #answer2:hover{
     background-color: #326f81;
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
+    -webkit-transition-duration: 100ms;
+    transition-duration: 100ms;
   }
 #answer3{
     background-color: #f57deb;}
   #answer3:hover{
     background-color: #a854a1;
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
+    -webkit-transition-duration: 100ms;
+    transition-duration: 100ms;
   }
 #answer4{
     background-color: #00cc5f;}
   #answer4:hover{
     background-color: #007a39;
-    -webkit-transition-duration: 500ms;
-    transition-duration: 500ms;
+    -webkit-transition-duration: 100ms;
+    transition-duration: 100ms;
   }
 
 #buttons{

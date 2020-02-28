@@ -32,10 +32,9 @@ function showAns(type){
             break;
         case 'sa' :
             tableAns =`
-            <h3>Your Answer</h3>
             <form class = "short">
                 <input id = "answer5" class = "shortanswertext"></input>
-                <button onclick = "answerSubmitted(1)" id = "answer5" class = "shortansbutton">Submit</button>
+                <button onclick = "shortAnswerSubmitted()" id = "answer5" class = "shortansbutton">Submit</button>
             </form>`;
             break;
     }
@@ -47,17 +46,6 @@ socket.on('noGameFound', function(){
     window.location.href = '../../';//Redirect user to 'join game' page 
 });
 
-function updateTimer(){
-    time = 20;
-    timer = setInterval(function(){
-        time -= 1;
-        document.getElementById('num').textContent = " " + time;
-        if(time == 0){
-            socket.emit('timeUp');
-        }
-    }, 1000);
-}
-
 function answerSubmitted(num){
     if(playerAnswered == false){
         playerAnswered = true;
@@ -66,19 +54,31 @@ function answerSubmitted(num){
         
         //Hiding buttons from user
         if(params.type =='4c'){
-        document.getElementById('answer1').style.visibility = "hidden";
-        document.getElementById('answer2').style.visibility = "hidden";
-        document.getElementById('answer3').style.visibility = "hidden";
-        document.getElementById('answer4').style.visibility = "hidden";
-    }else if(params.type=='2c'){
-        document.getElementById('answer1').style.visibility = "hidden";
-        document.getElementById('answer2').style.visibility = "hidden";
-    }else if(params.type=='sa'){
-        
-    }
+            document.getElementById('answer1').style.visibility = "hidden";
+            document.getElementById('answer2').style.visibility = "hidden";
+            document.getElementById('answer3').style.visibility = "hidden";
+            document.getElementById('answer4').style.visibility = "hidden";
+        }
+        else if(params.type=='2c'){
+            document.getElementById('answer1').style.visibility = "hidden";
+            document.getElementById('answer2').style.visibility = "hidden";
+        }
         document.getElementById('message').style.display = "block";
-        document.getElementById('message').innerHTML = "Answer Submitted! Waiting on other players...";
+        document.getElementById('message').innerHTML = "Answer Submitted! Waiting for other players...";
     }
+}
+
+function shortAnswerSubmitted(){
+    var answer = document.getElementById('answer5').innerHTML;
+    console.log(answer);
+    if(playerAnswered == false){
+        playerAnswered = true;
+        socket.emit('playerAnswer', answer.toUpperCase());
+    }
+
+    document.getElementById('answer5').style.visibility = "hidden";
+    document.getElementById('message').style.display = "block";
+    document.getElementById('message').innerHTML = "Answer Submitted! Waiting for other players...";
 }
 
 //Get results on last question
@@ -108,13 +108,9 @@ socket.on('questionOver', function(data){
         document.getElementById('answer1').style.visibility = "hidden";
         document.getElementById('answer2').style.visibility = "hidden";
     }else if(params.type=='sa'){
-        
+        document.getElementById('answer5').style.visibility = "hidden";
     }
-    
-    document.getElementById('answer1').style.visibility = "hidden";
-    document.getElementById('answer2').style.visibility = "hidden";
-    document.getElementById('answer3').style.visibility = "hidden";
-    document.getElementById('answer4').style.visibility = "hidden";
+
     socket.emit('getScore');
 });
 
@@ -149,6 +145,9 @@ socket.on('GameOver', function(){
     document.getElementById('answer2').style.visibility = "hidden";
     document.getElementById('answer3').style.visibility = "hidden";
     document.getElementById('answer4').style.visibility = "hidden";
+    if(params.type == 'sa'){
+        document.getElementById('answer5').style.visibility = "hidden";
+    }
     document.getElementById('message').style.display = "block";
     document.getElementById('message').innerHTML = "GAME OVER";
 });

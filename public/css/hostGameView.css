@@ -1,5 +1,5 @@
 #answer1{
-    background-color: #4CAF50;
+    background-color: rgb(241, 48, 48);
     margin: auto;
     padding: 30px 20px;
     height: 50%;
@@ -7,7 +7,7 @@
     font-size: 20px;
 }
 #answer2{
-    background-color: #f94a1e;
+    background-color: #4dacc8;
     margin: auto;
     padding: 30px 20px;
     height: 50%;
@@ -15,7 +15,7 @@
     font-size: 20px;
 }
 #answer3{
-    background-color: #3399ff;
+    background-color: #f57deb;
     margin: auto;
     padding: 30px 20px;
     height: 50%;
@@ -23,7 +23,7 @@
     font-size: 20px;
 }
 #answer4{
-    background-color: #ff9933;
+    background-color: #00cc5f;
     margin: auto;
     padding: 30px 20px;
     height: 50%;

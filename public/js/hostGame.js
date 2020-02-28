@@ -3,8 +3,8 @@ var socket = io();
 var params = jQuery.deparam(window.location.search); //Gets the id from url
 
 var timer;
-
-var time = 200000;
+var questionNumber = 0;
+var time;
 var type_Q;
 //When host connects to server
 socket.on('connect', function () {
@@ -18,12 +18,13 @@ socket.on('noGameFound', function () {
 });
 
 socket.on('gameQuestions', function (data) {
+    questionNumber += 1; 
     switch (data.type) {
         case "4c":
             type_Q = "4c"
             document.getElementById('QA123').innerHTML= `
             <h2 id = "question">${data.q1}</h2>
-            <h3 id = "answer1">${data.q1}</h3>
+            <h3 id = "answer1">${data.a1}</h3>
             <br>
             <h3 id = "answer2">${data.a2}</h3>
             <br>
@@ -31,6 +32,7 @@ socket.on('gameQuestions', function (data) {
             <br>
             <h3 id = "answer4">${data.a4}</h3>`
             var correctAnswer = data.correct;
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber;
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
@@ -43,13 +45,15 @@ socket.on('gameQuestions', function (data) {
         <h3 id = 'answer2'>False</h3>`
 
             var correctAnswer = data.correct;
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber;
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
 
         case "sa":
             type_Q = "sa"
-            document.getElementById('QA').innerHTML = `<h2 id = 'question'>${data.q1}</h2>`
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber;
+            document.getElementById('QA123').innerHTML = `<h2 id = 'question'>${data.q1}</h2>`
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
@@ -180,7 +184,7 @@ function nextQuestion() {
 }
 
 function updateTimer() {
-    time = 200;
+    time = 20000;
     timer = setInterval(function () {
         time -= 1;
         document.getElementById('num').textContent = " " + time;

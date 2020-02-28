@@ -8,15 +8,15 @@
         <link rel = "stylesheet" href = "../../assets/css/main.css" />
      
     </head>
+    
     <body>
-       
 
         <!-- Nav -->
 		<nav id="nav">
 			<ul>
 				<li><a href="profile.html">profile</a></li>
 				<li><a href="courses.html">courses</a></li>
-				<li class="current"><a href="createquiz.html">create quiz</a></li>
+				<li class="current"><a href="quiz.html">quiz</a></li>
 			</ul>
 		</nav>
 
@@ -24,30 +24,46 @@
 
     <!-- Header -->
 		<header id="header">
+            
 			<div class="logo container">
                 <div class="form-field">
                     <h1><label id="logo">Create Quiz</a></h1><br>
-                        
                 </div>
-                <br>
-			</div>
-    </header>
+            </div>
+       
+        </header>
+
         
+    <div class= "container" style="text-align:center;">
+        <br>
+        <form >
+            <label ><h3 id = "quizTitle">Quiz Title :</h3></label>
+            <input id = "name" type = "text" name="name" style=" text-align: center; font-size: larger; font-weight: 1000; ">
+        </form>
+    </div>
+
+
     <div class="container">
         <br>
+        
         <div id = "allQuestions"></div>
 
         <button onclick="addQuestion()">Add another question</button>
 
         <br>
         <br>
-        <div class="form-field">
-            <button onclick = "updateDatabase()">Create Quiz</button>
-        </div>
+        
+        <h2 class="major"></h2>
+        
+        <div class="form-field" style="text-align:center;">
+           <button style="background-color: rgb(82, 230, 95); font-size:22px;" onclick = "updateDatabase()">Create Quiz</button>
+        <br>
         <br>
         
-        <button onclick = 'cancelQuiz()'>Cancel quiz and return to quiz selection</button>
-    
+        <button style="background-color: rgb(209, 61, 24); font-size:22px;" onclick = 'cancelQuiz()'>Cancel quiz & return to quiz selection</button>
+        </div>
+        <br>    
+        
     </div>
     
       

@@ -46,10 +46,17 @@ function answerSubmitted(num){
         socket.emit('playerAnswer', num);//Sends player answer to server
         
         //Hiding buttons from user
+        if(params.type =='4c'){
         document.getElementById('answer1').style.visibility = "hidden";
         document.getElementById('answer2').style.visibility = "hidden";
         document.getElementById('answer3').style.visibility = "hidden";
         document.getElementById('answer4').style.visibility = "hidden";
+    }else if(params.type=='2c'){
+        document.getElementById('answer1').style.visibility = "hidden";
+        document.getElementById('answer2').style.visibility = "hidden";
+    }else if(params.type=='sa'){
+        
+    }
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Answer Submitted! Waiting on other players...";
         
@@ -72,11 +79,21 @@ socket.on('questionOver', function(data){
         document.body.style.backgroundColor = "#f94a1e";
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Incorrect!";
+    }        
+    
+    if(params.type =='4c'){
+        document.getElementById('answer1').style.visibility = "hidden";
+        document.getElementById('answer2').style.visibility = "hidden";
+        document.getElementById('answer3').style.visibility = "hidden";
+        document.getElementById('answer4').style.visibility = "hidden";
+    }else if(params.type=='2c'){
+        document.getElementById('answer1').style.visibility = "hidden";
+        document.getElementById('answer2').style.visibility = "hidden";
+    }else if(params.type=='sa'){
+        
     }
-    document.getElementById('answer1').style.visibility = "hidden";
-    document.getElementById('answer2').style.visibility = "hidden";
-    document.getElementById('answer3').style.visibility = "hidden";
-    document.getElementById('answer4').style.visibility = "hidden";
+
+
     socket.emit('getScore');
 });
 

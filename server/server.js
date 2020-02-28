@@ -129,7 +129,8 @@ io.on('connection', (socket) => {
                         a3: answer3,
                         a4: answer4,
                         correct: correctAnswer,
-                        playersInGame: playerData.length
+                        playersInGame: playerData.length,
+                        type:Q_type
                     });
                     console.log(Q_type);
                     // Q_type = "2c";
@@ -368,7 +369,8 @@ io.on('connection', (socket) => {
                             a3: answer3,
                             a4: answer4,
                             correct: correctAnswer,
-                            playersInGame: playerData.length
+                            playersInGame: playerData.length,
+                            type:Q_type
                         });
                         io.to(game.pin).emit('nextQuestionPlayer',Q_type);
                         db.close();

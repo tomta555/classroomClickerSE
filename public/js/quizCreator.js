@@ -5,6 +5,8 @@ function updateDatabase(){
     var questions = [];
     var name = document.getElementById('name').value;
     for(var i = 1; i <= questionNum; i++){
+        // if(qtype){}
+        // else{} 
         var question = document.getElementById('q' + i).value;
         var answers = [];
         var type = document.getElementById("type"+i).innerText;
@@ -22,6 +24,7 @@ function updateDatabase(){
     var quiz = {id: 0, "name": name, "questions": questions};
     socket.emit('newQuiz', quiz);
 };
+
 
 var questionTable = "";
 

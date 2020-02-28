@@ -33,6 +33,7 @@ function updateDatabase(){
     socket.emit('newQuiz', quiz);
 };
 
+
 var questionTable = "";
 
 function addQuestion(){

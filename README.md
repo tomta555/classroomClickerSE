@@ -3,5 +3,10 @@
 <ol>
   <li>Install MongoDB:</li>
   <li>Start Server: node server/server.js</li>
-  <li>This is touchy's branch</li>
+<<<<<<< HEAD
+  <li>Nani</li>
 </ol>
+=======
+  <li>ddddd</li>
+  </ol>
+>>>>>>> d2e311c7890ee18048c788e17648643b288be75b

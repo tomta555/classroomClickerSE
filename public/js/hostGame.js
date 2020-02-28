@@ -179,25 +179,13 @@ function nextQuestion() {
     document.getElementById('square2').style.display = "none";
     document.getElementById('square3').style.display = "none";
     document.getElementById('square4').style.display = "none";
-
-    document.getElementById('answer1').style.filter = "none";
-    document.getElementById('answer2').style.filter = "none";
-    document.getElementById('answer3').style.filter = "none";
-    document.getElementById('answer4').style.filter = "none";
-
-
     }
     else if(type_Q='2c'){
         document.getElementById('nextQButton').style.display = "none";
         document.getElementById('square1').style.display = "none";
         document.getElementById('square2').style.display = "none";
-
-        document.getElementById('answer1').style.filter = "none";
-        document.getElementById('answer2').style.filter = "none";
-
-
     }else if(type_Q='sa'){
-
+        document.getElementById('answer5').style.display = "none";
     }
     document.getElementById('playersAnswered').style.display = "block";
     document.getElementById('timerText').style.display = "block";
@@ -223,10 +211,16 @@ socket.on('GameOver', function (data) {
     document.getElementById('square3').style.display = "none";
     document.getElementById('square4').style.display = "none";
 
-    document.getElementById('answer1').style.display = "none";
-    document.getElementById('answer2').style.display = "none";
-    document.getElementById('answer3').style.display = "none";
-    document.getElementById('answer4').style.display = "none";
+    a = document.getElementById('answer1')
+    b = document.getElementById('answer2')
+    c = document.getElementById('answer3')
+    d = document.getElementById('answer4')
+    if(a!=undefined && b!=undefined && c!=undefined && d!=undefined){
+        a.style.display = "none";
+        b.style.display = "none";
+        c.style.display = "none";
+        d.style.display = "none";
+    }
     document.getElementById('timerText').innerHTML = "";
     document.getElementById('question').innerHTML = "GAME OVER";
     document.getElementById('playersAnswered').innerHTML = "";

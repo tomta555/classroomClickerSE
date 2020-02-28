@@ -2092,6 +2092,7 @@ input, select, textarea {
 
 /* Forms */
 
+			
 	form label {
 		display: block;
 		margin: 0 0 1em 0;
@@ -2107,11 +2108,13 @@ input, select, textarea {
 	form select,
 	form textarea {
 		-webkit-appearance: none;
-		display: block;
-		width: 70%;
+		width: 50%;
+		text-align:center;
 		border-radius: 8px;
 		border: solid 2px #E7EAE8;
 	}
+
+	
 
 		form input[type="text"]:focus,
 		form input[type="email"]:focus,
@@ -2190,6 +2193,22 @@ input, select, textarea {
 				background: #E7EAE8;
 				color: #fff;
 			}
+
+
+/* scroll-up */
+.scroll-up a {
+    background: #fff;
+    display: block;
+    height: 28px;
+    width: 28px;
+    text-align: center;
+    line-height: 28px;
+    font-size: 14px;
+    color: #000;
+    opacity: 0.6;
+    border-radius: 2px;
+}
+
 
 
 /* Tab */

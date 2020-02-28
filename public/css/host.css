@@ -7,23 +7,23 @@
 
 @keyframes bgcolor {
     0% {
-        background-color: #45a3e5
+        background-color: #ae00f3
     }
 
     30% {
-        background-color: #66bf39
+        background-color: #c6aaf3
     }
 
     60% {
-        background-color: #eb670f
+        background-color: #9930fcea
     }
 
     90% {
-        background-color: #f35
+        background-color: rgb(195, 65, 235)
     }
 
     100% {
-        background-color: #864cbf
+        background-color: #d1579e
     }
 }
 
@@ -65,9 +65,11 @@ body {
   }
 
 .joincontainer{
+    margin: 0% 10%;
     padding: 1% 2%;
-    width: 100%;
+    width: 80%;
     position: relative;
+
 }
   td{
     width: 33.33%;
@@ -97,4 +99,10 @@ body {
     margin-right: auto;
     font-size: 25px;
     font-family: 'Raleway', sans-serif;
+}
+
+#count {
+    width: auto;
+    height: auto;
+    background-color: rgb(82, 230, 95);
 }

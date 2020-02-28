@@ -9,8 +9,9 @@ var params = jQuery.deparam(window.location.search); //Gets the id from url
 
 socket.on('connect', function() {
     //Tell server that it is host connection from game view
+    console.log(params.type);
     socket.emit('player-join-game', params);
-    showAns('4c');
+    showAns(params.type);
 });
 
 function showAns(type){
@@ -102,14 +103,10 @@ socket.on('newScore', function(data){
     document.getElementById('scoreText').innerHTML = "Score: " + data;
 });
 
-socket.on('nextQuestionPlayer', function(){
+socket.on('nextQuestionPlayer', function(type){
     correct = false;
     playerAnswered = false;
-
-    document.getElementById('answer1').style.visibility = "visible";
-    document.getElementById('answer2').style.visibility = "visible";
-    document.getElementById('answer3').style.visibility = "visible";
-    document.getElementById('answer4').style.visibility = "visible";
+    showAns(type);
     document.getElementById('message').style.display = "none";
     document.body.style.backgroundColor = "white";
 });

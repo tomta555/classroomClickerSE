@@ -1,23 +1,31 @@
 var socket = io();
 var questionNum = 0; 
-
+var questionCounter = 0;
 function updateDatabase(){
     var questions = [];
     var name = document.getElementById('name').value;
     for(var i = 1; i <= questionNum; i++){
-        // if(qtype){}
-        // else{} 
+        if(document.getElementById('q'+i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
         var answers = [];
         var type = document.getElementById("type"+i).innerText;
-        if (type === "4c"){
-            var answer1 = document.getElementById(i + 'a1').value;
-            var answer2 = document.getElementById(i + 'a2').value;
-            var answer3 = document.getElementById(i + 'a3').value;
-            var answer4 = document.getElementById(i + 'a4').value;
-            answers = [answer1, answer2, answer3, answer4];
+        // var correct = document.getElementById('correct' + i).value;
+        var correct;
+        switch(type){
+            case("4c"):
+                var answer1 = document.getElementById(i + 'a1').value;
+                var answer2 = document.getElementById(i + 'a2').value;
+                var answer3 = document.getElementById(i + 'a3').value;
+                var answer4 = document.getElementById(i + 'a4').value;
+                correct = radioCheck(i);
+                answers = [answer1, answer2, answer3, answer4];
+                break;
+            case("2c"):
+                correct = radioCheck(i);
+                break;
+            case("sa"):
+                correct = document.getElementById('correct' + i).value;
         }
-        var correct = document.getElementById('correct' + i).value;
         questions.push({"question": question, "answers": answers, "correct": correct, "type":type})
     }
     
@@ -29,16 +37,19 @@ function updateDatabase(){
 var questionTable = "";
 
 function addQuestion(){
+    questionCounter += 1;
     questionNum += 1;
     questionTable = document.getElementById('allQuestions');
     thisQuestion = document.createElement("div");
     thisQuestion.setAttribute("id",`Question${questionNum}`);
     thisQuestion.innerHTML = `
-    <h3>Question ${questionNum} :</h3>
+    <h3 id="questionName${questionNum}">Question ${questionCounter} :</h3>
         <div class="tab">
-            <button class="tablinks${questionNum}" onclick="openTab(event, '4c', ${questionNum})">Select 4 choices</button>
-            <button class="tablinks${questionNum}" onclick="openTab(event, '2c', ${questionNum})">Select 2 choices</button>
-            <button class="tablinks${questionNum}" onclick="openTab(event, 'sa', ${questionNum})">Select Short Answer</button> 
+            <button class="tablinks${questionNum} active" onclick="openTab(event, '4c', ${questionNum})">4 choices</button>
+            <button class="tablinks${questionNum}" onclick="openTab(event, '2c', ${questionNum})">2 choices</button>
+            <button class="tablinks${questionNum}" onclick="openTab(event, 'sa', ${questionNum})">Short Answer</button> 
+            <button onclick="exportQeustion(${questionNum})" >export(not work yet)</button>
+            <button onclick="deleteQeustion(${questionNum})" >Delete</button>
             <br>
             <br>
         </div>
@@ -49,23 +60,42 @@ function addQuestion(){
             <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
             <br>
             <br>
+            <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
             <label>Answer 1: </label>
             <input id = "${questionNum}a1" type = "text" autofocus/>
+            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input>
             <label>Answer 2: </label>
             <input id = "${questionNum}a2" type = "text" autofocus/>
             <br>
             <br>
+            <input type = "radio" id = "radio3${questionNum}" name = "correct${questionNum}" value = 3></input>
             <label>Answer 3: </label>
             <input id = "${questionNum}a3"  type = "text"autofocus/>
+            <input type = "radio" id = "radio4${questionNum}" name = "correct${questionNum}" value = 4></input>
             <label>Answer 4: </label>
             <input id = "${questionNum}a4"  type = "text" autofocus/>
-            <br>
-            <br>
-            <label>Correct Answer (1-4) :</label>
-            <input class = "correct" id = "correct${questionNum}"  type = "number" autofocus/>
         </div>    
     <br>`;
     questionTable.appendChild(thisQuestion);
+}
+function deleteQeustion(i){
+    questionCounter-=1;
+    document.getElementById(`Question${i}`).remove();
+    var counter = 1;
+    for(j=1;j<=questionNum;j++){
+        var q = document.getElementById(`questionName${j}`)
+        if(q != undefined){
+            q.innerHTML = `Question ${counter} : `;
+            counter++;
+        }
+    }
+
+}
+function radioCheck(i){
+    var allRadio = document.getElementsByName(`correct${i}`);
+    for(var j=0; j<4;j++){
+        if(allRadio[j].checked == true) return allRadio[j].value;
+    }
 }
 
 function openTab(evt, quizType, id){
@@ -88,20 +118,20 @@ function openTab(evt, quizType, id){
             <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
             <br>
             <br>
+            <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
             <label>Answer 1: </label>
             <input id = "${questionNum}a1" type = "text" autofocus/>
+            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input>
             <label>Answer 2: </label>
             <input id = "${questionNum}a2" type = "text" autofocus/>
             <br>
             <br>
+            <input type = "radio" id = "radio3${questionNum}" name = "correct${questionNum}" value = 3></input>
             <label>Answer 3: </label>
             <input id = "${questionNum}a3"  type = "text"autofocus/>
+            <input type = "radio" id = "radio4${questionNum}" name = "correct${questionNum}" value = 4></input>
             <label>Answer 4: </label>
-            <input id = "${questionNum}a4"  type = "text" autofocus/>
-            <br>
-            <br>
-            <label>Correct Answer (1-4) :</label>
-            <input class = "correct" id = "correct${questionNum}"  type = "number" autofocus/>`
+            <input id = "${questionNum}a4"  type = "text" autofocus/>`
             break;
         case("2c"):
             tabcontent = `
@@ -111,8 +141,9 @@ function openTab(evt, quizType, id){
             <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
             <br>
             <br>
-            <label>Correct Answer (1-2) :</label>
-            <input class = "correct" id = "correct${questionNum}"  type = "number" autofocus/>`
+            
+            <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input> <label>True</lebel>
+            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>Fasle</lebel>`
             break;
         case("sa"):
             tabcontent = `

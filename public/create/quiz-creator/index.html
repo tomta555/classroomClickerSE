@@ -2,38 +2,21 @@
 <html>
     <head>
         <title>Creator</title>
-        <link rel = "stylesheet" href = "../../css/quizCreator.css"> 
+        <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
         <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="../../assets/css/main.css" />
+        <link rel = "stylesheet" href = "../../assets/css/main.css" />
      
     </head>
+    
     <body>
-      
-    <!-- Nav -->
+
+        <!-- Nav -->
 		<nav id="nav">
 			<ul>
 				<li><a href="profile.html">profile</a></li>
 				<li><a href="courses.html">courses</a></li>
-				<!-- <li>
-					<a href="#">seafood ></a>
-						<ul>
-							<li><a href="fish.html">fish</a></li>
-							<li><a href="shrimp.html">shrimp</a></li>
-							<li><a href="crab.html">crab</a></li>
-							<li><a href="octopus.html">octopus</a></li>
-							<li><a href="shellfish.html">shellfish</a></li>
-						</ul>	
-				</li>
-				<li>
-					<a href="#">meat dish ></a>
-						<ul>
-							<li><a href="pork.html">pork</a></li>
-							<li><a href="beef.html">beef</a></li>
-							<li><a href="chicken.html">chicken</a></li>
-						</ul>
-				</li> -->
-				<li class="current"><a href="createquiz.html">create quiz</a></li>
+				<li class="current"><a href="quiz.html">quiz</a></li>
 			</ul>
 		</nav>
 
@@ -41,58 +24,45 @@
 
     <!-- Header -->
 		<header id="header">
+            
 			<div class="logo container">
                 <div class="form-field">
-                    <label id = "quizTitle">Quiz Title : </label>
-                    <input id = "name" type = "text" name="name" autofocus/>
+                    <h1><label id="logo">Create Quiz</a></h1><br>
                 </div>
-                <br>
-			</div>
-    </header>
-        
-    <div class="container">
-      <br>
-        <!-- <div id = "allQuestions"> -->
-            <!-- <div id="question-field">
-                <label>Question 1: </label>
-                <input class = "question" id = "q1" type = "text" autofocus/>
-                <br>
-                <br>
-                <label>Answer 1: </label>
-                <input id = "1a1" type = "text" autofocus/>
-                <label>Answer 2: </label>
-                <input id = "1a2" type = "text" autofocus/>
-                <br>
-                <br>
-                <label>Answer 3: </label>
-                <input id = "1a3"  type = "text"autofocus/>
-                <label>Answer 4: </label>
-                <input id = "1a4"  type = "text" autofocus/>
-                <br>
-                <br>
-                <label>Correct Answer (1-4) :</label>
-                <input class = "correct" id = "correct1"  type = "number" autofocus/>
-            </div> -->
-        <!-- </div> -->
-        <div id = "allQuestions"></div>
-        <button onclick="addQuestion()">Add another question</button>
-        
-        <!-- <button onclick = "addQuestion4c()">Add another question(4 Choise)</button>
-        <button onclick = "addQuestion2c()">Add another question(2 Choise)</button>
-        <button onclick = "addQuestionSA()">Add another question(Short Answer)</button> -->
-
-        <br>
-        <br>
-        <div class="form-field">
-            <button onclick = "updateDatabase()">Create Quiz</button>
-        </div>
-        <br>
-        
-        <button onclick = 'cancelQuiz()'>Cancel quiz and return to quiz selection</button>
-
-        </div>
-    
+            </div>
        
+        </header>
+
+        
+    <div class= "container" style="text-align:center;">
+        <br>
+        <label><h3 id = "quizTitle">Quiz Title</h3></label>
+        <input id = "name" type = "text" name="name" style="font-size: larger; font-weight: 1000; text-align: center;">
+    </div>
+
+
+    <div class="container">
+        <br>
+        <div id = "allQuestions"></div>
+
+        <button onclick="addQuestion()">Add another question</button>
+
+        <br>
+        <br>
+        <h2 class="major"></h2>
+        
+        <div class="form-field" style="text-align:center;">
+           <button style="background-color: rgb(57, 164, 235);" onclick = "updateDatabase()">Create Quiz</button>
+        <br>
+        <br>
+        
+        <button style="background-color: rgb(209, 61, 24);" onclick = 'cancelQuiz()'>Cancel quiz & return to quiz selection</button>
+        </div>
+        <br>    
+        
+    </div>
+    
+      
       
 
         <!-- tab box -->
@@ -113,5 +83,14 @@
         </script> -->
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/quizCreator.js"></script>
+
+        <script src="../../assets/js/jquery.min.js"></script>
+        <script src="../../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../../assets/js/browser.min.js"></script>
+        <script src="../../assets/js/breakpoints.min.js"></script>
+        <script src="../../assets/js/util.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        
     </body>
 </html>

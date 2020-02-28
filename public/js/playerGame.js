@@ -32,9 +32,9 @@ function showAns(type){
             break;
         case 'sa' :
             tableAns =`
-            <form class = "short">
-                <input id = "answer5" class = "shortanswertext"></input>
-                <button onclick = "shortAnswerSubmitted()" id = "answer5" class = "shortansbutton">Submit</button>
+            <form class = "short" id="answer5">
+                <input id = "inputanswer5" class = "shortanswertext" type="text"></input>
+                <button onclick="shortAnswerSubmitted()">Submit</button>
             </form>`;
             break;
     }
@@ -53,32 +53,18 @@ function answerSubmitted(num){
         socket.emit('playerAnswer', num);//Sends player answer to server
         
         //Hiding buttons from user
-        if(params.type =='4c'){
-            document.getElementById('answer1').style.visibility = "hidden";
-            document.getElementById('answer2').style.visibility = "hidden";
-            document.getElementById('answer3').style.visibility = "hidden";
-            document.getElementById('answer4').style.visibility = "hidden";
-        }
-        else if(params.type=='2c'){
-            document.getElementById('answer1').style.visibility = "hidden";
-            document.getElementById('answer2').style.visibility = "hidden";
-        }
+        document.getElementById('answer1').style.visibility = "hidden";
+        document.getElementById('answer2').style.visibility = "hidden";
+        document.getElementById('answer3').style.visibility = "hidden";
+        document.getElementById('answer4').style.visibility = "hidden";
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Answer Submitted! Waiting for other players...";
     }
 }
 
 function shortAnswerSubmitted(){
-    var answer = document.getElementById('answer5').innerHTML;
-    console.log(answer);
-    if(playerAnswered == false){
-        playerAnswered = true;
-        socket.emit('playerAnswer', answer.toUpperCase());
-    }
-
-    document.getElementById('answer5').style.visibility = "hidden";
-    document.getElementById('message').style.display = "block";
-    document.getElementById('message').innerHTML = "Answer Submitted! Waiting for other players...";
+    var answer = document.getElementById('inputanswer5').value;
+    answerSubmitted(answer);
 }
 
 //Get results on last question
@@ -99,15 +85,13 @@ socket.on('questionOver', function(data){
         document.getElementById('message').innerHTML = "Incorrect!";
     }        
     
-    if(params.type =='4c'){
+    if(params.type =='4c' || params.type == '2c'){
         document.getElementById('answer1').style.visibility = "hidden";
         document.getElementById('answer2').style.visibility = "hidden";
         document.getElementById('answer3').style.visibility = "hidden";
         document.getElementById('answer4').style.visibility = "hidden";
-    }else if(params.type=='2c'){
-        document.getElementById('answer1').style.visibility = "hidden";
-        document.getElementById('answer2').style.visibility = "hidden";
-    }else if(params.type=='sa'){
+    }
+    else if(params.type=='sa'){
         document.getElementById('answer5').style.visibility = "hidden";
     }
 
@@ -145,9 +129,7 @@ socket.on('GameOver', function(){
     document.getElementById('answer2').style.visibility = "hidden";
     document.getElementById('answer3').style.visibility = "hidden";
     document.getElementById('answer4').style.visibility = "hidden";
-    if(params.type == 'sa'){
-        document.getElementById('answer5').style.visibility = "hidden";
-    }
+    document.getElementById('answer5').style.visibility = "hidden";
     document.getElementById('message').style.display = "block";
     document.getElementById('message').innerHTML = "GAME OVER";
 });

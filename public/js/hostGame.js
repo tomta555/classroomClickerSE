@@ -73,8 +73,9 @@ socket.on('questionOver', function (playerData, correct) {
     var answer4 = 0;
     var total = 0;
     //Hide elements on page
-    document.getElementById('playersAnswered').style.display = "none";
-    document.getElementById('timerText').style.display = "none";
+    // document.getElementById('playersAnswered').style.display = "none";
+    // document.getElementById('timerText').style.display = "none";
+    
     if (type_Q == '4c') {
         //Shows user correct answer with effects on elements
         if (correct == 1) {
@@ -142,9 +143,30 @@ socket.on('questionOver', function (playerData, correct) {
             document.getElementById('answer1').style.filter = "grayscale(50%)";
             var current = document.getElementById('answer2').innerHTML;
             document.getElementById('answer2').innerHTML = "&#10004" + " " + current;
-        } 
+        }
+        
+        for (var i = 0; i < playerData.length; i++) {
+            if (playerData[i].gameData.answer == 1) {
+                answer1 += 1;
+            } else if (playerData[i].gameData.answer == 2) {
+                answer2 += 1;
+            }
+            total += 1;
+        }
+
+        //Gets values for graph
+        answer1 = answer1 / total * 100;
+        answer2 = answer2 / total * 100;
+
+        document.getElementById('square1').style.display = "inline-block";
+        document.getElementById('square2').style.display = "inline-block";
+
+        document.getElementById('square1').style.height = answer1 + "px";
+        document.getElementById('square2').style.height = answer2 + "px";
+        
         document.getElementById('nextQButton').style.display = "block";
-    } else if (type_Q == 'ac') {
+    } else if (type_Q == 'sa') {
+        
         document.getElementById('nextQButton').style.display = "block";
 
     }
@@ -165,7 +187,7 @@ function nextQuestion() {
 
 
     }
-    else if(type_Q='2C'){
+    else if(type_Q='2c'){
         document.getElementById('nextQButton').style.display = "none";
         document.getElementById('square1').style.display = "none";
         document.getElementById('square2').style.display = "none";

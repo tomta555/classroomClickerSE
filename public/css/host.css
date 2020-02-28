@@ -1,3 +1,10 @@
+.col-count-3 { column-count: 3; }
+.col-lg-4 { 
+    -ms-flex:0 0 33.333333%;
+    flex:0 0 33.333333%; 
+    max-width: 33.333333% 
+}
+
 @keyframes bgcolor {
     0% {
         background-color: #45a3e5
@@ -43,12 +50,34 @@ body {
     font-family: 'Tajawal', sans-serif;
     font-size: 50px;
 }
-#players{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.counter{
+    width: 90%;
+    margin-left: 5%;
+    font-family: 'Tajawal', sans-serif;
+    text-align: left;
+    color: rgb(240, 240, 240);
+}
+  .counter h3{
+      font-size: 20px;
+  }
+  #playerCount{
+      font-size: 32px;
+  }
+
+.joincontainer{
+    padding: 1% 2%;
+    width: 100%;
+    position: relative;
+}
+  td{
+    width: 33.33%;
     text-align: center;
+  }
+
+#players{
+    font-family: 'Raleway', sans-serif;
     font-size: 20px;
+    color: #FFFFFF;
     resize: none;
 }
 

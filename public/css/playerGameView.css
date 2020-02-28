@@ -1,5 +1,5 @@
 html, body { padding: 0; margin: 0; }
-/* height: 90%; */
+/* height: 83%; */
 
 .col-count-2 { column-count: 2; }
 .col-lg-4 { 
@@ -30,6 +30,8 @@ html, body { padding: 0; margin: 0; }
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
+    height: 17%;
+    max-height: 17%;
 }
   .navbar table tbody tr td {
     width: 1%;

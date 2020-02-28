@@ -11,7 +11,31 @@
         <!-- <button id = "cancel" onclick = "endGame()">Cancel Game</button> -->
         <h2 id = "title">Join this Game using the Game Pin</h2>
         <h1 id = "gamePinText"></h1>
-        <textarea style = "width: 700px; height: 500px;" readonly id = 'players'></textarea>
+        
+        <div class="counter">
+            <h3>Players Joined: <span id="playerCount"></span></h3>
+        </div>
+        
+        <table class="joincontainer">
+            <tbody id="players">
+                
+                <!-- <tr>
+                    <td id="players">Sarah Logan</td>
+                    <td id="players">Liv Morgan</td>
+                    <td id="players">Ruby Riott</td>
+                </tr>
+                <tr>
+                    <td id="players">Shayna Brazler</td>
+                    <td id="players">Natalya</td>
+                    <td id="players">Azuka</td>
+                </tr> -->
+            </tbody>
+        </table>
+        
+        
+        
+        <!-- <textarea style = "width: 700px; height: 500px;" readonly id = 'players'></textarea> -->
+        <br>
         <br>
         <button id = 'start' onclick = "startGame()">Start Game</button>
         <br>

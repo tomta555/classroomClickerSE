@@ -66,6 +66,9 @@ body {
     color: white;
 }
 #host{
+    display: block;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
     color: white;
     text-decoration: none;
 }

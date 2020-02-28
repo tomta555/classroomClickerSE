@@ -132,7 +132,6 @@ io.on('connection', (socket) => {
                         playersInGame: playerData.length,
                         type:Q_type
                     });
-                    console.log(Q_type);
                     // Q_type = "2c";
                     io.to(game.pin).emit('gameStartedPlayer',Q_type);
                     game.gameData.questionLive = true;

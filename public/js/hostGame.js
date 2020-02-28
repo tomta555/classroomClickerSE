@@ -3,8 +3,8 @@ var socket = io();
 var params = jQuery.deparam(window.location.search); //Gets the id from url
 
 var timer;
-
-var time = 200000;
+var questionNumber = 0;
+var time;
 var type_Q;
 //When host connects to server
 socket.on('connect', function () {
@@ -18,12 +18,13 @@ socket.on('noGameFound', function () {
 });
 
 socket.on('gameQuestions', function (data) {
+    questionNumber += 1; 
     switch (data.type) {
         case "4c":
             type_Q = "4c"
             document.getElementById('QA123').innerHTML= `
             <h2 id = "question">${data.q1}</h2>
-            <h3 id = "answer1">${data.q1}</h3>
+            <h3 id = "answer1">${data.a1}</h3>
             <br>
             <h3 id = "answer2">${data.a2}</h3>
             <br>
@@ -31,6 +32,7 @@ socket.on('gameQuestions', function (data) {
             <br>
             <h3 id = "answer4">${data.a4}</h3>`
             var correctAnswer = data.correct;
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber;
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
@@ -43,13 +45,15 @@ socket.on('gameQuestions', function (data) {
         <h3 id = 'answer2'>False</h3>`
 
             var correctAnswer = data.correct;
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber;
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
 
         case "sa":
             type_Q = "sa"
-            document.getElementById('QA').innerHTML = `<h2 id = 'question'>${data.q1}</h2>`
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber;
+            document.getElementById('QA123').innerHTML = `<h2 id = 'question'>${data.q1}</h2>`
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
@@ -69,8 +73,9 @@ socket.on('questionOver', function (playerData, correct) {
     var answer4 = 0;
     var total = 0;
     //Hide elements on page
-    document.getElementById('playersAnswered').style.display = "none";
-    document.getElementById('timerText').style.display = "none";
+    // document.getElementById('playersAnswered').style.display = "none";
+    // document.getElementById('timerText').style.display = "none";
+    
     if (type_Q == '4c') {
         //Shows user correct answer with effects on elements
         if (correct == 1) {
@@ -138,9 +143,30 @@ socket.on('questionOver', function (playerData, correct) {
             document.getElementById('answer1').style.filter = "grayscale(50%)";
             var current = document.getElementById('answer2').innerHTML;
             document.getElementById('answer2').innerHTML = "&#10004" + " " + current;
-        } 
+        }
+        
+        for (var i = 0; i < playerData.length; i++) {
+            if (playerData[i].gameData.answer == 1) {
+                answer1 += 1;
+            } else if (playerData[i].gameData.answer == 2) {
+                answer2 += 1;
+            }
+            total += 1;
+        }
+
+        //Gets values for graph
+        answer1 = answer1 / total * 100;
+        answer2 = answer2 / total * 100;
+
+        document.getElementById('square1').style.display = "inline-block";
+        document.getElementById('square2').style.display = "inline-block";
+
+        document.getElementById('square1').style.height = answer1 + "px";
+        document.getElementById('square2').style.height = answer2 + "px";
+        
         document.getElementById('nextQButton').style.display = "block";
-    } else if (type_Q == 'ac') {
+    } else if (type_Q == 'sa') {
+        
         document.getElementById('nextQButton').style.display = "block";
 
     }
@@ -161,7 +187,7 @@ function nextQuestion() {
 
 
     }
-    else if(type_Q='2C'){
+    else if(type_Q='2c'){
         document.getElementById('nextQButton').style.display = "none";
         document.getElementById('square1').style.display = "none";
         document.getElementById('square2').style.display = "none";
@@ -180,7 +206,7 @@ function nextQuestion() {
 }
 
 function updateTimer() {
-    time = 200;
+    time = 20000;
     timer = setInterval(function () {
         time -= 1;
         document.getElementById('num').textContent = " " + time;

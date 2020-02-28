@@ -33,6 +33,7 @@ function updateDatabase(){
     socket.emit('newQuiz', quiz);
 };
 
+
 var questionTable = "";
 
 function addQuestion(){
@@ -182,7 +183,6 @@ function setBGColor(){
     var randColor = randomColor();
     document.getElementById('question-field').style.backgroundColor = randColor;
 }
-
 
 
 

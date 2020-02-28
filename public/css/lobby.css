@@ -1,10 +1,15 @@
 #title1, #title2{
+    font-size: 70px;
     text-align: center;
     color: white;
     font-family: 'Raleway', sans-serif;
 }
 #title2{
     font-size: 15px;
+}
+
+#pad{
+    padding-top: 100px;
 }
 
 @keyframes bgcolor {

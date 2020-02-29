@@ -105,7 +105,7 @@ html, body { padding: 0; margin: 70px 0px 0px 0px; }
     font-family: 'Raleway', sans-serif;
 }
 #timerText{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
     text-align: right;
 }
 #num{
@@ -114,10 +114,10 @@ html, body { padding: 0; margin: 70px 0px 0px 0px; }
     text-align: right;
 }
 #playersAnswered{
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 #questionNum{
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 
 #winner1{

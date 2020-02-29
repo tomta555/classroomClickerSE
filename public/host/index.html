@@ -3,8 +3,7 @@
     <head>
         <title>Host</title>
         <link rel = "stylesheet" href = "../css/host.css">
-        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Tajawal" rel="stylesheet">
+        
 
         <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -24,16 +23,18 @@
             
 			<div class="logo container">
                 <div class="form-field">
-                    <h1><label id="logo">Join a Game</a></h1><br>
+                    <h1><label id="logo">Join this Game</a></h1><br>
                 </div>
             </div>
        
         </header>
 
-        <a class = "icon" id = "cancel" onclick="endGame()"><img src="../img/back.png" width="50px" height="50px"></a>
+        
+        <a style="background-color: rgb(255, 153, 37);" class = "button" id = "cancel" onclick="endGame()"><img src="../img/back.png" width="30px" height="30px"></a>
+        <br>
         <!-- <button id = "cancel" onclick = "endGame()">Cancel Game</button> -->
-        <h2 id = "title">Join this Game using the Game Pin</h2>
-        <h1 id = "gamePinText"></h1>
+        <h2 id = "title" style="font-family: 'Open Sans Condensed', sans-serif;">Join this Game using the Game Pin :</h2>
+        <h1 id = "gamePinText" ></h1>
         
         <div class="counter">
             <h3 style="color: grey;height: auto;width: 140px;background-color: cornsilk; text-align: center;border-radius: 7px;">Players Joined: <span id="playerCount"></span></h3>
@@ -60,7 +61,8 @@
         <!-- <textarea style = "width: 700px; height: 500px;" readonly id = 'players'></textarea> -->
         <br>
         <br>
-        <button style="background-color: rgb(82, 230, 95);" id = 'start' onclick = "startGame()">Start Game</button>
+        
+        <button style="background-color: rgb(82, 230, 95); font-family: 'Open Sans Condensed', sans-serif;" id = 'start' onclick = "startGame()">Start Game</button>
         <br>
         <br>
         <script src = "../socket.io/socket.io.js"></script>

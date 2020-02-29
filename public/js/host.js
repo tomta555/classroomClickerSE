@@ -41,7 +41,7 @@ function startGame(){
 }
 
 function endGame(){
-    window.location.href = "/";
+    window.location.href = "../../create/index.html";
 }
 
 //When server starts the game

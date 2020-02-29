@@ -1,7 +1,6 @@
 var socket = io();
 var questionNum = 0; 
 var questionCounter = 0;
-var countCorrect = 1;
 function updateDatabase(){
     var questions = [];
     var name = document.getElementById('name').value;
@@ -25,16 +24,13 @@ function updateDatabase(){
                 correct = radioCheck(i);
                 break;
             case("sa"):
-                for(var j = 1; j<=countCorrect ; j++) 
-                    answers[j-1] = document.getElementById(j + 'correct' + i).value;
-                    // console.log(document.getElementById(j + 'correct' + i).value);
-                // console.log(answers);
+                correct = document.getElementById('correct' + i).value;
         }
         questions.push({"question": question, "answers": answers, "correct": correct, "type":type})
     }
 
     var quiz = { id: 0, "name": name, "questions": questions };
-    socket.emit('newQuiz', quiz);
+    socket.emit('newHomework', quiz);
 };
 
 
@@ -103,7 +99,6 @@ function radioCheck(i){
 }
 
 function openTab(evt, quizType, id){
-    // countCorrect = 1;
     if(evt.currentTarget.className == "active") return;
     //unactive all tablinks
     tablinks = document.getElementsByClassName(`tablinks${id}`);
@@ -159,25 +154,11 @@ function openTab(evt, quizType, id){
             <br>
             <br>
             <label>Correct Answer :</label>
-            <div id="allCorrect">
-            <div id="countCorrect">
-            <input class = "correct" id = "${countCorrect}correct${questionNum}" type = "text" autofocus/>
+            <input class = "correct" id = "correct${questionNum}" type = "text" autofocus/>
             <br>
-            <br>
-            </div>
-            </div>
-            <button class="tablinks${questionNum}" onclick="addbuttonAns()">AddAnswer</button> 
             <br>`
     }
     targetQuestion.innerHTML = tabcontent;
-}
-function addbuttonAns(){
-    countCorrect++;
-    var AnsDiv = document.createElement("div");
-    AnsDiv.innerHTML = document.getElementById('countCorrect').innerHTML;
-    document.getElementById('allCorrect').appendChild(AnsDiv);
-    AnsDiv.getElementsByTagName("input")[0].setAttribute("id",`${countCorrect}correct${questionNum}`);
-    console.log(countCorrect);
 }
 
 //Called when user wants to exit quiz creator
@@ -187,8 +168,8 @@ function cancelQuiz() {
     }
 }
 
-socket.on('startGameFromCreator', function (data) {
-    window.location.href = "../index.html";
+socket.on('CreateHW', function (data) {
+    window.location.href = "../../course/info.html";
 });
 
 function randomColor() {

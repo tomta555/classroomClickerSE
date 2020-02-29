@@ -133,9 +133,26 @@ html, body { padding: 0; margin: 0; }
     padding: 0px 10px;
 }
 #message{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Press Start 2P', sans-serif;
     text-align: center;
+    padding-top:8%;
     font-size: 35px;
+    color: white;
+}
+
+#waitans{
+  font-family: 'Press Start 2P',sans-serif;
+  text-align: center ;
+  padding-top: 10%;
+  color: white;
+}
+
+#finish{
+  font-family: 'Press Start 2P',sans-serif;
+  text-align: center;
+  padding-top: 8%;
+  color: yellow;
+  font-size:60px;
 }
 
 .container {

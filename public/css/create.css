@@ -49,8 +49,9 @@ body {
     text-align: center;
 }
 #gameButton{
-    font-size:80px;
+    font-size:25px;
 }
 #gameButton:hover{
     cursor: pointer;
 }
+

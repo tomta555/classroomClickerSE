@@ -1,22 +1,29 @@
+.col-count-3 { column-count: 3; }
+.col-lg-4 { 
+    -ms-flex:0 0 33.333333%;
+    flex:0 0 33.333333%; 
+    max-width: 33.333333% 
+}
+
 @keyframes bgcolor {
     0% {
-        background-color: #45a3e5
+        background-color: #ae00f3
     }
 
     30% {
-        background-color: #66bf39
+        background-color: #c6aaf3
     }
 
     60% {
-        background-color: #eb670f
+        background-color: #9930fcea
     }
 
     90% {
-        background-color: #f35
+        background-color: rgb(195, 65, 235)
     }
 
     100% {
-        background-color: #864cbf
+        background-color: #d1579e
     }
 }
 
@@ -25,6 +32,11 @@ body {
     animation: bgcolor 10s infinite;
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
+}
+.icon {
+    display: block;
+    margin-left: 3%;
+    margin-top: 1%;
 }
 #title{
     color:white;
@@ -38,12 +50,36 @@ body {
     font-family: 'Tajawal', sans-serif;
     font-size: 50px;
 }
-#players{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.counter{
+    width: 90%;
+    margin-left: 5%;
+    font-family: 'Tajawal', sans-serif;
+    text-align: left;
+    color: rgb(240, 240, 240);
+}
+  .counter h3{
+      font-size: 20px;
+  }
+  #playerCount{
+      font-size: 32px;
+  }
+
+.joincontainer{
+    margin: 0% 10%;
+    padding: 1% 2%;
+    width: 80%;
+    position: relative;
+
+}
+  td{
+    width: 33.33%;
     text-align: center;
+  }
+
+#players{
+    font-family: 'Raleway', sans-serif;
     font-size: 20px;
+    color: #FFFFFF;
     resize: none;
 }
 
@@ -63,4 +99,10 @@ body {
     margin-right: auto;
     font-size: 25px;
     font-family: 'Raleway', sans-serif;
+}
+
+#count {
+    width: auto;
+    height: auto;
+    background-color: rgb(82, 230, 95);
 }

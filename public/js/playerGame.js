@@ -50,8 +50,9 @@ function answerSubmitted(num,type){
         playerAnswered = true;
         
         socket.emit('playerAnswer', num);//Sends player answer to server
-        document.getElementById('message').style.display = "block";
-        document.getElementById('message').innerHTML = "Answer Submitted! Waiting for other players...";
+        document.body.style.backgroundColor = "rgb(238, 138, 20)"
+        document.getElementById('waitans').style.display = "block";
+        document.getElementById('waitans').innerHTML = "Answer Submitted!<br><br>Waiting for other players...";
         //Hiding buttons from user
         switch(type){
             case("4c"):
@@ -80,15 +81,26 @@ socket.on('answerResult', function(data){
     }
 });
 
+var messageTable = "";
 socket.on('questionOver', function(data){
+    document.getElementById('waitans').style.display = "none";
+    document.getElementById('finish').style.display = "none";
     if(correct == true){
         document.body.style.backgroundColor = "#4CAF50";
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Correct!";
+        messageTable = `
+        <br><br>
+        <img src="../../img/correct.png">`;
+        document.getElementById('message').innerHTML += messageTable;
     }else{
         document.body.style.backgroundColor = "#f94a1e";
         document.getElementById('message').style.display = "block";
         document.getElementById('message').innerHTML = "Incorrect!";
+        messageTable = `
+        <br><br>
+        <img src="../../img/incorrect.png">`;
+        document.getElementById('message').innerHTML += messageTable;
     }        
 
     socket.emit('getScore');
@@ -103,6 +115,7 @@ socket.on('nextQuestionPlayer', function(type){
     playerAnswered = false;
     showAns(type);
     document.getElementById('message').style.display="none";
+    document.getElementById('waitans').style.display = "none";
     document.body.style.backgroundColor = "white";
 });
 
@@ -120,9 +133,15 @@ socket.on('playerGameData', function(data){
 });
 
 socket.on('GameOver', function(data){
-    document.body.style.backgroundColor = "#FFFFFF";
-    document.getElementById('message').style.display = "block";
-    document.getElementById('message').innerText = "GAME OVER";
+    document.body.style.backgroundColor = "#c70000";
+    document.getElementById('finish').style.display = "block";
+    document.getElementById('finish').innerText = "FINISH!";
+    messageTable = `
+        <br><br><img src="../../img/3.gif">`;
+        // <img src="../../img/finish.png" width="25%" height="25%">`;
+        document.getElementById('finish').innerHTML += messageTable;
+    document.getElementById('waitans').style.display = "none";
+    document.getElementById('message').style.display = "none";
     document.getElementById('answer1').style.display = "none";
     document.getElementById('answer2').style.display = "none";
     document.getElementById('answer3').style.display = "none";

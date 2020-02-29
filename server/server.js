@@ -509,5 +509,31 @@ io.on('connection', (socket) => {
         
         
     });
+
+    socket.on('newHomework', function(data){
+        MongoClient.connect(url, function(err, db){
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection('Homeworks').find({}).toArray(function(err, result){
+                if(err) throw err;
+                var num = Object.keys(result).length;
+                if(num == 0){
+                	data.id = 1
+                	num = 1
+                }else{
+                	data.id = result[num -1 ].id + 1;
+                }
+                var game = data;
+                dbo.collection("Homeworks").insertOne(game, function(err, res) {
+                    if (err) throw err;
+                    db.close();
+                });
+                db.close();
+            });
+            
+        });
+        
+        
+    });
     
 });

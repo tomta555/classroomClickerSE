@@ -478,10 +478,22 @@ io.on('connection', (socket) => {
                 db.close();
             });
         });
-        
-         
     });
     
+    socket.on('requestDbHW', function(){
+        
+        MongoClient.connect(url, function(err, db){
+            if (err) throw err;
+    
+            var dbo = db.db('classroomClicker');
+            dbo.collection("Homeworks").find().toArray(function(err, res) {
+                if (err) throw err;
+                socket.emit('HWData', res);
+                db.close();
+            });
+        });
+    });
+
     
     socket.on('newQuiz', function(data){
         MongoClient.connect(url, function(err, db){
@@ -529,6 +541,7 @@ io.on('connection', (socket) => {
         
     });
 
+<<<<<<< HEAD
     socket.on('editQuiz', function(data){
         console.log(data.id);
         MongoClient.connect(url, function(err, db){
@@ -542,6 +555,34 @@ io.on('connection', (socket) => {
             });
             
         });
+=======
+    socket.on('newHomework', function(data){
+        MongoClient.connect(url, function(err, db){
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection('Homeworks').find({}).toArray(function(err, result){
+                if(err) throw err;
+                var num = Object.keys(result).length;
+                if(num == 0){
+                	data.id = 1
+                	num = 1
+                }else{
+                	data.id = result[num -1 ].id + 1;
+                }
+                var game = data;
+                dbo.collection("Homeworks").insertOne(game, function(err, res) {
+                    if (err) throw err;
+                    db.close();
+                });
+                db.close();
+                socket.emit('CreateHW', num);
+            });
+            
+        });
+        
+        
+    });
+>>>>>>> 0925fe218124d8d439895438af1ef16540cf1905
     
     });
 });

@@ -31,7 +31,6 @@ function updateDatabase(){
 
     var quiz = { id: 0, "name": name, "questions": questions };
     socket.emit('newHomework', quiz);
-    window.location.href = "../../course/info.html";
 };
 
 
@@ -169,8 +168,8 @@ function cancelQuiz() {
     }
 }
 
-socket.on('startGameFromCreator', function (data) {
-    
+socket.on('CreateHW', function (data) {
+    window.location.href = "../../course/info.html";
 });
 
 function randomColor() {

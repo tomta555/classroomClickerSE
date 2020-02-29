@@ -478,10 +478,22 @@ io.on('connection', (socket) => {
                 db.close();
             });
         });
-        
-         
     });
     
+    socket.on('requestDbHW', function(){
+        
+        MongoClient.connect(url, function(err, db){
+            if (err) throw err;
+    
+            var dbo = db.db('classroomClicker');
+            dbo.collection("Homeworks").find().toArray(function(err, res) {
+                if (err) throw err;
+                socket.emit('HWData', res);
+                db.close();
+            });
+        });
+    });
+
     
     socket.on('newQuiz', function(data){
         MongoClient.connect(url, function(err, db){
@@ -529,6 +541,7 @@ io.on('connection', (socket) => {
                     db.close();
                 });
                 db.close();
+                socket.emit('CreateHW', num);
             });
             
         });

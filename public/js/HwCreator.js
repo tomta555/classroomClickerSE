@@ -30,7 +30,8 @@ function updateDatabase(){
     }
 
     var quiz = { id: 0, "name": name, "questions": questions };
-    socket.emit('newQuiz', quiz);
+    socket.emit('newHomework', quiz);
+    window.location.href = "../../course/info.html";
 };
 
 
@@ -169,7 +170,7 @@ function cancelQuiz() {
 }
 
 socket.on('startGameFromCreator', function (data) {
-    window.location.href = "../index.html";
+    
 });
 
 function randomColor() {

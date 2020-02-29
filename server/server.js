@@ -552,8 +552,8 @@ io.on('connection', (socket) => {
                 // console.log(result[0]);
                 db.close();
             });
-            
         });
+    }); 
     socket.on('newHomework', function(data){
         MongoClient.connect(url, function(err, db){
             if (err) throw err;
@@ -579,7 +579,5 @@ io.on('connection', (socket) => {
         });
         
         
-    });
-    
     });
 });

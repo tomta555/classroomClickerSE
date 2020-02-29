@@ -18,16 +18,16 @@ function showAns(type){
     switch(type){
         case '4c': 
             tableAns =`
-                <a onclick = "answerSubmitted(1,'4c')" id = "answer1" class = "button4c"><img src="../../img/circle.png"></a>
-                <a onclick = "answerSubmitted(2,'4c')" id = "answer2" class = "button4c"><img src="../../img/cross.png"></a>
+                <a onclick = "answerSubmitted(1,'4c')" id = "answer1" class = "button4c"><img src="../../img/triangle.png"></a>
+                <a onclick = "answerSubmitted(2,'4c')" id = "answer2" class = "button4c"><img src="../../img/circle.png"></a>
                 <br>
                 <a onclick = "answerSubmitted(3,'4c')" id = "answer3" class = "button4c"><img src="../../img/square.png"></a>
-                <a onclick = "answerSubmitted(4,'4c')" id = "answer4" class = "button4c"><img src="../../img/triangle.png"></a>`;
+                <a onclick = "answerSubmitted(4,'4c')" id = "answer4" class = "button4c"><img src="../../img/cross.png"></a>`;
             break;
         case '2c' : 
             tableAns =`
-                <a onclick = "answerSubmitted(1,'2c')" id = "answer1" class = "button2c"><img src="../../img/circle.png"></a>
-                <a onclick = "answerSubmitted(2,'2c')" id = "answer2" class = "button2c"><img src="../../img/cross.png"></a>`;
+                <a onclick = "answerSubmitted(1,'2c')" id = "answer1" class = "button2c"><img src="../../img/triangle.png"></a>
+                <a onclick = "answerSubmitted(2,'2c')" id = "answer2" class = "button2c"><img src="../../img/circle.png"></a>`;
             break;
         case 'sa' :
             tableAns =`

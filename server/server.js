@@ -541,7 +541,6 @@ io.on('connection', (socket) => {
         
     });
 
-<<<<<<< HEAD
     socket.on('editQuiz', function(data){
         console.log(data.id);
         MongoClient.connect(url, function(err, db){
@@ -555,7 +554,6 @@ io.on('connection', (socket) => {
             });
             
         });
-=======
     socket.on('newHomework', function(data){
         MongoClient.connect(url, function(err, db){
             if (err) throw err;
@@ -582,7 +580,6 @@ io.on('connection', (socket) => {
         
         
     });
->>>>>>> 0925fe218124d8d439895438af1ef16540cf1905
     
     });
 });

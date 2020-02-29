@@ -16,14 +16,14 @@
 			<ul>
 				<li><a href="profile.html">profile</a></li>
 				<li><a href="courses.html">courses</a></li>
-				<li class="current"><a href="createquiz.html">create quiz</a></li>
+				<li class="current"><a href="">quiz</a></li>
 			</ul>
 		</nav>
         <!-- Header -->
 		<header id="header">
 			<div class="logo container">
                 <div class="form-field">
-                    <h1><label id="logo">Create Quiz</a></h1><br>
+                    <h1><label id="logo">Edit Quiz</a></h1><br>
                         
                 </div>
                 <br>
@@ -34,6 +34,7 @@
             <label><h3 id = "quizTitle">Quiz Title</h3></label>
             <input id = "name" type = "text" name="name" style="font-size: larger; font-weight: 1000; text-align: center;">
         </div>
+        <div id="message"></div>
         <div class="container">
             <br>
             <div id = "allQuestions"></div>
@@ -41,13 +42,16 @@
             <br>
             <br>
             <div class="form-field">
-                <button onclick = "updateDatabase()">Create Quiz</button>
+                <button onclick = "editQuiz()">save</button>
             </div>
             <br>
-            <button onclick = 'cancelQuiz()'>Cancel quiz and return to quiz selection</button>
+            <button onclick = 'cancelQuiz()'>Cancel</button>
         </div>
         <script src = "../socket.io/socket.io.js"></script>
+        <script src = "../../js/libs/jqueryLibrary.js"></script>
+        <script src = "../../js/libs/deparam.js"></script>
         <script src = "../js/quizCreator.js"></script>
+        <script src = "../js/quizEditor.js"></script>
 
         <script src="../assets/js/jquery.min.js"></script>
         <script src="../assets/js/jquery.dropotron.min.js"></script>

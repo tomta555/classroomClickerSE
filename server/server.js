@@ -248,7 +248,7 @@ io.on('connection', (socket) => {
             
             var gameQuestion = game.gameData.question;
             var gameid = game.gameData.gameid;
-            
+            console.log(gameid);
             MongoClient.connect(url, function(err, db){
                 if (err) throw err;
     
@@ -506,8 +506,42 @@ io.on('connection', (socket) => {
             });
             
         });
-        
+    
+    });
+
+    socket.on('req-quiz-data', (data) =>{
+        //Check to see if id passed in url corresponds to id of quiz game in database
+        MongoClient.connect(url, function(err, db) {
+            if (err) throw err;
+            var dbo = db.db("classroomClicker");
+            var query = { id:  parseInt(data.id)};
+            dbo.collection('Quizzes').find(query).toArray(function(err, result){
+                if(err) throw err;
+                //A quiz was found with the id passed in url
+                if(result[0] !== undefined){
+                    socket.emit('gameData-edit',result[0]);
+                }else{
+                    socket.emit('noGameFound');
+                }
+                db.close();
+            });
+        });
         
     });
+
+    socket.on('editQuiz', function(data){
+        console.log(data.id);
+        MongoClient.connect(url, function(err, db){
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            var query = { id:  parseInt(data.id)};
+            dbo.collection("Quizzes").updateOne(query, {$set:data}, function(err, result){
+                if(err) throw err;
+                // console.log(result[0]);
+                db.close();
+            });
+            
+        });
     
+    });
 });

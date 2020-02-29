@@ -143,7 +143,7 @@ function openTab(evt, quizType, id){
             <br>
             
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input> <label>True</lebel>
-            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>Fasle</lebel>`
+            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>False</lebel>`
             break;
         case("sa"):
             tabcontent = `

@@ -190,7 +190,7 @@ body {
     font-family: 'Raleway', sans-serif;
 }
 #timerText{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
     text-align: right;
 }
 #num{
@@ -199,10 +199,10 @@ body {
     text-align: right;
 }
 #playersAnswered{
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 #questionNum{
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
 }
 
 .overImage{

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Join</title>
+        <title>Homeworkpage</title>
         <link rel = "stylesheet" href = "../css/homework.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
         <!-- <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet"> -->
@@ -15,7 +15,7 @@
 		<nav id="nav">
 			<ul>
 				<li><a href="profile.html">profile</a></li>
-				<li class="current"><a href="courses.html">courses</a></li>
+				<li class="current"><a href="index.html">courses</a></li>
 				<li ><a href="quiz.html">quiz</a></li>
 			</ul>
 		</nav>
@@ -25,26 +25,13 @@
         <header id="header">
 			<div class="logo container">
 				<div >
-                    <p>Subject</p>
+                    <p>Homework</p>
                     
 				</div>
 			</div>
         </header>
         
-         <form action="/player/">
-                <div class="form-field">
-                        <a href="index.html" id ="labelchoice">HW1</a>
-                        <a href="index.html" id ="labelchoice">HW2</a>
-                        <a href="index.html" id ="labelchoice">HW3</a>
-                        <a href="index.html" id ="labelchoice">HW4</a>  
-                    
-                    </label>
-                </div>
-                <br>
-               
-                <br>
-               
-        </form>
+
         
         <br>
         <br>
@@ -64,7 +51,32 @@
         
 
         
-        
+        <form action="/player/">
+                <div class="form-field">
+                    <label id = "labelchoice">Questions</label>
+                    <label class="container">One
+                        <input type="radio" checked="checked" name="radio">
+                        <span class="checkmark"></span>
+                        </label>
+                        <label class="container">Two
+                        <input type="radio" name="radio">
+                        <span class="checkmark"></span>
+                        </label>
+                        <label class="container">Three
+                        <input type="radio" name="radio">
+                        <span class="checkmark"></span>
+                        </label>
+                        <label class="container">Four
+                        <input type="radio" name="radio">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <br>
+                <div class="form-field">
+                    <button id = "joinButton">Submit</button>
+                </div>
+                <br>
+               
         </form>
     </body>
 </html>

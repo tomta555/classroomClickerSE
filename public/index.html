@@ -5,7 +5,7 @@
         <link rel = "stylesheet" href = "css/index.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+ 
         <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
         <link rel = "stylesheet" href = "assets/css/main.css" />
@@ -15,9 +15,15 @@
         <!-- Nav -->
 		<nav id="nav">
 			<ul>
+<<<<<<< HEAD
 				<li><a href="profile/teacher.html">profile</a></li>
 				<li><a href="course/index.html">courses</a></li>
 				<li class="current"><a href="">quiz</a></li>
+=======
+				<li><a href="../profile/teacher.html">profile</a></li>
+				<li><a href="../course/index.html">courses</a></li>
+                <li class="current"><a href="../public/create/index.html">quiz</a></li>
+>>>>>>> 1b1a90c277642a97158ad68ad6764ac13425cba8
 			</ul>
         </nav>
 
@@ -25,30 +31,29 @@
             
 			<div class="logo container">
                 <div class="form-field">
-                    <h1><label id="logo">This is profile page</a></h1><br>
+                    <h1><label id="logo">Join a Game</a></h1><br>
                 </div>
             </div>
         </header>
         
-    
-        <h1 id = "title">Join a Game</h1>
+        
         <form action="/player/">
                 <div class="form-field">
+                    <br><br>
                     <label id = "label">Display Name</label>
                     <input id = "name" type = "text" name="name" autofocus/>
                 </div>
                 <br>
                 <div class="form-field">
                     <label id = "label">Game Pin</label>
-                    <input id = "pin" type="text" name="pin"/>
+                    <input id = "pin" type="number" name="pin"/>
                 </div>
                 <br>
                 <div class="form-field">
-                    <button id = "joinButton">Join</button>
+                    <button style="background-color: #6b0c7e;" id = "joinButton">Join</button>
                 </div>
         </form>
         <br/>
-        <a href = "/create/" id = "host">Click here to host a Quiz!</a>
 
         <script src="assets/js/jquery.min.js"></script>
         <script src="assets/js/jquery.dropotron.min.js"></script>

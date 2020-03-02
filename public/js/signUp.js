@@ -40,7 +40,7 @@ $(document).ready(function () {
     });
 
     socket.on('register_succeeded', function(){
-        window.location.href = '/'
-
+        console.log("register succeeded");
+        window.location.href = '../';
     });
 });

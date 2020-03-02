@@ -13,7 +13,7 @@ $(document).ready(function () {
         });
     });
     socket.on('already_logged_in',function(){
-        window.location.href = '/';
+        window.location.href = '../join.html';
     });
     socket.on('signIn_failed', function () {
         alert("Error: Username/Password is invalid");

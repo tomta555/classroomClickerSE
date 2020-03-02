@@ -84,18 +84,20 @@ io.on('connection', (socket) => {
                             studentID: stdID
                         }, function () {
                             db.close();
-                            socket.emit('register_succeeded')
+                            socket.emit('register_succeeded');
                         });
                     }
                 } else {
                     bcrypt.hash(pass, saltRounds, function (err, hash) {
+                        if(err) throw err;
                         dbo.collection('user').insertOne({
                             username: user,
                             password: hash,
                             studentID: stdID
                         }, function () {
                             db.close();
-                            socket.emit('register_succeeded')
+                            console.log("from server : register succeeded [username : "+String(user)+", stdId : "+String(stdID)+"]");
+                            socket.emit('register_succeeded');
                         });
                     });
                 }

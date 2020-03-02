@@ -169,7 +169,7 @@ function cancelQuiz() {
 }
 
 socket.on('startGameFromCreator', function (data) {
-    window.location.href = "../create/index.html";
+    window.location.href = "../index.html";
 });
 
 function randomColor() {

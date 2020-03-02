@@ -390,7 +390,8 @@ io.on('connection', (socket) => {
                 dbo.collection("Quizzes").find(query).toArray(function(err, res) {
                     if (err) throw err;
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
-                    io.to(game.pin).emit('questionOver', playerData, correctAnswer);
+                    var type = res[0].questions[gameQuestion-1].type;
+                    io.to(game.pin).emit('questionOver', playerData, correctAnswer,type);
                     
                     db.close();
                 });

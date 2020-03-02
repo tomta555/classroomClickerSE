@@ -154,7 +154,7 @@ function openTab(evt, quizType, id){
             <br>
             <br>
             <label>Correct Answer :</label>
-            <input class = "correct" id = "correct${questionNum}" type = "text" autofocus/>
+            <input class = "question" id = "correct${questionNum}" type = "text" autofocus/>
             <br>
             <br>`
     }

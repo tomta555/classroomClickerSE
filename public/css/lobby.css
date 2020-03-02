@@ -1,10 +1,16 @@
 #title1, #title2{
+    font-size:40px;
     text-align: center;
     color: white;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Press Start 2P', sans-serif;
+    padding: 0% 5%;
 }
 #title2{
     font-size: 15px;
+}
+
+#pad{
+    padding-top: 100px;
 }
 
 @keyframes bgcolor {

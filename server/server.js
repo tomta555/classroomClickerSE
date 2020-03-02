@@ -3,10 +3,10 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
-const LocalStrategy = require('passport-local').Strategy;
-const flash = require('connect-flash');
-const passport = require('passport');
-const cookieParser = require('cookie-parser');
+// const LocalStrategy = require('passport-local').Strategy;
+// const flash = require('connect-flash');
+// const passport = require('passport');
+// const cookieParser = require('cookie-parser');
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
@@ -48,7 +48,7 @@ io.on('connection', (socket) => {
     
     //When open pages
     socket.on('checkID', function(id){
-        MongoClient.connect(url,{useUnifiedTopology: true}, function (err, db) {
+        MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             //check if ObjID is 12 byte
             if(Buffer.byteLength(id) == 12){
@@ -68,7 +68,7 @@ io.on('connection', (socket) => {
         const user = data.user;
         const pass = data.pass;
         const stdID = data.id;
-        MongoClient.connect(url,{useUnifiedTopology: true}, function (err, db) {
+        MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
             dbo.collection('user').findOne({ $or: [{ username: user }, { studentID: stdID }] }, function (err, result) {
@@ -109,7 +109,7 @@ io.on('connection', (socket) => {
     socket.on('signIn', function (data) {
         const user = data.user;
         const pass = data.pass;
-        MongoClient.connect(url,{useUnifiedTopology: true}, function (err, db) {
+        MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
             dbo.collection('user').findOne({ username: user }, function (err, data) {
@@ -133,7 +133,7 @@ io.on('connection', (socket) => {
     socket.on('host-join', (data) =>{
         
         //Check to see if id passed in url corresponds to id of quiz game in database
-        MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db) {
+        MongoClient.connect(url, function(err, db) {
             if (err) throw err;
             var dbo = db.db("classroomClicker");
             var query = { id:  parseInt(data.id)};
@@ -178,7 +178,7 @@ io.on('connection', (socket) => {
                 }
             }
             var gameid = game.gameData['gameid'];
-            MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db){
+            MongoClient.connect(url, function(err, db){
                 if (err) throw err;
                 
                 var dbo = db.db('classroomClicker');
@@ -320,7 +320,7 @@ io.on('connection', (socket) => {
             var gameQuestion = game.gameData.question;
             var gameid = game.gameData.gameid;
             console.log(gameid);
-            MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db){
+            MongoClient.connect(url, function(err, db){
                 if (err) throw err;
     
                 var dbo = db.db('classroomClicker');
@@ -382,7 +382,7 @@ io.on('connection', (socket) => {
         var gameQuestion = game.gameData.question;
         var gameid = game.gameData.gameid;
             
-            MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db){
+            MongoClient.connect(url, function(err, db){
                 if (err) throw err;
     
                 var dbo = db.db('classroomClicker');
@@ -390,7 +390,8 @@ io.on('connection', (socket) => {
                 dbo.collection("Quizzes").find(query).toArray(function(err, res) {
                     if (err) throw err;
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
-                    io.to(game.pin).emit('questionOver', playerData, correctAnswer);
+                    var type = res[0].questions[gameQuestion-1].type;
+                    io.to(game.pin).emit('questionOver', playerData, correctAnswer,type);
                     
                     db.close();
                 });
@@ -414,7 +415,7 @@ io.on('connection', (socket) => {
         
         
         
-        MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db){
+        MongoClient.connect(url, function(err, db){
                 if (err) throw err;
     
                 var dbo = db.db('classroomClicker');
@@ -539,7 +540,7 @@ io.on('connection', (socket) => {
     //Give user game names data
     socket.on('requestDbNames', function(){
         
-        MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db){
+        MongoClient.connect(url, function(err, db){
             if (err) throw err;
     
             var dbo = db.db('classroomClicker');
@@ -553,7 +554,7 @@ io.on('connection', (socket) => {
     
     socket.on('requestDbHW', function(){
         
-        MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db){
+        MongoClient.connect(url, function(err, db){
             if (err) throw err;
     
             var dbo = db.db('classroomClicker');
@@ -567,7 +568,7 @@ io.on('connection', (socket) => {
 
     
     socket.on('newQuiz', function(data){
-        MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db){
+        MongoClient.connect(url, function(err, db){
             if (err) throw err;
             var dbo = db.db('classroomClicker');
             dbo.collection('Quizzes').find({}).toArray(function(err, result){
@@ -594,7 +595,7 @@ io.on('connection', (socket) => {
 
     socket.on('req-quiz-data', (data) =>{
         //Check to see if id passed in url corresponds to id of quiz game in database
-        MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db) {
+        MongoClient.connect(url, function(err, db) {
             if (err) throw err;
             var dbo = db.db("classroomClicker");
             var query = { id:  parseInt(data.id)};
@@ -614,7 +615,7 @@ io.on('connection', (socket) => {
 
     socket.on('editQuiz', function(data){
         console.log(data.id);
-        MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db){
+        MongoClient.connect(url, function(err, db){
             if (err) throw err;
             var dbo = db.db('classroomClicker');
             var query = { id:  parseInt(data.id)};
@@ -626,7 +627,7 @@ io.on('connection', (socket) => {
         });
     }); 
     socket.on('newHomework', function(data){
-        MongoClient.connect(url,{useUnifiedTopology: true}, function(err, db){
+        MongoClient.connect(url, function(err, db){
             if (err) throw err;
             var dbo = db.db('classroomClicker');
             dbo.collection('Homeworks').find({}).toArray(function(err, result){

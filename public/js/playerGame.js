@@ -82,7 +82,7 @@ socket.on('answerResult', function(data){
 });
 
 var messageTable = "";
-socket.on('questionOver', function(data){
+socket.on('questionOver', function(playerdata,correctAns,type){
     document.getElementById('waitans').style.display = "none";
     document.getElementById('finish').style.display = "none";
     if(correct == true){
@@ -102,6 +102,19 @@ socket.on('questionOver', function(data){
         <img src="../../img/incorrect.png">`;
         document.getElementById('message').innerHTML += messageTable;
     }        
+    
+    switch(type){
+        case("4c"):
+            document.getElementById('answer3').style.display = "none";
+            document.getElementById('answer4').style.display = "none";
+        case("2c"):
+            document.getElementById('answer1').style.display = "none";
+            document.getElementById('answer2').style.display = "none";
+            break;
+        case("sa"):
+            document.getElementById('answer5').style.display = "none";  
+
+    }
 
     socket.emit('getScore');
 });

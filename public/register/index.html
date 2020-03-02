@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../css/login-reg.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" rel="stylesheet">
+  <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
+  <title>Register</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+        <div class="card card-signin my-5">
+          <div class="card-body">
+            <h5 class="card-title text-center">Sign Up</h5>
+            <form class="form-signin">
+              <div class="form-label-group">
+                <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus/>
+                <label for="inputUsername">Username</label>
+              </div>
+
+              <div class="form-label-group">
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required/>
+                <label for="inputPassword">Password</label>
+              </div>
+
+              <div class="form-label-group">
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required/>
+                <label for="confirmPassword">Confirm Password</label>
+              </div>
+              <hr class="my-4">
+              <div class="form-label-group">
+                <input type="number" id="studentID" class="form-control"
+                  placeholder="Student ID" required>
+                <label for="studentID">Student ID</label>
+              </div>
+
+              <div class="mb-3">
+                <a href="../login/"> Already have an account?</a>
+              </div>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" id="signUp" type="submit" >Sign Up</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src = "../socket.io/socket.io.js"></script>
+  <script src = "../js/libs/jqueryLibrary.js"></script>
+  <script src = "../js/libs//deparam.js"></script>
+  <script src = "../js/cookie.js"></script>
+  <script src = "../js/signUp.js"></script>
+  
+</body>
+
+</html>

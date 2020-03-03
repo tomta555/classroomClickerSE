@@ -212,16 +212,11 @@ socket.on('GameOver', function (data) {
     document.getElementById('square3').style.display = "none";
     document.getElementById('square4').style.display = "none";
 
-    a = document.getElementById('answer1')
-    b = document.getElementById('answer2')
-    c = document.getElementById('answer3')
-    d = document.getElementById('answer4')
-    if(a!=undefined && b!=undefined && c!=undefined && d!=undefined){
-        a.style.display = "none";
-        b.style.display = "none";
-        c.style.display = "none";
-        d.style.display = "none";
-    }
+    a = document.getElementById('answer1'); if(a!=undefined) a.style.display = "none";
+    b = document.getElementById('answer2'); if(b!=undefined) b.style.display = "none";
+    c = document.getElementById('answer3'); if(c!=undefined) c.style.display = "none";
+    d = document.getElementById('answer4'); if(d!=undefined) d.style.display = "none";
+
     document.getElementById('timerText').innerHTML = "";
     document.getElementById('question').style.display = 'none';
     document.getElementById('questionNum').innerHTML = "GAME RESULT";

@@ -20,23 +20,23 @@ function updateDatabase(){
                 correct = radioCheck(i);
                 answers = [answer1, answer2, answer3, answer4];
                 break;
-                case("2c"):
+            case("2c"):
                 correct = radioCheck(i);
                 break;
-                case("sa"):
+            case("sa"):
                 correct = document.getElementById('correct' + i).value;
-            }
-            questions.push({"question": question, "answers": answers, "correct": correct, "type":type})
         }
-        
-        var quiz = { id: 0, "name": name, "questions": questions };
-        socket.emit('newQuiz', quiz);
-    };
-    
-    
-    
+        questions.push({"question": question, "answers": answers, "correct": correct, "type":type})
+    }
+
+    var quiz = { id: 0, "name": name, "questions": questions };
+    socket.emit('newHomework', quiz);
+};
+
+
+var questionTable = "";
+
 function addQuestion(){
-    var questionTable = "";
     questionCounter += 1;
     questionNum += 1;
     questionTable = document.getElementById('allQuestions');
@@ -143,7 +143,7 @@ function openTab(evt, quizType, id){
             <br>
             
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input> <label>True</lebel>
-            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>False</lebel>`
+            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>Fasle</lebel>`
             break;
         case("sa"):
             tabcontent = `
@@ -154,7 +154,7 @@ function openTab(evt, quizType, id){
             <br>
             <br>
             <label>Correct Answer :</label>
-            <input class = "question" id = "correct${questionNum}" type = "text" autofocus/>
+            <input class = "correct" id = "correct${questionNum}" type = "text" autofocus/>
             <br>
             <br>`
     }
@@ -168,11 +168,12 @@ function cancelQuiz() {
     }
 }
 
-socket.on('startGameFromCreator', function (data) {
-    window.location.href = "../index.html";
+socket.on('CreateHW', function (data) {
+    window.location.href = "../../course/info.html";
 });
 
 function randomColor() {
+
     var colors = ['#4CAF50', '#f94a1e', '#3399ff', '#ff9933'];
     var randomNum = Math.floor(Math.random() * 4);
     return colors[randomNum];

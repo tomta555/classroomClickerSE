@@ -133,7 +133,7 @@ socket.on('questionOver', function (playerData, correct) {
         document.getElementById('square3').style.height = answer3 + "px";
         document.getElementById('square4').style.height = answer4 + "px";
 
-        document.getElementById('nextQButton').style.display = "block";
+        document.getElementById('nextQButton').style.display = "inline-block";
     } else if (type_Q == '2c') {
         if (correct == 1) {
             document.getElementById('answer2').style.filter = "grayscale(50%)";
@@ -164,10 +164,10 @@ socket.on('questionOver', function (playerData, correct) {
         document.getElementById('square1').style.height = answer1 + "px";
         document.getElementById('square2').style.height = answer2 + "px";
         
-        document.getElementById('nextQButton').style.display = "block";
+        document.getElementById('nextQButton').style.display = "inline-block";
     } else if (type_Q == 'sa') {
         
-        document.getElementById('nextQButton').style.display = "block";
+        document.getElementById('nextQButton').style.display = "inline-block";
 
     }
 });
@@ -194,7 +194,7 @@ function nextQuestion() {
 }
 
 function updateTimer() {
-    time = 20000;
+    time = 20;
     timer = setInterval(function () {
         time -= 1;
         document.getElementById('num').textContent = " " + time;
@@ -203,6 +203,7 @@ function updateTimer() {
         }
     }, 1000);
 }
+
 socket.on('GameOver', function (data) {
     
     document.getElementById('nextQButton').style.display = "none";
@@ -211,37 +212,35 @@ socket.on('GameOver', function (data) {
     document.getElementById('square3').style.display = "none";
     document.getElementById('square4').style.display = "none";
 
-    a = document.getElementById('answer1')
-    b = document.getElementById('answer2')
-    c = document.getElementById('answer3')
-    d = document.getElementById('answer4')
-    if(a!=undefined && b!=undefined && c!=undefined && d!=undefined){
-        a.style.display = "none";
-        b.style.display = "none";
-        c.style.display = "none";
-        d.style.display = "none";
-    }
+    a = document.getElementById('answer1'); if(a!=undefined) a.style.display = "none";
+    b = document.getElementById('answer2'); if(b!=undefined) b.style.display = "none";
+    c = document.getElementById('answer3'); if(c!=undefined) c.style.display = "none";
+    d = document.getElementById('answer4'); if(d!=undefined) d.style.display = "none";
+
     document.getElementById('timerText').innerHTML = "";
-    document.getElementById('question').innerHTML = "GAME OVER";
-    document.getElementById('playersAnswered').innerHTML = "";
-
-
-
+    document.getElementById('question').style.display = 'none';
+    document.getElementById('questionNum').innerHTML = "GAME RESULT";
+    document.getElementById('playersAnswered').innerHTML = "THANKS FOR PLAYING";
+    
     document.getElementById('winner1').style.display = "block";
     document.getElementById('winner2').style.display = "block";
     document.getElementById('winner3').style.display = "block";
     document.getElementById('winner4').style.display = "block";
     document.getElementById('winner5').style.display = "block";
+    document.getElementById('plate').style.display = "block";
     document.getElementById('winnerTitle').style.display = "block";
+    document.getElementById('backButton').style.display = "block";
 
-    document.getElementById('winner1').innerHTML = "1. " + data.num1;
-    document.getElementById('winner2').innerHTML = "2. " + data.num2;
-    document.getElementById('winner3').innerHTML = "3. " + data.num3;
-    document.getElementById('winner4').innerHTML = "4. " + data.num4;
-    document.getElementById('winner5').innerHTML = "5. " + data.num5;
+    document.getElementById('winner1').innerHTML = "1st " + data.num1;
+    document.getElementById('winner2').innerHTML = "2nd " + data.num2;
+    document.getElementById('winner3').innerHTML = "3rd " + data.num3;
+    document.getElementById('winner4').innerHTML = "4th " + data.num4;
+    document.getElementById('winner5').innerHTML = "5th " + data.num5;
 });
 
-
+function backButton() {
+    window.location.href = "../../create";
+}
 
 socket.on('getTime', function (player) {
     socket.emit('time', {

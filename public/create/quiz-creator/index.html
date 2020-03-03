@@ -9,81 +9,42 @@
      
     </head>
     
-    <body>
-
+    <body onload="addQuestion()">
         <!-- Nav -->
 		<nav id="nav">
 			<ul>
-				<li><a href="profile.html">profile</a></li>
-				<li><a href="courses.html">courses</a></li>
+				<li><a href="../../profile/teacher.html">profile</a></li>
+				<li><a href="../../course/index.html">courses</a></li>
+                <li class="current"><a href="../index.html">quiz</a></li>
 			</ul>
 		</nav>
-
-
-
-    <!-- Header -->
+        <!-- Header -->
 		<header id="header">
-            
 			<div class="logo container">
                 <div class="form-field">
                     <h1><label id="logo">Create Quiz</a></h1><br>
                 </div>
             </div>
-       
         </header>
-
-        
-    <div class= "container" style="text-align:center;">
-        <br>
-        <form >
-            <label ><h3 id = "quizTitle">Quiz Title :</h3></label>
-            <input id = "name" type = "text" name="name" style=" text-align: center; font-size: larger; font-weight: 1000; ">
-        </form>
-    </div>
-
-
-    <div class="container">
-        <br>
-        
-        <div id = "allQuestions"></div>
-
-        <button onclick="addQuestion()">Add another question</button>
-
-        <br>
-        <br>
-        
-        <h2 class="major"></h2>
-        
-        <div class="form-field" style="text-align:center;">
-           <button style="background-color: rgb(82, 230, 95); font-size:22px;" onclick = "updateDatabase()">Create Quiz</button>
-        <br>
-        <br>
-        
-        <button style="background-color: rgb(209, 61, 24); font-size:22px;" onclick = 'cancelQuiz()'>Cancel quiz & return to quiz selection</button>
+        <!--=== Quiz Title ===-->
+        <div class= "container" style="text-align:center;">
+            <br>
+            <form >
+                <label ><h3 id = "quizTitle">Quiz Title :</h3></label>
+                <input id = "name" type = "text" name="name" style="font-size: larger; font-weight: 1000;" autofocus>
+            </form>
         </div>
-        <br>    
-        
-    </div>
-    
-      
-      
-
-        <!-- tab box -->
-        <!-- <script>
-            // function openTab(evt, quizType) {
-            //   var i, tabcontent, tablinks;
-            //   tabcontent = document.getElementsByClassName("tabcontent");
-            //   for (i = 0; i < tabcontent.length; i++) {
-            //     tabcontent[i].style.display = "none";
-            //   }
-            //   tablinks = document.getElementsByClassName("tablinks");
-            //   for (i = 0; i < tablinks.length; i++) {
-            //     tablinks[i].className = tablinks[i].className.replace(" active", "");
-            //   }
-            //   document.getElementById(quizType).style.display = "block";
-            //   evt.currentTarget.className += " active";
-            // }
-        </script> -->
+        <!--=== All questions ===-->
+        <div class="container">
+            <div id = "allQuestions" style="font-family: 'Open Sans Condensed', sans-serif; margin: 25px 0px;"></div>
+            <button onclick="addQuestion()" style="margin-bottom: 5%;">Add another question</button>
+            <h2 class="major"></h2><!--=== line ===-->
+            <div style="text-align:right;">
+                <button style="background-color: rgb(82, 230, 95); margin:2%" onclick = "updateDatabase()">Create Quiz</button>
+                <br>
+                <button style="background-color: rgb(209, 61, 24); margin:2%" onclick = 'cancelQuiz()'>Cancel quiz & return to quiz selection</button>
+            </div>
+        </div>
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/quizCreator.js"></script>
 

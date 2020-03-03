@@ -104,8 +104,6 @@ body {
 /* The container */
 .container {
     color: rgb(0, 0, 0);
-    
-
     display: block;
     position: relative;
     padding-left: 35px;
@@ -118,6 +116,23 @@ body {
     -ms-user-select: none;
     user-select: none;
   }
+
+  .container2 {
+    color: rgb(0, 0, 0);
+    display: block;
+    position: relative;
+    padding-left: 35px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 35px; /* font-size ---- courses ---- */
+    font-family: 'Open Sans Condensed', sans-serif;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+
+  
   
   /* Hide the browser's default radio button */
   .container input {
@@ -176,12 +191,13 @@ body {
     border: none;
     color: #FFFFFF;
     text-align: center;
-    font-size: 28px;
+    font-size: 28px; 
     padding: 20px;
-    width: 200px;
+    width: 400px;  /*200px no height*/
+    height: 400px;
     transition: all 0.5s;
     cursor: pointer;
-    margin: 5px;
+    margin: 35px; /* 5px */
   }
   
   .button span {
@@ -205,6 +221,46 @@ body {
   }
   
   .button:hover span:after {
+    opacity: 1;
+    right: 0;
+  }
+
+  .button1 {
+    display: inline-block;
+    border-radius: 4px;
+    background-color: #dd704e;
+    border: none;
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 28px; 
+    padding: 20px;
+    width: 200px;  /*20px no height*/
+    transition: all 0.5s;
+    cursor: pointer;
+    margin: 5px; /* 5px */
+  }
+  
+  .button1 span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.5s;
+  }
+  
+  .button1 span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+  }
+  
+  .button1:hover span {
+    padding-right: 25px;
+  }
+  
+  .button1:hover span:after {
     opacity: 1;
     right: 0;
   }

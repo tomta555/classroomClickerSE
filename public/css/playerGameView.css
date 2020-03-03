@@ -124,6 +124,36 @@ html, body { padding: 0; margin: 0; }
 #buttons{
     text-align: center;
 }
+#backButton{
+  display: none;
+  -webkit-appearance: none;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #252525;
+  color: #ffffff;
+  border: 0;
+  line-height: 1em;
+  border-radius: 8px;
+  outline: 0;
+  cursor: pointer;
+  -moz-transition: background-color .2s ease-in-out;
+  -webkit-transition: background-color .2s ease-in-out;
+  -o-transition: background-color .2s ease-in-out;
+  -ms-transition: background-color .2s ease-in-out;
+  transition: background-color .2s ease-in-out;
+  font-size: 1.25em;
+  padding: 0.85em 1.85em;
+  text-align: center;
+  margin: 0% auto;
+}
+#backButton:hover{
+  background-color: rgb(146, 0, 165);
+  -webkit-transition-duration: 100ms;
+  transition-duration: 100ms;
+}
+
 #nameText{
     font-family: 'Open Sans Condensed', sans-serif;
     padding: 0px 10px;
@@ -150,8 +180,8 @@ html, body { padding: 0; margin: 0; }
 #finish{
   font-family: 'Press Start 2P',sans-serif;
   text-align: center;
-  padding-top: 8%;
-  color: yellow;
+  padding-top: auto;
+  color: #ffff00;
   font-size:60px;
 }
 

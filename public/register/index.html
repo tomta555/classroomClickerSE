@@ -9,7 +9,7 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
-  <title>Register</title>
+  <title>signup</title>
 </head>
 
 <body>
@@ -19,44 +19,55 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Sign Up</h5>
-            <form class="form-signin">
+            <form class="form-signin" action="/signup" method="post">
               <div class="form-label-group">
-                <input type="text" id="inputUsername" class="form-control" placeholder="Username" required autofocus/>
+                <input type="text" id="inputUsername" name="email" class="form-control" placeholder="Username" required
+                  autofocus />
                 <label for="inputUsername">Username</label>
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required/>
+                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password"
+                  required />
                 <label for="inputPassword">Password</label>
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password" required/>
+                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password"
+                  required />
                 <label for="confirmPassword">Confirm Password</label>
               </div>
               <hr class="my-4">
               <div class="form-label-group">
-                <input type="number" id="studentID" class="form-control"
-                  placeholder="Student ID" required>
+                <input type="text" id="fname" name="fname" class="form-control" placeholder="firstname" required />
+                <label for="fname">firstname</label>
+              </div>
+              <div class="form-label-group">
+                <input type="text" id="lname" name="lname" class="form-control" placeholder="lastname" required />
+                <label for="lname">lastname</label>
+              </div>
+              <div class="form-label-group">
+                <input type="number" id="studentID" name="studentID" class="form-control" placeholder="Student ID"
+                  required>
                 <label for="studentID">Student ID</label>
               </div>
 
               <div class="mb-3">
-                <a href="../login/"> Already have an account?</a>
+                <a href="/signin"> Already have an account?</a>
               </div>
-              <button class="btn btn-lg btn-primary btn-block text-uppercase" id="signUp" type="submit" >Sign Up</button>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" id="signUp" type="submit">Sign Up</button>
             </form>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <script src = "../socket.io/socket.io.js"></script>
-  <script src = "../js/libs/jqueryLibrary.js"></script>
-  <script src = "../js/libs//deparam.js"></script>
-  <script src = "../js/cookie.js"></script>
-  <script src = "../js/signUp.js"></script>
-  
+  <script src="../socket.io/socket.io.js"></script>
+  <script src="../js/libs/jqueryLibrary.js"></script>
+  <script src="../js/libs//deparam.js"></script>
+  <script src="../js/cookie.js"></script>
+  <script src="../js/signUp.js"></script>
+
 </body>
 
 </html>

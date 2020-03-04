@@ -21,26 +21,31 @@ function updateDatabase(){
                 correct = radioCheck(i);
                 answers = [answer1, answer2, answer3, answer4];
                 break;
-            case("2c"):
+                case("2c"):
                 correct = radioCheck(i);
                 break;
+<<<<<<< HEAD
             case("sa"):
                 for(var j = 1; j<=countCorrect ; j++) 
                     answers[j-1] = document.getElementById(j + 'correct' + i).value;
                     // console.log(document.getElementById(j + 'correct' + i).value);
                 // console.log(answers);
+=======
+                case("sa"):
+                correct = document.getElementById('correct' + i).value;
+            }
+            questions.push({"question": question, "answers": answers, "correct": correct, "type":type})
+>>>>>>> 2a796e7e2306113d3e8ed252ce3bafd4dcd751fd
         }
-        questions.push({"question": question, "answers": answers, "correct": correct, "type":type})
-    }
-
-    var quiz = { id: 0, "name": name, "questions": questions };
-    socket.emit('newQuiz', quiz);
-};
-
-
-var questionTable = "";
-
+        
+        var quiz = { id: 0, "name": name, "questions": questions };
+        socket.emit('newQuiz', quiz);
+    };
+    
+    
+    
 function addQuestion(){
+    var questionTable = "";
     questionCounter += 1;
     questionNum += 1;
     questionTable = document.getElementById('allQuestions');
@@ -148,7 +153,7 @@ function openTab(evt, quizType, id){
             <br>
             
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input> <label>True</lebel>
-            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>Fasle</lebel>`
+            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>False</lebel>`
             break;
         case("sa"):
             tabcontent = `
@@ -192,7 +197,6 @@ socket.on('startGameFromCreator', function (data) {
 });
 
 function randomColor() {
-
     var colors = ['#4CAF50', '#f94a1e', '#3399ff', '#ff9933'];
     var randomNum = Math.floor(Math.random() * 4);
     return colors[randomNum];
@@ -202,11 +206,6 @@ function setBGColor() {
     var randColor = randomColor();
     document.getElementById('question-field').style.backgroundColor = randColor;
 }
-
-
-
-
-
 
 
 

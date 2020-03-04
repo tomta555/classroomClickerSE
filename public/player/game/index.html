@@ -5,6 +5,7 @@
         <link rel = "stylesheet" href = "../../css/playerGameView.css">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
     </head>
     <body>
         <div class="navbar">
@@ -12,9 +13,9 @@
                 <tbody>
                     <tr>
                         <td class = "col-lg-12"> 
-                            <div id = "stats">
-                                <h4 id = "nameText">Name: </h4>
-                                <h4 id = "scoreText">Score: </h4>
+                            <div id = "stats" >
+                                <h4 id = "nameText" >Name : </h4>
+                                <h4 id = "scoreText">Score : </h4>
                                 <h4 id = "rankText"></h4>
                             </div>
                         </td>
@@ -45,10 +46,13 @@
         </div>
     
         <h2 id = "message"></h2>
+        <h1 id = "waitans"></h1>
+        <p id="finish"></p>
 
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/libs/jqueryLibrary.js"></script>
         <script src = "../../js/libs/deparam.js"></script>
         <script src = "../../js/playerGame.js"></script>
+        
     </body>
 </html>

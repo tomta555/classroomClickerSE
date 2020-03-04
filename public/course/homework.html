@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Course</title>
+        <link rel = "stylesheet" href = "../css/new-HW.css" />
+        <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel = "stylesheet" href = "../../assets/css/main.css" />
+    </head>
+
+    <body>
+
+        <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="/profile">profile</a></li>
+				<li class="current"><a href="/course">courses</a></li>
+                <li><a href="/host_quiz">quiz</a></li>
+			</ul>
+		</nav>
+
+        <!-- Header -->
+
+        <header id="header">
+			<div class="logo container">
+				<div >
+                    <p>HOMEWORK</p>
+                    <!-- <h1><a style="color: rgb(82, 230, 95);" id = "logo" href = "quiz-creator/"><u>Course</u></a></h1> -->
+				</div>
+			</div>
+        </header>
+        
+        <form action="/player/">
+                <div class="form-field">
+                    <label class="choise">Questions</label>
+                    <label class="choise">One
+                        <input type="radio" checked="checked" name="radio">
+                        <span class="checkmark"></span>
+                        </label>
+                        <label class="choise">Two
+                        <input type="radio" name="radio">
+                        <span class="checkmark"></span>
+                        </label>
+                        <label class="choise">Three
+                        <input type="radio" name="radio">
+                        <span class="checkmark"></span>
+                        </label>
+                        <label class="choise">Four
+                        <input type="radio" name="radio">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
+                <br>
+                <br>
+                
+        </form> 
+        
+        <div class="form-field" style="text-align:center;">   
+            <button style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '/course/index.html'" >Submit</button>
+        <d/div>
+
+        <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../../js/course.js"></script>
+        <script src="../../assets/js/jquery.min.js"></script>
+        <script src="../../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../../assets/js/browser.min.js"></script>
+        <script src="../../assets/js/breakpoints.min.js"></script>
+        <script src="../../assets/js/util.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        
+        
+    </body>
+    
+</html>

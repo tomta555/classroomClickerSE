@@ -19,13 +19,12 @@
         background-color: #864cbf
     }
 }
-
-body {
+/* body {
     -webkit-animation: bgcolor 20s infinite;
     animation: bgcolor 10s infinite;
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
-}
+} */
 #title{
     color: white;
     text-align: center;
@@ -54,3 +53,102 @@ body {
 #gameButton:hover{
     cursor: pointer;
 }
+.all-class-area {
+    -webkit-box-flex: 0;
+    z-index:20;
+    -ms-flex: 0 0 calc(100% - 320px);
+    flex: 0 0 calc(100% - 320px);
+    width: calc(100% - 320px);
+    max-width: calc(100% - 320px); }
+    @media only screen and (min-width: 768px) and (max-width: 991px) {
+        .all-class-area {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 calc(100% - 280px);
+        flex: 0 0 calc(100% - 280px);
+        width: calc(100% - 280px);
+        max-width: calc(100% - 280px); } }
+    @media only screen and (max-width: 767px) {
+        .all-class-area {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 0 100%;
+        flex: 0 0 100%;
+        width: 100%;
+        max-width: 100%; } }
+
+.single-class-area {
+    position: relative;
+    display:inline-block;
+    z-index: 0;
+    width: 33%;
+    top: 0; }
+    @media only screen and (min-width: 992px) and (max-width: 1199px) {
+        .single-class-area {
+        width: 50%; } }
+    @media only screen and (min-width: 768px) and (max-width: 991px) {
+        .single-class-area {
+        width: 100%; } }
+    @media only screen and (max-width: 767px) {
+        .single-class-area {
+        width: 100%; } }
+    @media only screen and (min-width: 576px) and (max-width: 767px) {
+        .single-class-area {
+        width: 50%; } }
+    .single-class-area a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        position: relative;
+        z-index: 10; }
+        .single-class-area a::after {
+        -webkit-transition-duration: 250ms;
+        transition-duration: 250ms;
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        content: '';
+        background-color: rgba(60, 60, 60, 0.7);
+        z-index: 1;
+        opacity: 0;
+        visibility: visible; }
+        .single-class-area a img {
+        width: 100%; }
+    .single-class-area .hover-content {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        z-index: 10; }
+        @media only screen and (max-width: 767px) {
+        .single-class-area .hover-content {
+            top: 30px;
+            left: 30px; } }
+        .single-class-area .hover-content .line {
+        width: 80px;
+        height: 3px;
+        background-color: #fbb710;
+        display: block;
+        margin-bottom: 15px; }
+        .single-class-area .hover-content p {
+        font-size: 16px;
+        color: #6d6d6d;
+        line-height: 1;
+        margin-bottom: 5px;
+        -webkit-transition-duration: 250ms;
+        transition-duration: 250ms; }
+        .single-class-area .hover-content h4 {
+        margin-bottom: 0;
+        -webkit-transition-duration: 250ms;
+        transition-duration: 250ms; }
+        .single-class-area .hover-content h5 {
+        margin-bottom: 0;
+        -webkit-transition-duration: 250ms;
+        transition-duration: 250ms; }
+    .single-class-area:hover a::after, .single-class-area:focus a::after {
+        opacity: 1;
+        visibility: visible; }
+    .single-class-area:hover .hover-content p,
+    .single-class-area:hover .hover-content h4, .single-class-area:focus .hover-content p,
+    .single-class-area:focus .hover-content h4, .single-class-area:hover .hover-content h5,
+    .single-class-area:focus .hover-content h5 {
+    color: #fff; }

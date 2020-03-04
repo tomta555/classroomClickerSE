@@ -46,7 +46,7 @@ function addQuestion(){
     <h3 id="questionName${questionNum}">Question ${questionCounter} :</h3>
         <div class="tab">
             <button class="tablinks${questionNum} active" onclick="openTab(event, '4c', ${questionNum})">4 choices</button>
-            <button class="tablinks${questionNum}" onclick="openTab(event, '2c', ${questionNum})">2 choices</button>
+            <button class="tablinks${questionNum}" onclick="openTab(event, '2c', ${questionNum})">true or false</button>
             <button class="tablinks${questionNum}" onclick="openTab(event, 'sa', ${questionNum})">Short Answer</button> 
             <button style="background-color: rgb(240, 160, 56); "onclick="exportQeustion(${questionNum})" >export(not work yet)</button>
             <button style="background-color: rgb(209, 61, 24); "onclick="deleteQeustion(${questionNum})" >Delete</button>

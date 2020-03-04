@@ -2195,19 +2195,35 @@ input, select, textarea {
 			}
 
 
-/* scroll-up */
-.scroll-up a {
-    background: #fff;
-    display: block;
-    height: 28px;
-    width: 28px;
-    text-align: center;
-    line-height: 28px;
-    font-size: 14px;
-    color: #000;
-    opacity: 0.6;
-    border-radius: 2px;
-}
+#scrollUp {
+  background-color: #ecebeb;
+  border-radius: 0;
+  box-shadow: 0 2px 6px 0 rgba(0, 0, 0, 0.3);
+  color: #ffffff;
+  font-size: 17px;
+  height: 75px;
+  line-height: 20px;
+  right: 160px;
+  text-align: center;
+  width: 195px;
+  -webkit-transition-duration: 500ms;
+  transition-duration: 500ms; }
+  #scrollUp.one{
+	  bottom: 80px;
+  }
+  #scrollUp.two{
+	  bottom: 160px;
+  }
+  #scrollUp button{
+	  height: 70px;
+	  width: 190px;
+  }
+  #scrollUp:hover {
+    background-color: #c9c0c9; }
+  @media only screen and (max-width: 820px) {
+    #scrollUp {
+      bottom: 30px;
+	  right: 30px; } }
 
 
 

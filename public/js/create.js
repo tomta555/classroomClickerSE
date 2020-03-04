@@ -7,6 +7,7 @@ socket.on('connect', function(){
 socket.on('gameNamesData', function(data){
     for(var i = 0; i < Object.keys(data).length; i++){
         var div = document.getElementById('game-list');
+        var classarea =  document.createElement('div');
         var button = document.createElement('button');
         var editbutton = document.createElement('button');
         
@@ -17,12 +18,21 @@ socket.on('gameNamesData', function(data){
         editbutton.innerText = "edit";
         editbutton.setAttribute('onClick', "edit('"+data[i].id+"')");
         editbutton.setAttribute('id', "gameButton");
-        
-        div.appendChild(button);
-        div.appendChild(editbutton);
+        classarea.appendChild(button);
+        classarea.appendChild(editbutton);
+        classarea.setAttribute("class", "single-class-area");
+        // div.appendChild(button);
+        // div.appendChild(editbutton);
+        div.appendChild('classarea');
         div.appendChild(document.createElement('br'));
         div.appendChild(document.createElement('br'));
     }
+            tableproduct += `
+                <div class="single-class-area">
+                    <div class="hover-content">
+                        <!-- detail-->
+                    </a>
+                </div>`;
 });
 
 function startGame(data){
@@ -31,3 +41,5 @@ function startGame(data){
 function edit(data){
     window.location.href="/editQuiz/" + "?id=" + data;
 }
+
+

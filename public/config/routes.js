@@ -8,7 +8,11 @@ module.exports = function(app, passport) {
     app.get('/profile',isLoggedIn, function(req, res) {
         res.sendFile(path.join(__dirname,'../profile/teacher.html'));
     });
+    //----------Quiz----------
     app.get('/create_quiz', function(req, res) {
+        res.sendFile(path.join(__dirname,'../create/quiz-creator/index.html'));
+    });
+    app.get('/edit_quiz',function(req, res){
         res.sendFile(path.join(__dirname,'../create/quiz-creator/index.html'));
     });
     app.get('/create_course',isLoggedIn, function(req, res) {

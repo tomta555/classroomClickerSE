@@ -10,7 +10,7 @@
      
     </head>
     
-    <body onload="addQuestion()">
+    <body>
         <!-- Nav -->
 		<nav id="nav">
 			<ul>
@@ -29,7 +29,7 @@
 		<header id="header">
 			<div class="logo container">
                 <div class="form-field">
-                    <h1>Create Quiz</h1><br>
+                    <h1 id="mainTitle">Create Quiz</h1><br>
                 </div>
             </div>
         </header>
@@ -55,13 +55,20 @@
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/quizCreator.js"></script>
         <a id="scrollUp" class = "two" style="position: fixed;z-index: 2147483647;display: block;">
-            <button style="background-color: rgb(24, 226, 24);" onclick = "updateDatabase()">Create Quiz</button>
+            <button id="submitButton" style="background-color: rgb(24, 226, 24);" onclick = "updateDatabase('create')">Create Quiz</button>
         <i aria-hidden="true"></i></a>
     
         <a id="scrollUp" class = "one" style="position: fixed;z-index: 2147483647;display: block;">
-            <button style="background-color: rgb(209, 61, 24);" onclick = 'cancelQuiz()'>Cancel quiz</button>
+            <button id="cancleButton" style="background-color: rgb(209, 61, 24);" onclick = 'cancelQuiz()'>Cancel quiz</button>
         <i aria-hidden="true"></i></a>
+        
 
+        
+        
+        <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../../js/libs/jqueryLibrary.js"></script>
+        <script src = "../../js/libs/deparam.js"></script>
+        <script src = "../../js/quizCreator.js"></script>
       
         <script src="../../assets/js/jquery.min.js"></script>
         <script src="../../assets/js/jquery.dropotron.min.js"></script>

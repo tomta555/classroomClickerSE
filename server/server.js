@@ -616,7 +616,7 @@ io.on('connection', (socket) => {
                     db.close();
                 });
                 db.close();
-                socket.emit('startGameFromCreator', num);
+                socket.emit('backToHostPage');
             });
 
         });
@@ -644,14 +644,13 @@ io.on('connection', (socket) => {
     });
 
     socket.on('editQuiz', function (data) {
-        console.log(data.id);
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
             var query = { id: parseInt(data.id) };
             dbo.collection("Quizzes").updateOne(query, { $set: data }, function (err, result) {
                 if (err) throw err;
-                // console.log(result[0]);
+                socket.emit('backToHostPage');
                 db.close();
             });
         });

@@ -5,6 +5,7 @@
         <link rel = "stylesheet" href = "../../css/hostGameView.css">
         <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Tajawal" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
     </head>
     <body>
@@ -24,45 +25,47 @@
             </table>
         </div>
         
-        <div class = "resultgraph">
+        <!-- <div id = "unstatsBar"></div>
+        <div id = "unstatsBar"></div>
+        <div id = "unstatsBar"></div>
+        <div id = "unstatsBar"></div>
             <div class = "square" id = "square1"></div>
             <div class = "square" id = "square2"></div>
             <div class = "square" id = "square3"></div>
-            <div class = "square" id = "square4"></div>
-        </div>
+            <div class = "square" id = "square4"></div> -->
         
-        <div id="QA123">
-
-        </div>
-
+            
+        <div id="QA123"></div>
         <br>
         <button onclick = "nextQuestion()" id = "nextQButton">Next Question</button>
-        
-        <h2 id = "winnerTitle" >Top 5 Players</h4>
-        <div class="overImage" id="plate">
-            <div id="plate1">
-                <img src="../../img/plate.png" width= 550px height= 75px>
-                <h3 class="centered" id = "winner1">1st </h3><br><br>
-            </div>
-            <div id="plate2">
-                <img src="../../img/plate.png" width= 490px height= 65px>
-                <h3 class="centered" id = "winner2">2nd </h3><br><br>
-            </div>
-            <div id="plate3">
-                <img src="../../img/plate.png" width= 425px height= 55px>
-                <h3 class="centered" id = "winner3">3rd </h3><br><br>
-            </div>
-            <div id="plate4">
-                <img src="../../img/plate.png" width= 425px height= 55px>
-                <h3 class="centered" id = "winner4">4th </h3><br><br>
-            </div>
-            <div id="plate5">
-                <img src="../../img/plate.png" width= 425px height= 55px>
-                <h3 class="centered" id = "winner5">5th </h3>
-            </div>
-        </div>
 
-        <button onclick = "backButton()" id = "backButton">Return To Quiz Menu</button>
+        <div id = "resultBG">
+            <h2 id = "winnerTitle" >Top 5 Players</h2>
+            <div class="overImage" id="plate">
+                <div id="plate1">
+                    <img src="../../img/plate.png" width= 550px height= 75px>
+                    <h3 class="centered" id = "winner1">1st </h3><br><br>
+                </div>
+                <div id="plate2">
+                    <img src="../../img/plate.png" width= 490px height= 65px>
+                    <h3 class="centered" id = "winner2">2nd </h3><br><br>
+                </div>
+                <div id="plate3">
+                    <img src="../../img/plate.png" width= 425px height= 55px>
+                    <h3 class="centered" id = "winner3">3rd </h3><br><br>
+                </div>
+                <div id="plate4">
+                    <img src="../../img/plate.png" width= 425px height= 55px>
+                    <h3 class="centered" id = "winner4">4th </h3><br><br>
+                </div>
+                <div id="plate5">
+                    <img src="../../img/plate.png" width= 425px height= 55px>
+                    <h3 class="centered" id = "winner5">5th </h3>
+                </div>
+            </div>
+            <button onclick = "backButton()" id = "backButton">Return To Quiz Menu</button>
+        </div>
+        
         
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/libs/jqueryLibrary.js"></script>

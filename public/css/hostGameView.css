@@ -1,33 +1,33 @@
-html, body { padding: 0; margin: 70px 0px 0px 0px; }
+body { padding: 0; margin: 140px 0px 0px 0px; }
 
 @keyframes bgcolor {
     0% {
-        background-color: #ae00f3
+        background-color: #9600d1
     }
 
     30% {
-        background-color: #c6aaf3
+        background-color: #8781dd
     }
 
     60% {
-        background-color: #9930fcea
+        background-color: #6f009b
     }
 
     90% {
-        background-color: rgb(195, 65, 235)
+        background-color: rgb(235, 65, 212)
     }
 
     100% {
-        background-color: #d1579e
+        background-color: #c51a7e
     }
 }
 
-body {
+/* body {
     -webkit-animation: bgcolor 20s infinite;
     animation: bgcolor 10s infinite;
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
-}
+} */
 
 .col-count-2 { column-count: 2; }
 .col-lg-4 { 
@@ -51,6 +51,7 @@ body {
     max-width: 100% 
 }
 
+
 .navbar {
     background-color: rgb(63, 63, 63);
     color: #FFFFFF;
@@ -58,13 +59,14 @@ body {
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
-    height: 17%;
-    max-height: 17%;
-}
-    .navbar table tbody tr td {
-        width: 1%;
-        padding: 0% 5%;
-    }
+    height: 115px;
+    max-height: 115px;
+    z-index: 1000;}
+  .navbar table tbody tr td {
+    width: 1%;
+    padding: 0% 5%;
+  }
+
 
 .resultgraph {
     text-align: center;
@@ -73,39 +75,101 @@ body {
     margin-top: 125px;
 } */
 
-#answer1{
+#ans1{
     background-color: #00cc5f;
-    margin: auto;
-    padding: 30px 20px;
+    margin: auto;}
+  #answer1{
     height: 50%;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 20px;
+    z-index: 3; 
+    margin: 0%;
+    padding: 28px 5%;
 }
-#answer2{
+#ans2{
     background-color: rgb(241, 48, 48);
-    margin: auto;
-    padding: 30px 20px;
+    margin: auto;}
+  #answer2{
     height: 50%;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 20px;
+    z-index: 3;
+    margin: 0%;
+    padding: 28px 5%;
 }
-#answer3{
+#ans3{
     background-color: #f57deb;
-    margin: auto;
-    padding: 30px 20px;
+    margin: auto;}
+  #answer3{
     height: 50%;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 20px;
+    z-index: 3;
+    margin: 0%;
+    padding: 28px 5%;
 }
-#answer4{
+#ans4{
     background-color: #4dacc8;
-    margin: auto;
-    padding: 30px 20px;
+    margin: auto;}
+  #answer4{
     height: 50%;
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 20px;
+    z-index: 3;
+    margin: 0%;
+    padding: 28px 5%;
 }
-.square{
+
+#QA123 table{
+    table-layout: fixed;
+    height: 20px;
+}
+
+@keyframes statsBar {
+    0% {
+        width: 0%;
+    }
+    100% {
+        width: 100%;
+    }
+}
+.revealAns{
+    border: none;
+    height: 20px;}
+  #revealAns1{
+    display: none;
+    background-color: #00cc5f;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+    -webkit-animation: statsBar 1s;
+    animation: statsBar 1s;
+  }
+  #revealAns2{
+    display: none;
+    background-color: rgb(241, 48, 48);
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+    -webkit-animation: statsBar 1s;
+    animation: statsBar 1s;
+  }
+  #revealAns3{
+    display: none;
+    background-color: #f57deb;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+    -webkit-animation: statsBar 1s;
+    animation: statsBar 1s;
+  }
+  #revealAns4{
+    display: none;
+    background-color: #4dacc8;
+    -webkit-animation-delay: 1s;
+    animation-delay: 1s;
+    -webkit-animation: statsBar 1s;
+    animation: statsBar 1s;
+}
+
+/* .square{
     border: none;
     padding: 15px 32px;
     text-align: center;
@@ -129,12 +193,12 @@ body {
 }
 #square4{
     background-color: #4dacc8;
-}
+} */
 
 #nextQButton{
     display: none;
     -webkit-appearance: none;
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
     text-decoration: none;
@@ -161,7 +225,7 @@ body {
 #backButton{
     display: none;
     -webkit-appearance: none;
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
     font-weight: 700;
     text-transform: uppercase;
     text-decoration: none;
@@ -185,24 +249,33 @@ body {
     -webkit-transition-duration: 100ms;
     transition-duration: 100ms;
   }
-
+#countAns{
+    float: right; 
+    margin: 0%; 
+    font-size: 20px;
+}
 #question{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    font-size: 40px;
 }
 #timerText{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
     text-align: right;
+    font-size: 20px;
 }
 #num{
-    font-family: 'Tajawal', sans-serif;
-    font-size: 35px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 42px;
     text-align: right;
 }
 #playersAnswered{
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
 }
 #questionNum{
-    font-family: 'Tajawal', sans-serif;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
 }
 
 .overImage{

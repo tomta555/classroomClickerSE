@@ -7,29 +7,29 @@
 
 @keyframes bgcolor {
     0% {
-        background-color: #ae00f3
+        background-color: #b7b3ec
     }
 
-    30% {
-        background-color: #c6aaf3
+    25% {
+        background-color: #fbad63
     }
 
-    60% {
-        background-color: #9930fcea
+    50% {
+        background-color: #ffc3d4
     }
 
-    90% {
-        background-color: rgb(195, 65, 235)
+    75% {background-color: #a9ec7c
+        /* background-color: rgb(235, 65, 212) */
     }
 
     100% {
-        background-color: #d1579e
+        background-color: #d690f1
     }
 }
 
 body {
-    -webkit-animation: bgcolor 20s infinite;
-    animation: bgcolor 10s infinite;
+    -webkit-animation: bgcolor 40s infinite;
+    animation: bgcolor 50s infinite;
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
 }

@@ -1,22 +1,22 @@
 @keyframes bgcolor {
     0% {
-        background-color: #ae00f3
+        background-color: #9600d1
     }
 
     30% {
-        background-color: #c6aaf3
+        background-color: #8781dd
     }
 
     60% {
-        background-color: #9930fcea
+        background-color: #6f009b
     }
 
     90% {
-        background-color: rgb(195, 65, 235)
+        background-color: rgb(235, 65, 212)
     }
 
     100% {
-        background-color: #d1579e
+        background-color: #c51a7e
     }
 }
 

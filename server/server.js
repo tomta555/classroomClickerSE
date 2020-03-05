@@ -332,7 +332,7 @@ io.on('connection', (socket) => {
     });
 
     //Sets data in player class to answer from player
-    socket.on('playerAnswer', function (num) {
+    socket.on('playerAnswer', function (num,type) {
         var player = players.getPlayer(socket.id);
         var hostId = player.hostId;
         var playerNum = players.getPlayers(hostId);
@@ -346,19 +346,35 @@ io.on('connection', (socket) => {
             console.log(gameid);
             MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
-
+                // console.log(num.toUpperCase())        
                 var dbo = db.db('classroomClicker');
                 var query = { id: parseInt(gameid) };
                 dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                     if (err) throw err;
+                    console.log("b")
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
-
+                    var NubAnsSA = res[0].questions[gameQuestion-1].answers.length;
+                    console.log(NubAnsSA)
+                    console.log("a")
                     //Checks player answer with correct answer
-                    if (num == correctAnswer) {
-                        player.gameData.score += 100;
-                        // player.answeredQuestion.push({});
-                        io.to(game.pin).emit('getTime', socket.id);
-                        socket.emit('answerResult', true);
+                    if(type == "4c" || type == "2c"){
+                        if (num == correctAnswer) {
+                            player.gameData.score += 100;
+                            // player.answeredQuestion.push({});
+                            io.to(game.pin).emit('getTime', socket.id);
+                            socket.emit('answerResult', true);
+                        }
+                    }
+                    else if(type == "sa"){
+                        for(var i=0 ;i<NubAnsSA;i++){
+                            if(num == res[0].questions[gameQuestion-1].answers[i]){
+                                player.gameData.score += 100;
+                                // player.answeredQuestion.push({});
+                                io.to(game.pin).emit('getTime', socket.id);
+                                socket.emit('answerResult', true);
+                            }
+                        }
+                        
                     }
 
                     //Checks if all players answered

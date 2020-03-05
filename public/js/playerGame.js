@@ -48,8 +48,8 @@ socket.on('noGameFound', function(){
 function answerSubmitted(num,type){
     if(playerAnswered == false){
         playerAnswered = true;
-        
-        socket.emit('playerAnswer', num);//Sends player answer to server
+
+        socket.emit('playerAnswer', num,type);//Sends player answer to server
         document.body.style.backgroundColor = "rgb(238, 138, 20)"
         document.getElementById('waitans').style.display = "block";
         document.getElementById('waitans').innerHTML = "Answer Submitted!<br><br>Waiting for other players...";
@@ -70,7 +70,9 @@ function answerSubmitted(num,type){
 }
 
 function shortAnswerSubmitted(){
-    var answer = document.getElementById('inputanswer5').value;
+    var tempanswer = document.getElementById('inputanswer5').value;
+    answer = tempanswer.toUpperCase();
+    console.log(answer)
     answerSubmitted(answer,"sa");
 }
 

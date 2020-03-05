@@ -1,19 +1,19 @@
 var socket = io();
-var questionNum = 0; 
+var questionNum = 0;
 var questionCounter = 0;
 var countCorrect = 1;
-function updateDatabase(){
+function updateDatabase() {
     var questions = [];
     var name = document.getElementById('name').value;
-    for(var i = 1; i <= questionNum; i++){
-        if(document.getElementById('q'+i) == undefined) continue;
+    for (var i = 1; i <= questionNum; i++) {
+        if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
         var answers = [];
-        var type = document.getElementById("type"+i).innerText;
+        var type = document.getElementById("type" + i).innerText;
         // var correct = document.getElementById('correct' + i).value;
         var correct;
-        switch(type){
-            case("4c"):
+        switch (type) {
+            case ("4c"):
                 var answer1 = document.getElementById(i + 'a1').value;
                 var answer2 = document.getElementById(i + 'a2').value;
                 var answer3 = document.getElementById(i + 'a3').value;
@@ -21,36 +21,34 @@ function updateDatabase(){
                 correct = radioCheck(i);
                 answers = [answer1, answer2, answer3, answer4];
                 break;
-                case("2c"):
+            case ("2c"):
                 correct = radioCheck(i);
                 break;
-<<<<<<< HEAD
-            case("sa"):
-                for(var j = 1; j<=countCorrect ; j++) 
-                    answers[j-1] = document.getElementById(j + 'correct' + i).value;
-                    // console.log(document.getElementById(j + 'correct' + i).value);
-                // console.log(answers);
-=======
-                case("sa"):
-                correct = document.getElementById('correct' + i).value;
-            }
-            questions.push({"question": question, "answers": answers, "correct": correct, "type":type})
->>>>>>> 2a796e7e2306113d3e8ed252ce3bafd4dcd751fd
+            case ("sa"):    
+                for (var j = 1; j <= countCorrect; j++){
+                     tempans = document.getElementById(j + 'correct' + i).value;
+                     answers[j - 1] = tempans.toUpperCase();
+                }
+                    
+            // console.log(document.getElementById(j + 'correct' + i).value);
+            // console.log(answers);
         }
-        
-        var quiz = { id: 0, "name": name, "questions": questions };
-        socket.emit('newQuiz', quiz);
-    };
-    
-    
-    
-function addQuestion(){
+        questions.push({ "question": question, "answers": answers, "correct": correct, "type": type })
+    }
+
+    var quiz = { id: 0, "name": name, "questions": questions };
+    socket.emit('newQuiz', quiz);
+};
+
+
+
+function addQuestion() {
     var questionTable = "";
     questionCounter += 1;
     questionNum += 1;
     questionTable = document.getElementById('allQuestions');
     thisQuestion = document.createElement("div");
-    thisQuestion.setAttribute("id",`Question${questionNum}`);
+    thisQuestion.setAttribute("id", `Question${questionNum}`);
     thisQuestion.innerHTML = `
     <h3 id="questionName${questionNum}">Question ${questionCounter} :</h3>
         <div class="tab">
@@ -87,29 +85,29 @@ function addQuestion(){
     <br>`;
     questionTable.appendChild(thisQuestion);
 }
-function deleteQeustion(i){
-    questionCounter-=1;
+function deleteQeustion(i) {
+    questionCounter -= 1;
     document.getElementById(`Question${i}`).remove();
     var counter = 1;
-    for(j=1;j<=questionNum;j++){
+    for (j = 1; j <= questionNum; j++) {
         var q = document.getElementById(`questionName${j}`)
-        if(q != undefined){
+        if (q != undefined) {
             q.innerHTML = `Question ${counter} : `;
             counter++;
         }
     }
 
 }
-function radioCheck(i){
+function radioCheck(i) {
     var allRadio = document.getElementsByName(`correct${i}`);
-    for(var j=0; j<4;j++){
-        if(allRadio[j].checked == true) return allRadio[j].value;
+    for (var j = 0; j < 4; j++) {
+        if (allRadio[j].checked == true) return allRadio[j].value;
     }
 }
 
-function openTab(evt, quizType, id){
+function openTab(evt, quizType, id) {
     // countCorrect = 1;
-    if(evt.currentTarget.className == "active") return;
+    if (evt.currentTarget.className == "active") return;
     //unactive all tablinks
     tablinks = document.getElementsByClassName(`tablinks${id}`);
     for (i = 0; i < tablinks.length; i++) {
@@ -119,8 +117,8 @@ function openTab(evt, quizType, id){
     evt.currentTarget.className += " active";
     var targetQuestion = document.getElementById(`tabcontent${id}`);
     var tabcontent;
-    switch(quizType){
-        case("4c"):
+    switch (quizType) {
+        case ("4c"):
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">4c</div>
             <br>
@@ -143,7 +141,7 @@ function openTab(evt, quizType, id){
             <label>Answer 4: </label>
             <input id = "${questionNum}a4"  type = "text" autofocus/>`
             break;
-        case("2c"):
+        case ("2c"):
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">2c</div>
             <br>
@@ -155,7 +153,7 @@ function openTab(evt, quizType, id){
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input> <label>True</lebel>
             <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>False</lebel>`
             break;
-        case("sa"):
+        case ("sa"):
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">sa</div>
             <br>
@@ -176,12 +174,12 @@ function openTab(evt, quizType, id){
     }
     targetQuestion.innerHTML = tabcontent;
 }
-function addbuttonAns(){
+function addbuttonAns() {
     countCorrect++;
     var AnsDiv = document.createElement("div");
     AnsDiv.innerHTML = document.getElementById('countCorrect').innerHTML;
     document.getElementById('allCorrect').appendChild(AnsDiv);
-    AnsDiv.getElementsByTagName("input")[0].setAttribute("id",`${countCorrect}correct${questionNum}`);
+    AnsDiv.getElementsByTagName("input")[0].setAttribute("id", `${countCorrect}correct${questionNum}`);
     console.log(countCorrect);
 }
 
@@ -206,6 +204,11 @@ function setBGColor() {
     var randColor = randomColor();
     document.getElementById('question-field').style.backgroundColor = randColor;
 }
+
+
+
+
+
 
 
 

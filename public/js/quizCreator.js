@@ -4,7 +4,7 @@ var questionCounter = 0;
 var params = jQuery.deparam(window.location.search);
 var quizId;
 socket.on('connect',function(){
-    if(params == undefined){
+    if(params.id == undefined){
         addQuestion();
         document.getElementById('submitButton').setAttribute("onclick","updateDatabase('create')");
         document.getElementById('submitButton').innerHTML="Create Quiz";
@@ -32,6 +32,7 @@ function updateDatabase(reqtype){
     for(var i = 1; i <= questionNum; i++){
         if(document.getElementById('q'+i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
+        var content = document.getElementById("content"+i).value;
         var answers = [];
         var qtype = document.getElementById("type"+i).innerText;
         // var correct = document.getElementById('correct' + i).value;
@@ -82,6 +83,9 @@ function addQuestion(){
             <button style="background-color: rgb(209, 61, 24); "onclick="deleteQeustion(${questionNum})" >Delete</button>
             <br>
             <br>
+        </div>
+        <div>
+            <layer>quiz content : </layer><input id="content${questionNum}" type="text">
         </div>
         <div id="tabcontent${questionNum}">
             <div id="type${questionNum}" style = "display:none">4c</div>

@@ -1,7 +1,9 @@
 var socket = io();
-var questionNum = 0; 
+var questionNum = 0;
 var questionCounter = 0;
+
 var params = jQuery.deparam(window.location.search);
+var countCorrect = 1;
 // var quizId;
 socket.on('connect',function(){
     if(params.id == undefined){
@@ -30,8 +32,8 @@ socket.on('gameData-edit',function(data){
 function updateDatabase(reqtype, quizId){
     var questions = [];
     var name = document.getElementById('name').value;
-    for(var i = 1; i <= questionNum; i++){
-        if(document.getElementById('q'+i) == undefined) continue;
+    for (var i = 1; i <= questionNum; i++) {
+        if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
         var content = document.getElementById("content"+i).value;
         var answers = [];
@@ -47,11 +49,14 @@ function updateDatabase(reqtype, quizId){
                 correct = radioCheck(i);
                 answers = [answer1, answer2, answer3, answer4];
                 break;
-                case("2c"):
+            case ("2c"):
                 correct = radioCheck(i);
                 break;
                 case("sa"):
-                correct = document.getElementById('correct' + i).value;
+                for (var j = 1; j <= countCorrect; j++){
+                    tempans = document.getElementById(j + 'correct' + i).value;
+                    answers[j - 1] = tempans.toUpperCase();
+               }
             }
             questions.push({"question": question, "content":content, "type":qtype, "answers": answers, "correct": correct})
     }
@@ -72,7 +77,7 @@ function addQuestion(){
     questionNum += 1;
     questionTable = document.getElementById('allQuestions');
     thisQuestion = document.createElement("div");
-    thisQuestion.setAttribute("id",`Question${questionNum}`);
+    thisQuestion.setAttribute("id", `Question${questionNum}`);
     thisQuestion.innerHTML = `
     <h3 id="questionName${questionNum}">Question ${questionCounter} :</h3>
         <div class="tab">
@@ -111,20 +116,20 @@ function addQuestion(){
     <br>`;
     questionTable.appendChild(thisQuestion);
 }
-function deleteQeustion(i){
-    questionCounter-=1;
+function deleteQeustion(i) {
+    questionCounter -= 1;
     document.getElementById(`Question${i}`).remove();
     var counter = 1;
-    for(j=1;j<=questionNum;j++){
+    for (j = 1; j <= questionNum; j++) {
         var q = document.getElementById(`questionName${j}`)
-        if(q != undefined){
+        if (q != undefined) {
             q.innerHTML = `Question ${counter} : `;
             counter++;
         }
     }
 
 }
-function radioCheck(i){
+function radioCheck(i) {
     var allRadio = document.getElementsByName(`correct${i}`);
     var quizType;
     for(var j=0; j<4;j++){
@@ -210,8 +215,8 @@ function openTab(evt, quizType, id){
     evt.currentTarget.className += " active";
     var targetQuestion = document.getElementById(`tabcontent${id}`);
     var tabcontent;
-    switch(quizType){
-        case("4c"):
+    switch (quizType) {
+        case ("4c"):
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">4c</div>
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
@@ -229,22 +234,36 @@ function openTab(evt, quizType, id){
             <label>Answer 4: </label>
             <input id = "${questionNum}a4"  type = "text" autofocus/>`
             break;
-        case("2c"):
+        case ("2c"):
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">2c</div>
             
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input> <label>True</lebel>
             <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>False</lebel>`
             break;
-        case("sa"):
+        case ("sa"):
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">sa</div>
             <label>Correct Answer :</label>
-            <input class = "question" id = "correct${questionNum}" type = "text" autofocus/>
+            <div id="allCorrect">
+            <div id="countCorrect">
+            <input class = "correct" id = "${countCorrect}correct${questionNum}" type = "text" autofocus/>
             <br>
+            <br>
+            </div>
+            </div>
+            <button class="tablinks${questionNum}" onclick="addbuttonAns()">AddAnswer</button> 
             <br>`
     }
     targetQuestion.innerHTML = tabcontent;
+}
+function addbuttonAns() {
+    countCorrect++;
+    var AnsDiv = document.createElement("div");
+    AnsDiv.innerHTML = document.getElementById('countCorrect').innerHTML;
+    document.getElementById('allCorrect').appendChild(AnsDiv);
+    AnsDiv.getElementsByTagName("input")[0].setAttribute("id", `${countCorrect}correct${questionNum}`);
+    console.log(countCorrect);
 }
 
 //Called when user wants to exit quiz creator

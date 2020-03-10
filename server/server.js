@@ -50,15 +50,17 @@ app.use(session({
 
 })); // session secret
 
+//Path
+const publicPath = path.join(__dirname, '../public');
+app.use(express.static(publicPath));
+
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
 require('../public/config/routes')(app, passport);
 
 
-//Path
-const publicPath = path.join(__dirname, '../public');
-app.use(express.static(publicPath));
+
 
 
 
@@ -85,72 +87,6 @@ io.on('connection', (socket) => {
             }
 
         })
-    });
-
-    //When submit signUP
-    socket.on('signUp', function (data) {
-        const user = data.user;
-        const pass = data.pass;
-        const stdID = data.id;
-        MongoClient.connect(url, function (err, db) {
-            if (err) throw err;
-            var dbo = db.db('classroomClicker');
-            dbo.collection('user').findOne({ $or: [{ username: user }, { studentID: stdID }] }, function (err, result) {
-                if (err) throw err;
-                if (result != null) {
-                    if (result.studentID == stdID || result.username == user) {
-                        socket.emit('register_failed');
-                    } else {
-                        const hash = bcrypt.hashSync(pass, saltRounds)
-                        dbo.collection('user').insertOne({
-                            username: user,
-                            password: hash,
-                            studentID: stdID
-                        }, function () {
-                            db.close();
-                            socket.emit('register_succeeded');
-                        });
-                    }
-                } else {
-                    bcrypt.hash(pass, saltRounds, function (err, hash) {
-                        if(err) throw err;
-                        dbo.collection('user').insertOne({
-                            username: user,
-                            password: hash,
-                            studentID: stdID
-                        }, function () {
-                            db.close();
-                            console.log("from server : register succeeded [username : "+String(user)+", id"+String(stdID)+"]");
-                            socket.emit('register_succeeded');
-                        });
-                    });
-                }
-            });
-        });
-    });
-
-    //When submit signIn
-    socket.on('signIn', function (data) {
-        const user = data.user;
-        const pass = data.pass;
-        MongoClient.connect(url, function (err, db) {
-            if (err) throw err;
-            var dbo = db.db('classroomClicker');
-            dbo.collection('user').findOne({ username: user }, function (err, data) {
-                if (err) throw err;
-                if (data != null) {
-                    var hash = data.password
-                    passCheck = bcrypt.compareSync(pass, hash)
-                    if (data.username == user && passCheck) {
-                        socket.emit('logged_in', { id: data._id });
-                    } else {
-                        socket.emit('invalid_password')
-                    }
-                } else {
-                    socket.emit('signIn_failed')
-                }
-            });
-        });
     });
 
     //When host connects for the first time

@@ -59,9 +59,9 @@ module.exports = function(app, passport) {
         failureRedirect : '/signin', // redirect back to the signup page if there is an error
         failureFlash : true // allow flash messages
     }));
-    // app.get('*', function(req, res) {
-    //     res.status(404).send("WTF 404 Not Found");
-    // });
+    app.get('*', function(req, res) {
+        res.status(404).send("WTF 404 Not Found");
+    });
 }
 
 function isLoggedIn(req, res, next) {

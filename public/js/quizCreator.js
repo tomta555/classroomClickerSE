@@ -87,13 +87,12 @@ function addQuestion(){
             <label>Quiz content : </label>
             <input class = "question" id="content${questionNum}" type="text" autofocus/>
         </div>
+        <br>
+        <label>Question : </label>
+        <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
+        <br>
+        <br>
         <div id="tabcontent${questionNum}">
-            <div id="type${questionNum}" style = "display:none">4c</div>
-            <br>
-            <label>Question : </label>
-            <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
-            <br>
-            <br>
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
             <label>Answer 1: </label>
             <input id = "${questionNum}a1" type = "text" autofocus/>
@@ -127,6 +126,7 @@ function deleteQeustion(i){
 }
 function radioCheck(i){
     var allRadio = document.getElementsByName(`correct${i}`);
+    var quizType;
     for(var j=0; j<4;j++){
         if(allRadio[j].checked == true) return allRadio[j].value;
     }
@@ -134,16 +134,18 @@ function radioCheck(i){
 
 function fixedOpenTab(id, data){
     var targetQuestion = document.getElementById(`tabcontent${id}`);
-    var tabcontent = '';
-    switch(data.type){
-        case("4c"):
-            tabcontent = `
-            <div id="type${id}" style = "display:none">4c</div>
+    var tabcontent = `
             <br>
             <label>Question : </label>
             <input class = "question" id = "q${id}" type = "text" value='${data.question}' autofocus/>
             <br>
-            <br>
+            <br>`;
+    switch(data.type){
+        case("4c"):
+            quizType = "4 choices";
+            tabcontent = `
+            <div id="type${id}" style = "display:none">4c</div>
+            
             <input type = "radio" id = "radio1${id}" name = "correct${id}" value = 1></input>
             <label>Answer 1: </label>
             <input id = "${id}a1" type = "text" value='${data.answers[0]}' autofocus/>
@@ -160,24 +162,16 @@ function fixedOpenTab(id, data){
             <input id = "${id}a4"  type = "text" value='${data.answers[3]}' autofocus/>`
             break;
         case("2c"):
+            quizType = "true or false";
             tabcontent = `
             <div id="type${id}" style = "display:none">2c</div>
-            <br>
-            <label>Question : </label>
-            <input class = "question" id = "q${id}" type = "text" value='${data.question}' autofocus/>
-            <br>
-            <br>
             <input type = "radio" id = "radio1${id}" name = "correct${id}" value = 1></input> <label>True</lebel>
             <input type = "radio" id = "radio2${id}" name = "correct${id}" value = 2></input> <label>False</lebel>`
             break;
         case("sa"):
+            quizType = "Short Answer";
             tabcontent = `
             <div id="type${id}" style = "display:none">sa</div>
-            <br>
-            <label>Question : </label>
-            <input class = "question" id = "q${id}" type = "text" value='${data.question}' autofocus/>
-            <br>
-            <br>
             <label>Correct Answer :</label>
             <input class = "question" id = "correct${id}" value='${data.correct}' type = "text" autofocus/>
             <br>
@@ -197,7 +191,13 @@ function fixedOpenTab(id, data){
     }else{
         document.getElementById(`correct${id}`).value = data.correct;
     }
-
+    var tablinks = document.getElementsByClassName(`tablinks${questionNum}`);
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        if(tablinks[i].innerHTML == quizType){
+            tablinks[i].className += " active";
+        }
+    }
 }
 function openTab(evt, quizType, id){
     if(evt.currentTarget.className == "active") return;
@@ -207,18 +207,13 @@ function openTab(evt, quizType, id){
         tablinks[i].className = tablinks[i].className.replace(" active", "");
     }
     //active the target tablink
-    evt.currentTarget.className += "active";
+    evt.currentTarget.className += " active";
     var targetQuestion = document.getElementById(`tabcontent${id}`);
     var tabcontent;
     switch(quizType){
         case("4c"):
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">4c</div>
-            <br>
-            <label>Question : </label>
-            <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
-            <br>
-            <br>
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
             <label>Answer 1: </label>
             <input id = "${questionNum}a1" type = "text" autofocus/>
@@ -237,11 +232,6 @@ function openTab(evt, quizType, id){
         case("2c"):
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">2c</div>
-            <br>
-            <label>Question : </label>
-            <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
-            <br>
-            <br>
             
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input> <label>True</lebel>
             <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input> <label>False</lebel>`
@@ -249,11 +239,6 @@ function openTab(evt, quizType, id){
         case("sa"):
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">sa</div>
-            <br>
-            <label>Question : </label>
-            <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
-            <br>
-            <br>
             <label>Correct Answer :</label>
             <input class = "question" id = "correct${questionNum}" type = "text" autofocus/>
             <br>

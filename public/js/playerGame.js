@@ -74,6 +74,10 @@ function shortAnswerSubmitted(){
     answerSubmitted(answer,"sa");
 }
 
+function backButton() {
+    window.location.href = "../../join.html";
+}
+
 //Get results on last question
 socket.on('answerResult', function(data){
     if(data == true){
@@ -146,9 +150,10 @@ socket.on('playerGameData', function(data){
 });
 
 socket.on('GameOver', function(data){
-    document.body.style.backgroundColor = "#c70000";
+    document.body.style.backgroundColor = "#c70011";
     document.getElementById('finish').style.display = "block";
     document.getElementById('finish').innerText = "FINISH!";
+    document.getElementById('backButton').style.display ="block";
     messageTable = `
         <br><br><img src="../../img/3.gif">`;
         // <img src="../../img/finish.png" width="25%" height="25%">`;

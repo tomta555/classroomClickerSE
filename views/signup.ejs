@@ -19,10 +19,14 @@
         <div class="card card-signin my-5">
           <div class="card-body">
             <h5 class="card-title text-center">Sign Up</h5>
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+            <% } %>
             <form class="form-signin" action="/signup" method="post">
               <div class="form-label-group">
-                <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required
-                  autofocus />
+                <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username"
+                  required autofocus />
                 <label for="inputUsername">Username</label>
               </div>
 

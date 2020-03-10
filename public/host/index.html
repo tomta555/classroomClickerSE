@@ -10,39 +10,19 @@
 </head>
 
 <body>
-    <a class="button" onclick="endGame()">Back</a>
+    <a style="background-color: rgb(255, 153, 37);" class = "button" id = "cancel" onclick="endGame()"><img src="../img/back.png" width="30px" height="30px"></a>
     <button id='start' onclick="startGame()">Start Game</button><br><br><br>
 
     <!-- <button id = "cancel" onclick = "endGame()">Cancel Game</button> -->
     <h2 id="title" style="font-family: 'Open Sans Condensed', sans-serif;">Join this Game using the Game Pin :</h2>
     <h1 id="gamePinText"></h1>
 
-    <div class="counter">
-        <h3>Player joined:<p id="playerCount"></p></h3>
-        
-        <a style="background-color: rgb(255, 153, 37);" class = "button" id = "cancel" onclick="endGame()"><img src="../img/back.png" width="30px" height="30px"></a>
-        <br>
-        <!-- <button id = "cancel" onclick = "endGame()">Cancel Game</button> -->
-        <h2 id = "title" style="font-family: 'Open Sans Condensed', sans-serif;">Join this Game using the Game Pin :</h2>
-        <h1 id = "gamePinText" ></h1>
-        
-        <div class="counter">
-            <h3 style="color: grey;height: auto;width: 140px;background-color: cornsilk; text-align: center;border-radius: 7px;">Players Joined: <span id="playerCount"></span></h3>
-        </div><br>
-        
-        <table class="joincontainer">
-            <tbody id="players" style = "margin:10%; padding:75px; background-color: white; color:black;height: 75%;">
-                
-                <!-- <tr>
-                    <td>Sarah Logan</td>
-                    <td>Liv Morgan</td>
-                    <td>Ruby Riott</td>
-                </tr>
-                <tr>
-                    <td>Shayna Brazler</td>
-                    <td>Natalya</td>
-                    <td>Azuka</td>
-                </tr> -->
+    <div class="counter button" style="background-color: beige; height: 100px;">
+        <h3>Player joined: <p id="playerCount"></p></h3>
+    </div>
+    <br>
+    <table class="joincontainer">
+        <tbody id="players" style = "margin:10%; padding:75px; height: 75%;">
         </tbody>
     </table>
 

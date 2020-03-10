@@ -50,9 +50,13 @@ socket.on('gameQuestions', function (data) {
             type_Q = "2c"
             document.getElementById('QA123').innerHTML = `
             <h2 id = 'question'>${data.q1}</h2>
-            <h3 id = 'answer1'>TRUE</h3>
+            <div id = "ans1">
+            <h3 id = 'answer1'>TRUE</h3></div>
+            <div class="revealAns" id="revealAns1"></div>
             <br>
-            <h3 id = 'answer2'>FALSE</h3>`
+            <div id = "ans2">
+            <h3 id = 'answer2'>FALSE</h3></div>
+            <div class="revealAns" id="revealAns2"></div>`
             var correctAnswer = data.correct;
             document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / ";  // Add total number of questions
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
@@ -90,10 +94,7 @@ socket.on('questionOver', function (playerData, correct) {
     document.getElementById('playersAnswered').innerHTML = "Players Answered " + latestPlayerCount + " / " + latestPlayerInGame;
 
     if (type_Q == '4c') {
-        
-        // document.getElementById('revealAns2').style.filter = "grayscale(75%)";
-        // document.getElementById('revealAns3').style.filter = "grayscale(75%)";
-        // document.getElementById('revealAns4').style.filter = "grayscale(75%)";
+    
         //Shows user correct answer with effects on elements
         if (correct == 1) {
             document.getElementById('ans2').style.backgroundColor = "#9c9c9c";
@@ -196,11 +197,17 @@ socket.on('questionOver', function (playerData, correct) {
     
     } else if (type_Q == '2c') {
         if (correct == 1) {
-            document.getElementById('answer2').style.filter = "grayscale(50%)";
+            document.getElementById('ans2').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans2').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans2').style.TransitionDuration = "1000ms"
+            document.getElementById('revealAns1').style.filter = "grayscale(50%)"
             var current = document.getElementById('answer1').innerHTML;
             document.getElementById('answer1').innerHTML = "&#10004" + " " + current;
         } else if (correct == 2) {
-            document.getElementById('answer1').style.filter = "grayscale(50%)";
+            document.getElementById('ans1').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans1').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans1').style.TransitionDuration = "1000ms"
+            document.getElementById('revealAns2').style.filter = "grayscale(50%)"
             var current = document.getElementById('answer2').innerHTML;
             document.getElementById('answer2').innerHTML = "&#10004" + " " + current;
         }
@@ -218,11 +225,18 @@ socket.on('questionOver', function (playerData, correct) {
         playerAns1 = answer1 / total * 100;
         playerAns2 = answer2 / total * 100;
 
-        document.getElementById('square1').style.display = "inline-block";
-        document.getElementById('square2').style.display = "inline-block";
-
-        document.getElementById('square1').style.height = playerAns1 + "px";
-        document.getElementById('square2').style.height = playerAns2 + "px";
+        // Count players who answered this choice
+        document.getElementById('answer1').innerHTML += `<span id = "countAns">(${answer1} players)</span>`;
+        document.getElementById('answer2').innerHTML += `<span id = "countAns">(${answer2} players)</span>`;
+        
+        if(playerAns1 == 0) { playerAns1 = 0.99; }
+        if(playerAns2 == 0) { playerAns2 = 0.99; }
+        // Table width for revealAns
+        document.getElementById('revealAns1').style.marginRight = (100-playerAns1).toString() + "%";
+        document.getElementById('revealAns2').style.marginRight = (100-playerAns2).toString() + "%";
+        // Shows revealAns that show statistics of players' answers
+        document.getElementById('revealAns1').style.display = "block";
+        document.getElementById('revealAns2').style.display = "block";
         
         document.getElementById('nextQButton').style.display = "inline-block";
     } else if (type_Q == 'sa') {
@@ -233,6 +247,9 @@ socket.on('questionOver', function (playerData, correct) {
 });
 
 function nextQuestion() {
+    
+    // hide all revealAns block
+    if (type_Q == '4c') {
     // restore answer block color
     document.getElementById('ans1').style.backgroundColor = "#00cc5f";
     document.getElementById('ans2').style.backgroundColor = "rgb(241, 48, 48)";
@@ -248,9 +265,7 @@ function nextQuestion() {
     document.getElementById('revealAns2').style.filter = "grayscale(0%)";
     document.getElementById('revealAns3').style.filter = "grayscale(0%)";
     document.getElementById('revealAns4').style.filter = "grayscale(0%)";
-    
-    // hide all revealAns block
-    if (type_Q == '4c') {
+    // hide all result from last question
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('revealAns1').style.display = "none";
     document.getElementById('revealAns2').style.display = "none";
@@ -258,13 +273,27 @@ function nextQuestion() {
     document.getElementById('revealAns4').style.display = "none";
     }
     else if(type_Q='2c'){
-        document.getElementById('nextQButton').style.display = "none";
-        document.getElementById('revealAns1').style.display = "none";
-        document.getElementById('revealAns2').style.display = "none";
+    // restore answer block color
+    document.getElementById('ans1').style.backgroundColor = "#00cc5f";
+    document.getElementById('ans2').style.backgroundColor = "rgb(241, 48, 48)";
+    // restore all ans color
+    document.getElementById('ans1').style.filter = "grayscale(0%)";
+    document.getElementById('ans2').style.filter = "grayscale(0%)";
+    // restore all revealAns color
+    document.getElementById('revealAns1').style.filter = "grayscale(0%)";
+    document.getElementById('revealAns2').style.filter = "grayscale(0%)";
+    // hide all result from last question
+    document.getElementById('nextQButton').style.display = "none";
+    document.getElementById('revealAns1').style.display = "none";
+    document.getElementById('revealAns2').style.display = "none";
    
-    }else if(type_Q='sa'){
-        document.getElementById('answer5').style.display = "none";
     }
+    else if(type_Q='sa'){
+    document.getElementById('answer5').style.display = "none";
+    // hide all result from last question
+    document.getElementById('nextQButton').style.display = "none";
+    }
+    
     document.getElementById('playersAnswered').style.display = "block";
     document.getElementById('timerText').style.display = "block";
     document.getElementById('num').innerHTML = " 20";
@@ -285,21 +314,25 @@ function updateTimer() {
 socket.on('GameOver', function (data) {
     
     document.getElementById('nextQButton').style.display = "none";
-    document.getElementById('revealAns1').style.display = "none";
-    document.getElementById('revealAns2').style.display = "none";
-    document.getElementById('revealAns3').style.display = "none";
-    document.getElementById('revealAns4').style.display = "none";
     document.getElementById('QA123').style.display = "none";
 
-    a = document.getElementById('answer1')
-    b = document.getElementById('answer2')
-    c = document.getElementById('answer3')
-    d = document.getElementById('answer4')
+    a = document.getElementById('answer1');
+    b = document.getElementById('answer2');
+    c = document.getElementById('answer3');
+    d = document.getElementById('answer4');
     if(a!=undefined && b!=undefined && c!=undefined && d!=undefined){
         a.style.display = "none";
         b.style.display = "none";
         c.style.display = "none";
         d.style.display = "none";
+        document.getElementById('ans1').style.display = "none";
+        document.getElementById('ans2').style.display = "none";
+        document.getElementById('ans3').style.display = "none";
+        document.getElementById('ans4').style.display = "none";
+        document.getElementById('revealAns1').style.display = "none";
+        document.getElementById('revealAns2').style.display = "none";
+        document.getElementById('revealAns3').style.display = "none";
+        document.getElementById('revealAns4').style.display = "none";
     }
     document.getElementById('timerText').innerHTML = "";
     document.getElementById('question').style.display = 'none';

@@ -246,54 +246,30 @@ socket.on('questionOver', function (playerData, correct) {
     }
 });
 
+function resetBgColor(target, color, close){
+    if(target != undefined){
+        target.style.backgroundColor = color;
+        target.style.filter = "grayscale(0%)";
+        if(close){
+            target.style.display = "none"
+        }
+    }
+}
+
 function nextQuestion() {
-    
     // hide all revealAns block
-    if (type_Q == '4c') {
-    // restore answer block color
-    document.getElementById('ans1').style.backgroundColor = "#00cc5f";
-    document.getElementById('ans2').style.backgroundColor = "rgb(241, 48, 48)";
-    document.getElementById('ans3').style.backgroundColor = "#f57deb";
-    document.getElementById('ans4').style.backgroundColor = "#4dacc8";
-    // restore all ans color
-    document.getElementById('ans1').style.filter = "grayscale(0%)";
-    document.getElementById('ans2').style.filter = "grayscale(0%)";
-    document.getElementById('ans3').style.filter = "grayscale(0%)";
-    document.getElementById('ans4').style.filter = "grayscale(0%)";
-    // restore all revealAns color
-    document.getElementById('revealAns1').style.filter = "grayscale(0%)";
-    document.getElementById('revealAns2').style.filter = "grayscale(0%)";
-    document.getElementById('revealAns3').style.filter = "grayscale(0%)";
-    document.getElementById('revealAns4').style.filter = "grayscale(0%)";
-    // hide all result from last question
-    document.getElementById('nextQButton').style.display = "none";
-    document.getElementById('revealAns1').style.display = "none";
-    document.getElementById('revealAns2').style.display = "none";
-    document.getElementById('revealAns3').style.display = "none";
-    document.getElementById('revealAns4').style.display = "none";
-    }
-    else if(type_Q='2c'){
-    // restore answer block color
-    document.getElementById('ans1').style.backgroundColor = "#00cc5f";
-    document.getElementById('ans2').style.backgroundColor = "rgb(241, 48, 48)";
-    // restore all ans color
-    document.getElementById('ans1').style.filter = "grayscale(0%)";
-    document.getElementById('ans2').style.filter = "grayscale(0%)";
-    // restore all revealAns color
-    document.getElementById('revealAns1').style.filter = "grayscale(0%)";
-    document.getElementById('revealAns2').style.filter = "grayscale(0%)";
-    // hide all result from last question
-    document.getElementById('nextQButton').style.display = "none";
-    document.getElementById('revealAns1').style.display = "none";
-    document.getElementById('revealAns2').style.display = "none";
-   
-    }
-    else if(type_Q='sa'){
-    document.getElementById('answer5').style.display = "none";
-    // hide all result from last question
-    document.getElementById('nextQButton').style.display = "none";
-    }
+    //resetBgColor(target, color, close) :: reset target bg color to input color if posible and style.display=none if close
+    resetBgColor(document.getElementById('ans1'), "#00cc5f", false);
+    resetBgColor(document.getElementById('ans2'), "rgb(241, 48, 48)", false);
+    resetBgColor(document.getElementById('ans3'), "#f57deb", false);
+    resetBgColor(document.getElementById('ans4'), "#4dacc8", false);
+    resetBgColor(document.getElementById('revealAns4'), "#00cc5f", true);
+    resetBgColor(document.getElementById('revealAns3'), "rgb(241, 48, 48)", true);
+    resetBgColor(document.getElementById('revealAns2'), "#f57deb", true);
+    resetBgColor(document.getElementById('revealAns1'), "#4dacc8", true);
+    var a = document.getElementById('answer5'); if(a != undefined) a.style.display = "none";
     
+    document.getElementById('nextQButton').style.display = "none";
     document.getElementById('playersAnswered').style.display = "block";
     document.getElementById('timerText').style.display = "block";
     document.getElementById('num').innerHTML = " 20";

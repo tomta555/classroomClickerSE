@@ -98,6 +98,7 @@ function addQuestion(){
         <br>
         <br>
         <div id="tabcontent${questionNum}">
+            <div id="type${questionNum}" style = "display:none">4c</div>
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
             <label>Answer 1: </label>
             <input id = "${questionNum}a1" type = "text" autofocus/>

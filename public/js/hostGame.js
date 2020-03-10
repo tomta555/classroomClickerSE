@@ -6,6 +6,8 @@ var timer;
 var questionNumber = 0;
 var time;
 var type_Q;
+var latestPlayerCount = 0;
+var latestPlayerInGame = 0;
 //When host connects to server
 socket.on('connect', function () {
 
@@ -24,45 +26,57 @@ socket.on('gameQuestions', function (data) {
             type_Q = "4c"
             document.getElementById('QA123').innerHTML= `
             <h2 id = "question">${data.q1}</h2>
-            <h3 id = "answer1">${data.a1}</h3>
+            <div id = "ans1">
+                <h3 id = "answer1">${data.a1}</h3></div>
+            <div class="revealAns" id="revealAns1"></div>
             <br>
-            <h3 id = "answer2">${data.a2}</h3>
+            <div id = "ans2">
+                <h3 id = "answer2">${data.a2}</h3></div>
+            <div class="revealAns" id="revealAns2"></div>
             <br>
-            <h3 id = "answer3">${data.a3}</h3>
+            <div id = "ans3">
+                <h3 id = "answer3">${data.a3}</h3></div>
+            <div class="revealAns" id="revealAns3"></div>
             <br>
-            <h3 id = "answer4">${data.a4}</h3>`
+            <div id = "ans4">
+                <h3 id = "answer4">${data.a4}</h3></div>
+            <div class="revealAns" id="revealAns4"></div>`
             var correctAnswer = data.correct;
-            document.getElementById('questionNum').innerHTML = "Question " + questionNumber;
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / ";  // Add total number of questions
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
         case "2c":
             type_Q = "2c"
             document.getElementById('QA123').innerHTML = `
-        <h2 id = 'question'>${data.q1}</h2>
-        <h3 id = 'answer1'>True</h3>
-        <br>
-        <h3 id = 'answer2'>False</h3>`
-
+            <h2 id = 'question'>${data.q1}</h2>
+            <div id = "ans1">
+            <h3 id = 'answer1'>TRUE</h3></div>
+            <div class="revealAns" id="revealAns1"></div>
+            <br>
+            <div id = "ans2">
+            <h3 id = 'answer2'>FALSE</h3></div>
+            <div class="revealAns" id="revealAns2"></div>`
             var correctAnswer = data.correct;
-            document.getElementById('questionNum').innerHTML = "Question " + questionNumber;
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / ";  // Add total number of questions
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
 
         case "sa":
             type_Q = "sa"
-            document.getElementById('questionNum').innerHTML = "Question " + questionNumber;
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / ";  // Add total number of questions
             document.getElementById('QA123').innerHTML = `<h2 id = 'question'>${data.q1}</h2>`
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
     }
-
+    latestPlayerInGame = data.playersInGame;
 });
 
 socket.on('updatePlayersAnswered', function (data) {
     document.getElementById('playersAnswered').innerHTML = "Players Answered " + data.playersAnswered + " / " + data.playersInGame;
+    latestPlayerCount = data.playersAnswered + 1;
 });
 
 socket.on('questionOver', function (playerData, correct) {
@@ -71,35 +85,70 @@ socket.on('questionOver', function (playerData, correct) {
     var answer2 = 0;
     var answer3 = 0;
     var answer4 = 0;
+    var playerAns1 = 0;
+    var playerAns2 = 0;
+    var playerAns3 = 0;
+    var playerAns4 = 0;
     var total = 0;
-    //Hide elements on page
-    // document.getElementById('playersAnswered').style.display = "none";
-    // document.getElementById('timerText').style.display = "none";
-    
+
+    document.getElementById('playersAnswered').innerHTML = "Players Answered " + latestPlayerCount + " / " + latestPlayerInGame;
+
     if (type_Q == '4c') {
+    
         //Shows user correct answer with effects on elements
         if (correct == 1) {
-            document.getElementById('answer2').style.filter = "grayscale(50%)";
-            document.getElementById('answer3').style.filter = "grayscale(50%)";
-            document.getElementById('answer4').style.filter = "grayscale(50%)";
+            document.getElementById('ans2').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans3').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans4').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans2').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans2').style.TransitionDuration = "1000ms"
+            document.getElementById('ans3').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans3').style.TransitionDuration = "1000ms"
+            document.getElementById('ans4').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans4').style.TransitionDuration = "1000ms"
+            document.getElementById('revealAns1').style.filter = "grayscale(50%)"
             var current = document.getElementById('answer1').innerHTML;
             document.getElementById('answer1').innerHTML = "&#10004" + " " + current;
-        } else if (correct == 2) {
-            document.getElementById('answer1').style.filter = "grayscale(50%)";
-            document.getElementById('answer3').style.filter = "grayscale(50%)";
-            document.getElementById('answer4').style.filter = "grayscale(50%)";
+        }
+        else if (correct == 2) {
+            document.getElementById('ans1').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans3').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans4').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans1').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans1').style.TransitionDuration = "1000ms"
+            document.getElementById('ans3').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans3').style.TransitionDuration = "1000ms"
+            document.getElementById('ans4').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans4').style.TransitionDuration = "1000ms"
+            document.getElementById('revealAns2').style.filter = "grayscale(50%)"
             var current = document.getElementById('answer2').innerHTML;
             document.getElementById('answer2').innerHTML = "&#10004" + " " + current;
-        } else if (correct == 3) {
-            document.getElementById('answer1').style.filter = "grayscale(50%)";
-            document.getElementById('answer2').style.filter = "grayscale(50%)";
-            document.getElementById('answer4').style.filter = "grayscale(50%)";
+        } 
+        else if (correct == 3) {
+            document.getElementById('ans1').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans2').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans4').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans1').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans1').style.TransitionDuration = "1000ms"
+            document.getElementById('ans2').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans2').style.TransitionDuration = "1000ms"
+            document.getElementById('ans4').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans4').style.TransitionDuration = "1000ms"
+            document.getElementById('revealAns3').style.filter = "grayscale(50%)"
             var current = document.getElementById('answer3').innerHTML;
             document.getElementById('answer3').innerHTML = "&#10004" + " " + current;
-        } else if (correct == 4) {
-            document.getElementById('answer1').style.filter = "grayscale(50%)";
-            document.getElementById('answer2').style.filter = "grayscale(50%)";
-            document.getElementById('answer3').style.filter = "grayscale(50%)";
+        }
+        else if (correct == 4) {
+            document.getElementById('ans1').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans2').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans3').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans1').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans1').style.TransitionDuration = "1000ms"
+            document.getElementById('ans2').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans2').style.TransitionDuration = "1000ms"
+            document.getElementById('ans3').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans3').style.TransitionDuration = "1000ms"
+            document.getElementById('revealAns4').style.filter = "grayscale(50%)"
             var current = document.getElementById('answer4').innerHTML;
             document.getElementById('answer4').innerHTML = "&#10004" + " " + current;
         }
@@ -117,30 +166,48 @@ socket.on('questionOver', function (playerData, correct) {
             total += 1;
         }
 
-        //Gets values for graph
-        answer1 = answer1 / total * 100;
-        answer2 = answer2 / total * 100;
-        answer3 = answer3 / total * 100;
-        answer4 = answer4 / total * 100;
-
-        document.getElementById('square1').style.display = "inline-block";
-        document.getElementById('square2').style.display = "inline-block";
-        document.getElementById('square3').style.display = "inline-block";
-        document.getElementById('square4').style.display = "inline-block";
-
-        document.getElementById('square1').style.height = answer1 + "px";
-        document.getElementById('square2').style.height = answer2 + "px";
-        document.getElementById('square3').style.height = answer3 + "px";
-        document.getElementById('square4').style.height = answer4 + "px";
-
+        // Gets values for graph
+        playerAns1 = answer1 / total * 100;
+        playerAns2 = answer2 / total * 100;
+        playerAns3 = answer3 / total * 100;
+        playerAns4 = answer4 / total * 100;
+        // Count players who answered this choice
+        document.getElementById('answer1').innerHTML += `<span id = "countAns">(${answer1} players)</span>`;
+        document.getElementById('answer2').innerHTML += `<span id = "countAns">(${answer2} players)</span>`;
+        document.getElementById('answer3').innerHTML += `<span id = "countAns">(${answer3} players)</span>`;
+        document.getElementById('answer4').innerHTML += `<span id = "countAns">(${answer4} players)</span>`;
+        
+        if(playerAns1 == 0) { playerAns1 = 0.99; }
+        if(playerAns2 == 0) { playerAns2 = 0.99; }
+        if(playerAns3 == 0) { playerAns3 = 0.99; }
+        if(playerAns4 == 0) { playerAns4 = 0.99; }
+        // Table width for revealAns
+        document.getElementById('revealAns1').style.marginRight = (100-playerAns1).toString() + "%";
+        document.getElementById('revealAns2').style.marginRight = (100-playerAns2).toString() + "%";
+        document.getElementById('revealAns3').style.marginRight = (100-playerAns3).toString() + "%";
+        document.getElementById('revealAns4').style.marginRight = (100-playerAns4).toString() + "%";
+        // Shows revealAns that show statistics of players' answers
+        document.getElementById('revealAns1').style.display = "block";
+        document.getElementById('revealAns2').style.display = "block";
+        document.getElementById('revealAns3').style.display = "block";
+        document.getElementById('revealAns4').style.display = "block";
+        // Next question button
         document.getElementById('nextQButton').style.display = "inline-block";
+    
+    
     } else if (type_Q == '2c') {
         if (correct == 1) {
-            document.getElementById('answer2').style.filter = "grayscale(50%)";
+            document.getElementById('ans2').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans2').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans2').style.TransitionDuration = "1000ms"
+            document.getElementById('revealAns1').style.filter = "grayscale(50%)"
             var current = document.getElementById('answer1').innerHTML;
             document.getElementById('answer1').innerHTML = "&#10004" + " " + current;
         } else if (correct == 2) {
-            document.getElementById('answer1').style.filter = "grayscale(50%)";
+            document.getElementById('ans1').style.backgroundColor = "#9c9c9c";
+            document.getElementById('ans1').style.webkitTransitionDuration = "1000ms"
+            document.getElementById('ans1').style.TransitionDuration = "1000ms"
+            document.getElementById('revealAns2').style.filter = "grayscale(50%)"
             var current = document.getElementById('answer2').innerHTML;
             document.getElementById('answer2').innerHTML = "&#10004" + " " + current;
         }
@@ -155,14 +222,21 @@ socket.on('questionOver', function (playerData, correct) {
         }
 
         //Gets values for graph
-        answer1 = answer1 / total * 100;
-        answer2 = answer2 / total * 100;
+        playerAns1 = answer1 / total * 100;
+        playerAns2 = answer2 / total * 100;
 
-        document.getElementById('square1').style.display = "inline-block";
-        document.getElementById('square2').style.display = "inline-block";
-
-        document.getElementById('square1').style.height = answer1 + "px";
-        document.getElementById('square2').style.height = answer2 + "px";
+        // Count players who answered this choice
+        document.getElementById('answer1').innerHTML += `<span id = "countAns">(${answer1} players)</span>`;
+        document.getElementById('answer2').innerHTML += `<span id = "countAns">(${answer2} players)</span>`;
+        
+        if(playerAns1 == 0) { playerAns1 = 0.99; }
+        if(playerAns2 == 0) { playerAns2 = 0.99; }
+        // Table width for revealAns
+        document.getElementById('revealAns1').style.marginRight = (100-playerAns1).toString() + "%";
+        document.getElementById('revealAns2').style.marginRight = (100-playerAns2).toString() + "%";
+        // Shows revealAns that show statistics of players' answers
+        document.getElementById('revealAns1').style.display = "block";
+        document.getElementById('revealAns2').style.display = "block";
         
         document.getElementById('nextQButton').style.display = "inline-block";
     } else if (type_Q == 'sa') {
@@ -173,20 +247,53 @@ socket.on('questionOver', function (playerData, correct) {
 });
 
 function nextQuestion() {
+    
+    // hide all revealAns block
     if (type_Q == '4c') {
+    // restore answer block color
+    document.getElementById('ans1').style.backgroundColor = "#00cc5f";
+    document.getElementById('ans2').style.backgroundColor = "rgb(241, 48, 48)";
+    document.getElementById('ans3').style.backgroundColor = "#f57deb";
+    document.getElementById('ans4').style.backgroundColor = "#4dacc8";
+    // restore all ans color
+    document.getElementById('ans1').style.filter = "grayscale(0%)";
+    document.getElementById('ans2').style.filter = "grayscale(0%)";
+    document.getElementById('ans3').style.filter = "grayscale(0%)";
+    document.getElementById('ans4').style.filter = "grayscale(0%)";
+    // restore all revealAns color
+    document.getElementById('revealAns1').style.filter = "grayscale(0%)";
+    document.getElementById('revealAns2').style.filter = "grayscale(0%)";
+    document.getElementById('revealAns3').style.filter = "grayscale(0%)";
+    document.getElementById('revealAns4').style.filter = "grayscale(0%)";
+    // hide all result from last question
     document.getElementById('nextQButton').style.display = "none";
-    document.getElementById('square1').style.display = "none";
-    document.getElementById('square2').style.display = "none";
-    document.getElementById('square3').style.display = "none";
-    document.getElementById('square4').style.display = "none";
+    document.getElementById('revealAns1').style.display = "none";
+    document.getElementById('revealAns2').style.display = "none";
+    document.getElementById('revealAns3').style.display = "none";
+    document.getElementById('revealAns4').style.display = "none";
     }
     else if(type_Q='2c'){
-        document.getElementById('nextQButton').style.display = "none";
-        document.getElementById('square1').style.display = "none";
-        document.getElementById('square2').style.display = "none";
-    }else if(type_Q='sa'){
-        document.getElementById('answer5').style.display = "none";
+    // restore answer block color
+    document.getElementById('ans1').style.backgroundColor = "#00cc5f";
+    document.getElementById('ans2').style.backgroundColor = "rgb(241, 48, 48)";
+    // restore all ans color
+    document.getElementById('ans1').style.filter = "grayscale(0%)";
+    document.getElementById('ans2').style.filter = "grayscale(0%)";
+    // restore all revealAns color
+    document.getElementById('revealAns1').style.filter = "grayscale(0%)";
+    document.getElementById('revealAns2').style.filter = "grayscale(0%)";
+    // hide all result from last question
+    document.getElementById('nextQButton').style.display = "none";
+    document.getElementById('revealAns1').style.display = "none";
+    document.getElementById('revealAns2').style.display = "none";
+   
     }
+    else if(type_Q='sa'){
+    document.getElementById('answer5').style.display = "none";
+    // hide all result from last question
+    document.getElementById('nextQButton').style.display = "none";
+    }
+    
     document.getElementById('playersAnswered').style.display = "block";
     document.getElementById('timerText').style.display = "block";
     document.getElementById('num').innerHTML = " 20";
@@ -207,21 +314,39 @@ function updateTimer() {
 socket.on('GameOver', function (data) {
     
     document.getElementById('nextQButton').style.display = "none";
-    document.getElementById('square1').style.display = "none";
-    document.getElementById('square2').style.display = "none";
-    document.getElementById('square3').style.display = "none";
-    document.getElementById('square4').style.display = "none";
+    document.getElementById('QA123').style.display = "none";
 
-    a = document.getElementById('answer1'); if(a!=undefined) a.style.display = "none";
-    b = document.getElementById('answer2'); if(b!=undefined) b.style.display = "none";
-    c = document.getElementById('answer3'); if(c!=undefined) c.style.display = "none";
-    d = document.getElementById('answer4'); if(d!=undefined) d.style.display = "none";
+    a = document.getElementById('answer1'); 
+    if(a!=undefined){
+        a.style.display = "none";
+        document.getElementById('revealAns1').style.display = "none";
+    } 
+    b = document.getElementById('answer2'); 
+    if(b!=undefined){
+        b.style.display = "none";
+        document.getElementById('revealAns2').style.display = "none";
+    } 
+    c = document.getElementById('answer3'); 
+    if(c!=undefined){
+        c.style.display = "none";
+        document.getElementById('revealAns3').style.display = "none";
+    } 
+    d = document.getElementById('answer4'); 
+    if(d!=undefined){
+        d.style.display = "none";
+        document.getElementById('revealAns4').style.display = "none";
+    } 
 
     document.getElementById('timerText').innerHTML = "";
     document.getElementById('question').style.display = 'none';
     document.getElementById('questionNum').innerHTML = "GAME RESULT";
     document.getElementById('playersAnswered').innerHTML = "THANKS FOR PLAYING";
     
+    document.body.style.animation = "bgcolor 20s infinite";
+    document.body.style.webkitAnimation = "bgcolor 10s infinite";
+    document.body.style.animationDirection = "alternate";
+    document.body.style.webkitAnimationDirection = "alternate";
+
     document.getElementById('winner1').style.display = "block";
     document.getElementById('winner2').style.display = "block";
     document.getElementById('winner3').style.display = "block";
@@ -248,23 +373,3 @@ socket.on('getTime', function (player) {
         time: time
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

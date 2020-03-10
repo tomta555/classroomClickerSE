@@ -32,6 +32,7 @@ function showAns(type){
         case 'sa' :
             tableAns =`
             <div class = "short" id="answer5">
+                <h2>Please input the answer</h2>
                 <input id = "inputanswer5" class = "shortanswertext" type="text"></input>
                 <button onclick="shortAnswerSubmitted()">Submit</button>
             </div>`;

@@ -7,29 +7,29 @@
 
 @keyframes bgcolor {
     0% {
-        background-color: #ae00f3
+        background-color: #b7b3ec
     }
 
-    30% {
-        background-color: #c6aaf3
+    25% {
+        background-color: #fbad63
     }
 
-    60% {
-        background-color: #9930fcea
+    50% {
+        background-color: #ffc3d4
     }
 
-    90% {
-        background-color: rgb(195, 65, 235)
+    75% {background-color: #a9ec7c
+        /* background-color: rgb(235, 65, 212) */
     }
 
     100% {
-        background-color: #d1579e
+        background-color: #d690f1
     }
 }
 
 body {
-    -webkit-animation: bgcolor 20s infinite;
-    animation: bgcolor 10s infinite;
+    -webkit-animation: bgcolor 40s infinite;
+    animation: bgcolor 50s infinite;
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
 }
@@ -51,18 +51,24 @@ body {
     font-size: 50px;
 }
 .counter{
-    width: 90%;
+    width: 200px;
     margin-left: 5%;
-    font-family: 'Tajawal', sans-serif;
-    text-align: left;
-    color: rgb(240, 240, 240);
+    text-align: center;
+    display: inline-block;
 }
-  .counter h3{
-      font-size: 20px;
-  }
-  #playerCount{
-      font-size: 32px;
-  }
+
+.counter h3{
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-size: 20px;
+    color: rgb(75, 73, 73);
+}
+
+#playerCount{
+    font-size: 50px;
+
+
+}
+  
 
 .joincontainer{
     margin: 0% 10%;
@@ -84,21 +90,9 @@ body {
 }
 
 #start{
-    background-color: #3A3B3A;
-    border: none;
-    color: white;
-    padding: 15px 100px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 25px;
-    font-family: 'Raleway', sans-serif;
+    background-color: rgb(82, 230, 95); 
+    font-family: 'Open Sans Condensed', sans-serif;;
+    float: right;
 }
 
 #count {

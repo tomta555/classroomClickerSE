@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Course</title>
+        <link rel = "stylesheet" href = "../css/new-HW.css" />
         <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
         <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -30,26 +31,37 @@
 			</div>
         </header>
         
-        
-            <!-- <a style="background-color: rgb(202, 26, 13);" id = "back" class="button" href = "../" >Back</a> -->
-            <br>
-        
-            <div id = "game-list"></div>
-            
-            <div class="form-field" style="text-align:center;">
+        <form action="/player/">
+                <div class="form-field">
+                    <label class="choise">Questions</label>
+                    <label class="choise">One
+                        <input type="radio" checked="checked" name="radio">
+                        <span class="checkmark"></span>
+                        </label>
+                        <label class="choise">Two
+                        <input type="radio" name="radio">
+                        <span class="checkmark"></span>
+                        </label>
+                        <label class="choise">Three
+                        <input type="radio" name="radio">
+                        <span class="checkmark"></span>
+                        </label>
+                        <label class="choise">Four
+                        <input type="radio" name="radio">
+                        <span class="checkmark"></span>
+                    </label>
+                </div>
                 <br>
                 <br>
-                <br>
-                <button style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '../create/HW-creator/index.html'" >Create New HOMEWORK</button>
-            </div>
+                
+        </form> 
         
-        <br>
-        <br>
-
+        <div class="form-field" style="text-align:center;">   
+            <button style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '/course/index.html'" >Submit</button>
+        <d/div>
 
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/course.js"></script>
-
         <script src="../../assets/js/jquery.min.js"></script>
         <script src="../../assets/js/jquery.dropotron.min.js"></script>
         <script src="../../assets/js/jquery.scrolly.min.js"></script>
@@ -58,5 +70,7 @@
         <script src="../../assets/js/util.js"></script>
         <script src="../../assets/js/main.js"></script>
         
+        
     </body>
+    
 </html>

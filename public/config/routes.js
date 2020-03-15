@@ -16,31 +16,31 @@ module.exports = function(app, passport) {
         res.sendFile(path.join(__dirname,'../create/quiz-creator/index.html'));
     });
     app.get('/create_course',isLoggedIn, function(req, res) {
-        res.sendFile(path.join(__dirname,'../create/Course-creator/index.html'));
+        res.sendFile(path.join(__dirname,'../create/Course-creator/create_course.html'));
     });
     app.get('/create_homework',isLoggedIn, function(req, res) {
-        res.sendFile(path.join(__dirname,'../create/HW-creator/index.html'));
+        res.sendFile(path.join(__dirname,'../create/HW-creator/create_homework.html'));
     });
     app.get('/host_quiz', function(req, res) {
-        res.sendFile(path.join(__dirname,'../create/index.html'));
+        res.sendFile(path.join(__dirname,'../create/host_quiz.html'));
     });
-    app.get('/course',isLoggedIn, function(req, res) {
-        res.sendFile(path.join(__dirname,'../course/index.html'));
+    app.get('/courses',isLoggedIn, function(req, res) {
+        res.sendFile(path.join(__dirname,'../course/course.html'));
     });
     app.get('/join', function(req, res) {
         res.sendFile(path.join(__dirname,'../join.html'));
     });
     app.get('/signup', function(req, res) {
-        res.sendFile(path.join(__dirname,'../register/index.html'));
+        res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
     app.get('/signin',isLoggedIn_loginPage, function(req, res) {
-        res.sendFile(path.join(__dirname,'../login/index.html'));
+        res.render('login.ejs', { message: req.flash('loginMessage') }); 
     });
     app.get('/register', function(req, res) {
-        res.sendFile(path.join(__dirname,'../register/index.html'));
+        res.render('signup.ejs', { message: req.flash('signupMessage') });
     });
     app.get('/login',isLoggedIn_loginPage, function(req, res) {
-        res.sendFile(path.join(__dirname,'../login/index.html'));
+        res.render('login.ejs', { message: req.flash('loginMessage') }); 
     });
     app.get('/logout', function(req, res) {
         req.logout();

@@ -192,7 +192,7 @@ socket.on('questionOver', function (playerData, correct) {
         document.getElementById('revealAns3').style.display = "block";
         document.getElementById('revealAns4').style.display = "block";
         // Next question button
-        document.getElementById('nextQButton').style.display = "inline-block";
+        document.getElementById('nextQButton').style.display = "block";
     
     
     } else if (type_Q == '2c') {
@@ -238,10 +238,10 @@ socket.on('questionOver', function (playerData, correct) {
         document.getElementById('revealAns1').style.display = "block";
         document.getElementById('revealAns2').style.display = "block";
         
-        document.getElementById('nextQButton').style.display = "inline-block";
+        document.getElementById('nextQButton').style.display = "block";
     } else if (type_Q == 'sa') {
         
-        document.getElementById('nextQButton').style.display = "inline-block";
+        document.getElementById('nextQButton').style.display = "block";
 
     }
 });
@@ -340,7 +340,7 @@ socket.on('GameOver', function (data) {
 });
 
 function backButton() {
-    window.location.href = "../../create";
+    window.location.href = "../../create/host_quiz.html";
 }
 
 socket.on('getTime', function (player) {

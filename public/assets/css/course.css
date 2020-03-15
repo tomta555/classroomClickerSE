@@ -1810,7 +1810,7 @@ input, select, textarea {
 		text-align: center;
 	}
 
-		input[type="button"]:hover,
+		/* input[type="button"]:hover,
 		input[type="submit"]:hover,
 		input[type="reset"]:hover,
 		button:hover,
@@ -1820,7 +1820,7 @@ input, select, textarea {
 			background: -webkit-linear-gradient(top, #864cbf 70%,#888 30%);
 			background: linear-gradient(to bottom, #864cbf 70%,#888 30%);
 			
-		}
+		} */
 
 		/* input[type="button"]:active,
 		input[type="submit"]:active,

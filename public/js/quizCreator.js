@@ -31,13 +31,22 @@ socket.on('gameData-edit',function(data){
 });
 function updateDatabase(reqtype, quizId){
     var questions = [];
+    var tag;
     var name = document.getElementById('name').value;
     for (var i = 1; i <= questionNum; i++) {
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
-        var content = document.getElementById("content"+i).value;
+        var qtag = document.getElementsByClassName("tag"+i);
+        //get tags
+        tag = [];
+        if(qtag !== undefined){
+            for(i in qtag){
+                tag.push(i.innerText);
+            }
+        }
         var answers = [];
         var qtype = document.getElementById("type"+i).innerText;
+        
         // var correct = document.getElementById('correct' + i).value;
         var correct;
         switch(qtype){
@@ -52,13 +61,13 @@ function updateDatabase(reqtype, quizId){
             case ("2c"):
                 correct = radioCheck(i);
                 break;
-                case("sa"):
+            case("sa"):
                 for (var j = 1; j <= countCorrect; j++){
                     tempans = document.getElementById(j + 'correct' + i).value;
                     answers[j - 1] = tempans.toUpperCase();
                }
             }
-            questions.push({"question": question, "content":content, "type":qtype, "answers": answers, "correct": correct})
+            questions.push({"question": question, "tag":tag, "type":qtype, "answers": answers, "correct": correct})
     }
     var quiz = { id: 0, "name": name, "questions": questions };
     switch(reqtype){
@@ -71,6 +80,14 @@ function updateDatabase(reqtype, quizId){
             socket.emit('addQuizContent',{"id":quizId, "content":content});
     }
 };
+function addTagBox(questionNum, tagInput){
+    var tagbox = document.getElementById(`tagbox${questionNum}`);
+    var thistag = document.createElement("div");
+    thistag.className += ` tag${questionNum}` 
+    thistag.innerHTML = tagInput.value;
+    tagInput.value = "";
+    tagbox.appendChild(thistag);
+}
 function addQuestion(){
     var questionTable = "";
     questionCounter += 1;
@@ -88,9 +105,12 @@ function addQuestion(){
             <button style="background-color: rgb(209, 61, 24); "onclick="deleteQeustion(${questionNum})" >Delete</button>
         </div>
         <br>
-        <div>
-            <label>Quiz content : </label>
-            <input class = "question" id="content${questionNum}" type="text" autofocus/>
+        <div id = "tagbox${questionNum}">
+            <label>Tags : </label>
+            <input class = "question" id="tagInput${questionNum}" type="text">
+            <button onclick="addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'))">Add</button>
+
+
         </div>
         <br>
         <label>Question : </label>

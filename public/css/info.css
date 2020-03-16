@@ -106,8 +106,8 @@
 
 .card-holder {
   margin: 20px;
-  margin-left: 10%;
-  margin-right: 10%;
+  
+  
  
 }
 
@@ -145,7 +145,13 @@
 }
 
 .homeworkList button{
-  background: #fdcd3b;
+  background: #ffed4b;
+  color: #000;
+  margin: 4px;
+}
+
+.homeworkList .editButton{
+  background: #ffed4b;
   color: #000;
   margin: 4px;
 }
@@ -159,17 +165,3 @@ table {
   display: flex;
 }
 
-.fText {
-  display: block;
-  position: relative;
-  padding-left: 5px;
-  margin-bottom: 12px;
-  cursor: pointer;
-  font-size: 25px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  color: white;
-  }
-  

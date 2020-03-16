@@ -1809,6 +1809,12 @@ input, select, textarea {
 		padding: 0.85em 1.85em;
 		text-align: center;
 	}
+	@media only screen and (max-width: 736px){
+	.button2{
+		margin: auto;
+		width: 100%;
+	}
+	}
 
 		/* input[type="button"]:hover,
 		input[type="submit"]:hover,

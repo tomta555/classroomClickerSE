@@ -71,8 +71,7 @@ function answerSubmitted(num,type){
 }
 
 function shortAnswerSubmitted(){
-    var tempanswer = document.getElementById('inputanswer5').value;
-    answer = tempanswer.toUpperCase();
+    answer= document.getElementById('inputanswer5').value;
     console.log(answer)
     answerSubmitted(answer,"sa");
 }

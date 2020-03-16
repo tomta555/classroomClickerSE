@@ -52,10 +52,11 @@ function updateDatabase(reqtype, quizId){
             case ("2c"):
                 correct = radioCheck(i);
                 break;
-                case("sa"):
+            case("sa"):
                 for (var j = 1; j <= countCorrect; j++){
-                    tempans = document.getElementById(j + 'correct' + i).value;
-                    answers[j - 1] = tempans.toUpperCase();
+                    // tempans = document.getElementById(j + 'correct' + i).value;
+                    // answers[j - 1] = tempans.toUpperCase();
+                    answers[j-1] = document.getElementById(j + 'correct' + i).value;
                }
             }
             questions.push({"question": question, "content":content, "type":qtype, "answers": answers, "correct": correct})

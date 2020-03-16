@@ -2,11 +2,11 @@
 <html>
     <head>
         <title>Course</title>
-        <link rel = "stylesheet" href = "../css/new-HW.css" />
+        <link rel = "stylesheet" href = "../css/homework.css" />
         <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
         <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel = "stylesheet" href = "../../assets/css/main.css" />
+        <link rel = "stylesheet" href = "../../assets/css/course.css" />
     </head>
 
     <body>
@@ -33,32 +33,62 @@
         
         <form action="/player/">
                 <div class="form-field">
-                    <label class="choise">Questions</label>
-                    <label class="choise">One
-                        <input type="radio" checked="checked" name="radio">
-                        <span class="checkmark"></span>
-                        </label>
-                        <label class="choise">Two
-                        <input type="radio" name="radio">
-                        <span class="checkmark"></span>
-                        </label>
-                        <label class="choise">Three
-                        <input type="radio" name="radio">
-                        <span class="checkmark"></span>
-                        </label>
-                        <label class="choise">Four
-                        <input type="radio" name="radio">
-                        <span class="checkmark"></span>
-                    </label>
+                <table>
+                    <div class="card-holder">
+                        <div class="card bg-gold " style="text-align:left;">
+                            <label class="choiseHead">1. Questions</label>
+                            <label class="choise">One
+                                <input type="radio" checked="checked" name="radio">
+                                <span class="checkmark"></span>
+                                </label>
+                                <label class="choise">Two
+                                <input type="radio" name="radio">
+                                <span class="checkmark"></span>
+                                </label>
+                                <label class="choise">Three
+                                <input type="radio" name="radio">
+                                <span class="checkmark"></span>
+                                </label>
+                                <label class="choise">Four
+                                <input type="radio" name="radio">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
+                    </div>
                 </div>
-                <br>
-                <br>
-                
+                <div class="form-field">
+                    <div class="card-holder">
+                        <div class="card bg-gold " style="text-align:left;">
+                            <label class="choiseHead">2. Questions </label>
+                                <label class="choise">True
+                                    <input type="radio" checked="checked" name="radio">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="choise">False
+                                    <input type="radio" name="radio">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="card-holder">
+                        <div class="card bg-gold " style="text-align:left;">
+                            <label class="choiseHead">3. Questions </label>
+                                <label class = "fText">Answer : 
+                                    <input type="text"  name="text">
+                                </label>
+                        </div>
+                    </div>
+                </div>
+                 <div class="form-field" style="text-align:right; margin-right: 8%">   
+                    <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = "window.location.href = 'index.html'" >Submit</button>
+                </div>
+                </table>
         </form> 
         
-        <div class="form-field" style="text-align:center;">   
-            <button style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '/course/index.html'" >Submit</button>
-        <d/div>
+        
 
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/course.js"></script>

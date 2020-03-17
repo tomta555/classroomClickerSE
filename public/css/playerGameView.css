@@ -1,4 +1,4 @@
-html, body { padding: 0; margin: 0; }
+body { padding: 0; margin: 116px 0px 0px 0px; }
 /* height: 83%; */
 
 .col-count-2 { column-count: 2; }
@@ -30,8 +30,8 @@ html, body { padding: 0; margin: 0; }
     position: fixed; /* Set the navbar to fixed position */
     top: 0; /* Position the navbar at the top of the page */
     width: 100%; /* Full width */
-    height: 17%;
-    max-height: 17%;
+    height: 115px;
+    max-height: 115px;
 }
   .navbar table tbody tr td {
     width: 1%;
@@ -40,18 +40,11 @@ html, body { padding: 0; margin: 0; }
         position: relative;
         display: block;
         padding: 0% 5%;
-    }
-    .navbar table tbody tr td .timer {
-        position: relative;
-        display: block;
-        padding: 1% 5%;
-        text-align: right;
-        font-family: 'Raleway', sans-serif;
-        font-size: 25px;
+        font-size: 20px;
     }
 
 .cardcontent {
-    margin-top: 110px;
+    margin-top: 0px;
 }
   .cardcontent #card a img {
     width: 195px;
@@ -73,18 +66,20 @@ html, body { padding: 0; margin: 0; }
   }
 
 .short{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     margin-top: 250px;
     margin-left: 5%;
     margin-right: 5%;
 }
   .short .shortansbutton{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-align: center;
     width: 25%;
+    height: 60px;
     padding: 2% 0%;
   }
   .short .shortanswertext{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 32px;
     text-align: center;
     width: 100%; 
@@ -124,16 +119,46 @@ html, body { padding: 0; margin: 0; }
 #buttons{
     text-align: center;
 }
+#backButton{
+  display: none;
+  -webkit-appearance: none;
+  font-family: 'Tajawal', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  background: #252525;
+  color: #ffffff;
+  border: 0;
+  line-height: 1em;
+  border-radius: 8px;
+  outline: 0;
+  cursor: pointer;
+  -moz-transition: background-color .2s ease-in-out;
+  -webkit-transition: background-color .2s ease-in-out;
+  -o-transition: background-color .2s ease-in-out;
+  -ms-transition: background-color .2s ease-in-out;
+  transition: background-color .2s ease-in-out;
+  font-size: 1.25em;
+  padding: 0.85em 1.85em;
+  text-align: center;
+  margin: 0% auto;
+}
+#backButton:hover{
+  background-color: rgb(146, 0, 165);
+  -webkit-transition-duration: 100ms;
+  transition-duration: 100ms;
+}
+
 #nameText{
-    font-family: 'Open Sans Condensed', sans-serif;
-    padding: 0px 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
 }
 #scoreText{
-    font-family: 'Open Sans Condensed', sans-serif;
-    padding: 0px 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
 }
 #message{
-    font-family: 'Press Start 2P', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     text-align: center;
     padding-top:8%;
     font-size: 35px;
@@ -150,8 +175,8 @@ html, body { padding: 0; margin: 0; }
 #finish{
   font-family: 'Press Start 2P',sans-serif;
   text-align: center;
-  padding-top: 8%;
-  color: yellow;
+  padding-top: auto;
+  color: #ffff00;
   font-size:60px;
 }
 

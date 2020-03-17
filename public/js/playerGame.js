@@ -32,6 +32,7 @@ function showAns(type){
         case 'sa' :
             tableAns =`
             <div class = "short" id="answer5">
+                <h2>Please input the answer</h2>
                 <input id = "inputanswer5" class = "shortanswertext" type="text"></input>
                 <button onclick="shortAnswerSubmitted()">Submit</button>
             </div>`;
@@ -48,8 +49,8 @@ socket.on('noGameFound', function(){
 function answerSubmitted(num,type){
     if(playerAnswered == false){
         playerAnswered = true;
-        
-        socket.emit('playerAnswer', num);//Sends player answer to server
+
+        socket.emit('playerAnswer', num,type);//Sends player answer to server
         document.body.style.backgroundColor = "rgb(238, 138, 20)"
         document.getElementById('waitans').style.display = "block";
         document.getElementById('waitans').innerHTML = "Answer Submitted!<br><br>Waiting for other players...";
@@ -70,8 +71,14 @@ function answerSubmitted(num,type){
 }
 
 function shortAnswerSubmitted(){
-    var answer = document.getElementById('inputanswer5').value;
+    var tempanswer = document.getElementById('inputanswer5').value;
+    answer = tempanswer.toUpperCase();
+    console.log(answer)
     answerSubmitted(answer,"sa");
+}
+
+function backButton() {
+    window.location.href = "../../join.html";
 }
 
 //Get results on last question
@@ -146,9 +153,10 @@ socket.on('playerGameData', function(data){
 });
 
 socket.on('GameOver', function(data){
-    document.body.style.backgroundColor = "#c70000";
+    document.body.style.backgroundColor = "#c70011";
     document.getElementById('finish').style.display = "block";
     document.getElementById('finish').innerText = "FINISH!";
+    document.getElementById('backButton').style.display ="block";
     messageTable = `
         <br><br><img src="../../img/3.gif">`;
         // <img src="../../img/finish.png" width="25%" height="25%">`;

@@ -9,7 +9,8 @@
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" rel="stylesheet">
   <link href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" rel="stylesheet">
-  <title>signup</title>
+
+  <title>Login</title>
 </head>
 
 <body>
@@ -18,10 +19,14 @@
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
         <div class="card card-signin my-5">
           <div class="card-body">
-            <h5 class="card-title text-center">Sign Up</h5>
-            <form class="form-signin" action="/signup" method="post">
+            <h5 class="card-title text-center">Sign In</h5>
+            <!-- show any messages that come back with authentication -->
+            <% if (message.length > 0) { %>
+            <div class="alert alert-danger"><%= message %></div>
+            <% } %>
+            <form class="form-signin" action="/signin" method="post">
               <div class="form-label-group">
-                <input type="text" id="inputUsername" name="email" class="form-control" placeholder="Username" required
+                <input type="text" id="inputUsername" name="username" class="form-control" placeholder="Username" required
                   autofocus />
                 <label for="inputUsername">Username</label>
               </div>
@@ -32,30 +37,14 @@
                 <label for="inputPassword">Password</label>
               </div>
 
-              <div class="form-label-group">
-                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password"
-                  required />
-                <label for="confirmPassword">Confirm Password</label>
+              <div class="custom-control custom-checkbox mb-3">
+                <input type="checkbox" class="custom-control-input" id="customCheck1">
+                <label class="custom-control-label" for="customCheck1">Remember password</label>
               </div>
-              <hr class="my-4">
-              <div class="form-label-group">
-                <input type="text" id="fname" name="fname" class="form-control" placeholder="firstname" required />
-                <label for="fname">firstname</label>
-              </div>
-              <div class="form-label-group">
-                <input type="text" id="lname" name="lname" class="form-control" placeholder="lastname" required />
-                <label for="lname">lastname</label>
-              </div>
-              <div class="form-label-group">
-                <input type="number" id="studentID" name="studentID" class="form-control" placeholder="Student ID"
-                  required>
-                <label for="studentID">Student ID</label>
-              </div>
-
               <div class="mb-3">
-                <a href="/signin"> Already have an account?</a>
+                <a href="/signup"> Don't have an account?</a>
               </div>
-              <button class="btn btn-lg btn-primary btn-block text-uppercase" id="signUp" type="submit">Sign Up</button>
+              <button class="btn btn-lg btn-primary btn-block text-uppercase" id="signIn" type="submit">Sign in</button>
             </form>
           </div>
         </div>
@@ -66,8 +55,6 @@
   <script src="../js/libs/jqueryLibrary.js"></script>
   <script src="../js/libs//deparam.js"></script>
   <script src="../js/cookie.js"></script>
-  <script src="../js/signUp.js"></script>
-
 </body>
 
 </html>

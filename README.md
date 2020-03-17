@@ -6,5 +6,4 @@
   <li>Make sure that all dependencies are installed:</li>
   <li>Start Server with nodemon: npm run dev</li>
   <li>Start Server: node server/server.js</li>
-</ol>
 

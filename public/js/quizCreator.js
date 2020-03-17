@@ -4,21 +4,47 @@ var questionCounter = 0;
 var tags = [];
 var params = jQuery.deparam(window.location.search);
 var countCorrect = 1;
+var courseId = params.courseId;
 // var quizId;
 socket.on('connect',function(){
-    if(params.id == undefined){
-        addQuestion();
-        document.getElementById('submitButton').setAttribute("onclick","updateDatabase('create', 0)");
-        document.getElementById('submitButton').innerHTML="Create Quiz";
-        document.getElementById('cancleButton').innerHTML="Cancle Quiz";
-        document.getElementById('mainTitle').innerHTML="Create Quiz";
-    }else{
-        socket.emit('req-quiz-data', params);
-        document.getElementById('submitButton').setAttribute("onclick", "updateDatabase('edit', 0)");
-        document.getElementById('submitButton').innerHTML="Save";
-        document.getElementById('cancleButton').innerHTML="cancle";
-        document.getElementById('mainTitle').innerHTML="Edit Quiz";
-        document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteQuiz(${params.id})`)
+    var mainTitle = document.getElementById('mainTitle');
+    var submitButton = document.getElementById('submitButton');
+    var cancleButton = document.getElementById('cancleButton');
+    console.log(params.type==="editHw");
+    switch( params.type.toString() ){
+        case("createQuiz"):
+            mainTitle.innerHTML="create Quiz";
+            addQuestion();
+            submitButton.setAttribute("onclick","updateDatabase('createQuiz', 0)");
+            submitButton.innerHTML="Create Quiz";
+            cancleButton.innerHTML="Cancle Quiz";
+            mainTitle.innerHTML="Create Quiz";
+            break;
+        case("editQuiz"):
+            mainTitle.innerHTML="edit Quiz";
+            socket.emit('req-quiz-data', params);
+            submitButton.setAttribute("onclick", "updateDatabase('editQuiz', 0)");
+            submitButton.innerHTML="Save";
+            cancleButton.innerHTML="cancle";
+            mainTitle.innerHTML="Edit Quiz";
+            document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteQuiz(${params.id})`)
+            break;
+        case("createHw"):
+            mainTitle.innerHTML="create Hw";
+            addQuestion();
+            submitButton.setAttribute("onclick","updateDatabase('createHw', 0)");
+            submitButton.innerHTML="Create Quiz";
+            cancleButton.innerHTML="Cancle Quiz";
+            mainTitle.innerHTML="Create Quiz";
+            break;
+        case("editHw"):
+            mainTitle.innerHTML="Edit Homework";
+            socket.emit('req-hw-data', params);
+            submitButton.setAttribute("onclick", "updateDatabase('editHw', 0)");
+            submitButton.innerHTML="Save";
+            cancleButton.innerHTML="cancle";
+            document.getElementById('deleteQuizButton').setAttribute("onclick", ``)
+            break;
     }
     // socket.emit('getTags',{"id":params.courseId});
 });
@@ -41,13 +67,11 @@ socket.on('gameData-edit',function(data){
         }
     }
 });
-function updateDatabase(reqtype, quizId){
+function updateDatabase(reqtype, Id){
     var questions = [];
     var tag;
     var name = document.getElementById('name').value;
-    console.log(questionNum);
     for (var i = 1; i <= questionNum; i++) {
-        console.log(i);
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
         var qtag = document.getElementsByClassName("tag"+i);
@@ -83,15 +107,24 @@ function updateDatabase(reqtype, quizId){
             }
             questions.push({"question": question, "tag":tag, "type":qtype, "answers": answers, "correct": correct})
     }
-    var quiz = { id: 0, "name": name, "questions": questions };
+    var data = { id: 0, "name": name, "questions": questions,"courseId": courseId };
+    console.log(data);
     switch(reqtype){
-        case('create'):
-            socket.emit('newQuiz',quiz);
+        case('createQuiz'):
+            socket.emit('newQuiz',data);
             break;
-        case('edit'):
-            quiz.id = quizId;
-            socket.emit('editQuiz',quiz);
-    }
+        case('editQuiz'):
+            data.id = Id;
+            socket.emit('editQuiz',data);
+            break;
+        case('createHw'):
+            socket.emit('newHw',data);
+            break;
+        case('editHw'):
+            data.id = Id;
+            socket.emit('editHw',data);
+            break;
+        }
 };
 function deleteQuiz(quizId){
     socket.emit('deleteQuiz',{"id":quizId});
@@ -327,7 +360,7 @@ function cancelQuiz() {
 }
 
 socket.on('backToHostPage', function (data) {
-    window.location.href = "/host_quiz";
+    window.location.href = `/courseInfo?courseId=${courseId}`;
 });
 
 function randomColor() {

@@ -12,6 +12,9 @@ module.exports = function(app, passport) {
     app.get('/create_quiz', function(req, res) {
         res.sendFile(path.join(__dirname,'../create/quiz-creator/index.html'));
     });
+    app.get('/create', function(req, res){
+        res.sendFile(path.join(__dirname,'../create/quiz-creator/index.html'));
+    });
     app.get('/edit_quiz',function(req, res){
         res.sendFile(path.join(__dirname,'../create/quiz-creator/index.html'));
     });
@@ -26,6 +29,9 @@ module.exports = function(app, passport) {
     });
     app.get('/courses',isLoggedIn, function(req, res) {
         res.sendFile(path.join(__dirname,'../course/course.html'));
+    });
+    app.get('/coursesInfo',isLoggedIn, function(req, res) {
+        res.sendFile(path.join(__dirname,'../course/info.html'));
     });
     app.get('/join', function(req, res) {
         res.sendFile(path.join(__dirname,'../join.html'));

@@ -43,22 +43,57 @@
         </div>
         <!--=== All questions ===-->
         <div class="container">
-            <div id = "allQuestions" style="font-family: 'Open Sans Condensed', sans-serif; margin: 25px 0px;"></div>
+            <div id = "allQuestions" style="font-family: 'Open Sans Condensed', sans-serif; margin: 25px 0px;">
+            </div>
             <button onclick="addQuestion()" style="margin-bottom: 5%;">Add another question</button>
-            <!-- <h2 class="major"></h2>=== line === -->
-            <!-- <div style="text-align:right;">
-                <button style="background-color: rgb(24, 226, 24); margin:2%" onclick = "updateDatabase()">Create Quiz</button>
-                <br>
-                <button style="background-color: rgb(209, 61, 24); margin:2%" onclick = 'cancelQuiz()'>Cancel quiz & return to quiz selection</button>
-            </div> -->
+            <button onclick="deleteQuiz()" id="deleteQuizButton" class = "redButton">Delete Quiz</button>
         </div>
-        <a id="scrollUp" class = "two" style="position: fixed;z-index: 2147483647;display: block;">
+        
+        <!-- pop up -->
+        <div style="text-align: center;">
+        <div id="scoreDetail" class="popup">
+            <div class="box">
+                <label class="checkBoxContainer" style="width: 50%;">Doing time
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+                <input type="text" id="doingTimeScore" style="width: 50%;">
+            </div>
+            <div class="box">
+                <label class="checkBoxContainer" style="width: 50%;">Top n player
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+                <input type="text" id="nPlaceScore" style="width: 50%;">
+            </div>
+            <div class="box">
+                <label class="checkBoxContainer" style="width: 50%;">In time 
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                    <input type="text" id="InTime" style="width: 50%;">
+                </label>
+                <input type="text" id="InTimeScore" style="width: 50%;">
+            </div>
+            <div class="box">
+                <label class="checkBoxContainer" style="width:50%">Death Line
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+                <input type="text" id="DeathLineTime" style="width: 50%;">
+            </div>
+        </div>
+        </div>
+        <!-- score bar -->
+        <a id="scrollUp" class = "tree" style="position: fixed;z-index: 100;display: block;">
+            <button id="nextButton" style="background-color: orange;" onclick = "document.getElementById('scoreDetail').style='display:block'" >Create Quiz</button>
+            <i aria-hidden="true"></i></a>
+        <a id="scrollUp" class = "two" style="position: fixed;z-index: 100;display: block;">
             <button id="submitButton" style="background-color: rgb(24, 226, 24);" onclick = "updateDatabase('create')">Create Quiz</button>
         <i aria-hidden="true"></i></a>
-    
-        <a id="scrollUp" class = "one" style="position: fixed;z-index: 2147483647;display: block;">
+        <a id="scrollUp" class = "one" style="position: fixed;z-index: 100;display: block;">
             <button id="cancleButton" style="background-color: rgb(209, 61, 24);" onclick = 'cancelQuiz()'>Cancel quiz</button>
         <i aria-hidden="true"></i></a>
+
         
 
         

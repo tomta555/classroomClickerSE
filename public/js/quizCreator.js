@@ -1,7 +1,7 @@
 var socket = io();
 var questionNum = 0;
 var questionCounter = 0;
-
+var tags = [];
 var params = jQuery.deparam(window.location.search);
 var countCorrect = 1;
 // var quizId;
@@ -14,12 +14,21 @@ socket.on('connect',function(){
         document.getElementById('mainTitle').innerHTML="Create Quiz";
     }else{
         socket.emit('req-quiz-data', params);
-        document.getElementById('submitButton').setAttribute("onclick","updateDatabase('edit', 0)");
+        document.getElementById('submitButton').setAttribute("onclick", "updateDatabase('edit', 0)");
         document.getElementById('submitButton').innerHTML="Save";
         document.getElementById('cancleButton').innerHTML="cancle";
         document.getElementById('mainTitle').innerHTML="Edit Quiz";
+        document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteQuiz(${params.id})`)
     }
+    // socket.emit('getTags',{"id":params.courseId});
 });
+
+// socket.on('TagsData', function(data){
+//     var tags = document.getElementsByClassName('dropdown-content');
+    
+// });
+
+
 socket.on('gameData-edit',function(data){
     document.getElementById('submitButton').setAttribute("onclick",`updateDatabase('edit', ${data.id})`);
     document.getElementById("name").value=`${data.name}`;
@@ -27,25 +36,30 @@ socket.on('gameData-edit',function(data){
     for(q in data.questions){
         addQuestion();
         fixedOpenTab(questionNum, data.questions[String(q)]);
+        for(i in data.questions[String(q)].tag){
+            addTagBox(questionNum, data.questions[String(q)].tag[String[i]], i);
+        }
     }
 });
 function updateDatabase(reqtype, quizId){
     var questions = [];
     var tag;
     var name = document.getElementById('name').value;
+    console.log(questionNum);
     for (var i = 1; i <= questionNum; i++) {
+        console.log(i);
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
         var qtag = document.getElementsByClassName("tag"+i);
         //get tags
         tag = [];
         if(qtag !== undefined){
-            for(i in qtag){
-                tag.push(i.innerText);
+            for(k in qtag){
+                tag.push(k.innerText);
             }
         }
         var answers = [];
-        var qtype = document.getElementById("type"+i).innerText;
+        var qtype = document.getElementById(`type${i}`).innerText;
         
         // var correct = document.getElementById('correct' + i).value;
         var correct;
@@ -77,16 +91,27 @@ function updateDatabase(reqtype, quizId){
         case('edit'):
             quiz.id = quizId;
             socket.emit('editQuiz',quiz);
-            socket.emit('addQuizContent',{"id":quizId, "content":content});
     }
 };
-function addTagBox(questionNum, tagInput){
+function deleteQuiz(quizId){
+    socket.emit('deleteQuiz',{"id":quizId});
+}
+function addTagBox(questionNum, tagInput, tagNum){
     var tagbox = document.getElementById(`tagbox${questionNum}`);
     var thistag = document.createElement("div");
-    thistag.className += ` tag${questionNum}` 
+    var delBut = document.createElement("button");
+
+    delBut.innerText = 'x';
+    delBut.setAttribute("onclick", `document.getElementById('tag${questionNum}_${tagNum}').remove()`)
+    thistag.className += ` tag${questionNum}`; 
+    thistag.className += " questionTag";
     thistag.innerHTML = tagInput.value;
-    tagInput.value = "";
+    thistag.setAttribute('id', `tag${questionNum}_${tagNum}`)
+    thistag.appendChild(delBut);
+    tagNum += 1;
     tagbox.appendChild(thistag);
+    document.getElementsByClassName('addTagBut')[questionNum-1].setAttribute('onclick', `addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), ${tagNum})`);
+    tagInput.value = "";
 }
 function addQuestion(){
     var questionTable = "";
@@ -102,42 +127,49 @@ function addQuestion(){
             <button class="tablinks${questionNum}" onclick="openTab(event, '2c', ${questionNum})">true or false</button>
             <button class="tablinks${questionNum}" onclick="openTab(event, 'sa', ${questionNum})">Short Answer</button> 
             <button style="background-color: rgb(240, 160, 56); "onclick="exportQeustion(${questionNum})" >export(not work yet)</button>
-            <button style="background-color: rgb(209, 61, 24); "onclick="deleteQeustion(${questionNum})" >Delete</button>
+            <button style="background-color: rgb(209, 61, 24); "onclick="deleteQuestion(${questionNum})" >Delete</button>
         </div>
         <br>
-        <div id = "tagbox${questionNum}">
-            <label>Tags : </label>
-            <input class = "question" id="tagInput${questionNum}" type="text">
-            <button onclick="addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'))">Add</button>
-
-
+        <div id = "tagbox${questionNum}" class="box">
         </div>
+        <label>Tags : </label>
+        <input class = "question" id="tagInput${questionNum}" type="text">
+        <div class="dropdown">
+            <button class="dropbtn">v</button>
+            <div class="dropdown-content">
+                <p>hello</p>
+            </div>
+        </div>
+        <button class="addTagBut" onclick="addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), 0)">Add</button>
         <br>
         <label>Question : </label>
-        <input class = "question" id = "q${questionNum}" type = "text" autofocus/>
+        <input class = "question" id = "q${questionNum}" type = "text">
         <br>
         <br>
         <div id="tabcontent${questionNum}">
             <div id="type${questionNum}" style = "display:none">4c</div>
             <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
             <label>Answer 1: </label>
-            <input id = "${questionNum}a1" type = "text" autofocus/>
+            <input id = "${questionNum}a1" type = "text">
             <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input>
             <label>Answer 2: </label>
-            <input id = "${questionNum}a2" type = "text" autofocus/>
+            <input id = "${questionNum}a2" type = "text">
             <br>
             <br>
             <input type = "radio" id = "radio3${questionNum}" name = "correct${questionNum}" value = 3></input>
             <label>Answer 3: </label>
-            <input id = "${questionNum}a3"  type = "text"autofocus/>
+            <input id = "${questionNum}a3"  type = "text>
             <input type = "radio" id = "radio4${questionNum}" name = "correct${questionNum}" value = 4></input>
             <label>Answer 4: </label>
-            <input id = "${questionNum}a4"  type = "text" autofocus/>
-        </div>    
+            <input id = "${questionNum}a4"  type = "text">
+        </div> 
+        <br>
+        <label>Score : </label>
+        <input id="score${questionNum}" type="text" class="question"></input>    
     <br>`;
     questionTable.appendChild(thisQuestion);
 }
-function deleteQeustion(i) {
+function deleteQuestion(i) {
     questionCounter -= 1;
     document.getElementById(`Question${i}`).remove();
     var counter = 1;
@@ -163,7 +195,7 @@ function fixedOpenTab(id, data){
     var tabcontent = `
             <br>
             <label>Question : </label>
-            <input class = "question" id = "q${id}" type = "text" value='${data.question}' autofocus/>
+            <input class = "question" id = "q${id}" type = "text" value='${data.question}'>
             <br>
             <br>`;
     switch(data.type){
@@ -174,18 +206,18 @@ function fixedOpenTab(id, data){
             
             <input type = "radio" id = "radio1${id}" name = "correct${id}" value = 1></input>
             <label>Answer 1: </label>
-            <input id = "${id}a1" type = "text" value='${data.answers[0]}' autofocus/>
+            <input id = "${id}a1" type = "text" value='${data.answers[0]}'>
             <input type = "radio" id = "radio2${id}" name = "correct${id}" value = 2></input>
             <label>Answer 2: </label>
-            <input id = "${id}a2" type = "text" value='${data.answers[1]}' autofocus/>
+            <input id = "${id}a2" type = "text" value='${data.answers[1]}'>
             <br>
             <br>
             <input type = "radio" id = "radio3${id}" name = "correct${id}" value = 3></input>
             <label>Answer 3: </label>
-            <input id = "${id}a3"  type = "text" value='${data.answers[2]}' autofocus/>
+            <input id = "${id}a3"  type = "text" value='${data.answers[2]}'>
             <input type = "radio" id = "radio4${id}" name = "correct${id}" value = 4></input>
             <label>Answer 4: </label>
-            <input id = "${id}a4"  type = "text" value='${data.answers[3]}' autofocus/>`
+            <input id = "${id}a4"  type = "text" value='${data.answers[3]}'>`
             break;
         case("2c"):
             quizType = "true or false";
@@ -199,7 +231,7 @@ function fixedOpenTab(id, data){
             tabcontent = `
             <div id="type${id}" style = "display:none">sa</div>
             <label>Correct Answer :</label>
-            <input class = "question" id = "correct${id}" value='${data.correct}' type = "text" autofocus/>
+            <input class = "question" id = "correct${id}" value='${data.correct}' type = "text">
             <br>
             <br>`
     }

@@ -75,24 +75,22 @@ io.on('connection', (socket) => {
     //When open pages
 
 
-    // socket.on('get-user-detail', function () {
-    //     var userID = socket.handshake.session.passport
-
-    //     MongoClient.connect(url, function (err, db) {
-    //         if (err) throw err;
-    //         console.log(userID.user)
-    //         var dbo = db.db('classroomClicker');
-    //         dbo.collection('users').find({ _id: ObjectID(userID.user) }, function (err, result) {
-    //             if (err) throw err;
-    //             // console.log(result)
-    //             // result
-    //             // get user data here
-    //             // socket.emit('user-detail', result)
-    //         })
-
-
-    //     })
-    // });
+    socket.on('get-user-detail', function () {
+        var userID = socket.handshake.session.passport
+        if (socket.handshake.session.passport != undefined) {
+            // console.log(userID)
+            MongoClient.connect(url, function (err, db) {
+                if (err) throw err;
+                var dbo = db.db('classroomClicker');
+                dbo.collection('users').findOne({ _id: ObjectID(userID.user) }, function (err, result) {
+                    if (err) throw err;
+                    // result
+                    // get user data here
+                    socket.emit('user-detail', result)
+                })
+            })
+        }
+    });
 
 
 

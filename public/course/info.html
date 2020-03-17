@@ -2,10 +2,12 @@
 <html>
     <head>
         <title>Course</title>
+        <link rel = "stylesheet" href = "../css/info.css" />
         <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
         <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel = "stylesheet" href = "../../assets/css/main.css" />
+        <link rel = "stylesheet" href = "../../assets/css/course.css" />
+        
     </head>
 
     <body>
@@ -34,18 +36,35 @@
             <!-- <a style="background-color: rgb(202, 26, 13);" id = "back" class="button" href = "../" >Back</a> -->
             <br>
         
-            <div id = "game-list"></div>
+            <!-- <div id = "game-list"></div> -->
             
-            <div class="form-field" style="text-align:center;">
-                <br>
-                <br>
-                <br>
-                <button style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '../create/HW-creator/index.html'" >Create New HOMEWORK</button>
+            <div class = "collection">
+                <div class="card-holder">
+                    <div class="card bg-gold " style="text-align:left;">
+                        HOMEWORK<br><br>
+                        <div style = "font-size: 18px ">
+                            <div id = "hw-list" class="homeworkList"></div>
+                        </div>
+                    </div>
+                    <div style = "text-align: left">
+                        <button style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '../create/HW-creator/index.html'" >Create New HOMEWORK</button>
+                    </div>
+                </div>
+                <div class="card-holder">
+                    <div class="card bg-gold " style="text-align:left;">
+                        QUIZ<br><br>
+                        <div style = "font-size: 18px ">
+                            <div id = "quiz-list" class="homeworkList"></div>
+                        </div>
+                    </div>
+                    <div style = "text-align: left">
+                        <button style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '../create/quiz-creator/'" >Create New QUIZ</button>
+                    </div>                
+                </div>
             </div>
         
         <br>
         <br>
-
 
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../../js/course.js"></script>

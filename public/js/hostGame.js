@@ -246,10 +246,10 @@ socket.on('questionOver', function (playerData, correct) {
     }
 });
 
-function resetBgColor(target, color, close){
+function setBgColor(target, color, grayscale, close){
     if(target != undefined){
         target.style.backgroundColor = color;
-        target.style.filter = "grayscale(0%)";
+        target.style.filter = `grayscale(${grayscale})`;
         if(close){
             target.style.display = "none"
         }
@@ -258,15 +258,15 @@ function resetBgColor(target, color, close){
 
 function nextQuestion() {
     // hide all revealAns block
-    //resetBgColor(target, color, close) :: reset target bg color to input color if posible and style.display=none if close
-    resetBgColor(document.getElementById('ans1'), "#00cc5f", false);
-    resetBgColor(document.getElementById('ans2'), "rgb(241, 48, 48)", false);
-    resetBgColor(document.getElementById('ans3'), "#f57deb", false);
-    resetBgColor(document.getElementById('ans4'), "#4dacc8", false);
-    resetBgColor(document.getElementById('revealAns4'), "#00cc5f", true);
-    resetBgColor(document.getElementById('revealAns3'), "rgb(241, 48, 48)", true);
-    resetBgColor(document.getElementById('revealAns2'), "#f57deb", true);
-    resetBgColor(document.getElementById('revealAns1'), "#4dacc8", true);
+    //resetBgColor(target, color, grayscale, close) if posible set target bg-color to input-color and if close is true style.display=none
+    setBgColor(document.getElementById('ans1'), "#00cc5f", "0%", false);
+    setBgColor(document.getElementById('ans2'), "rgb(241, 48, 48)", "0%", false);
+    setBgColor(document.getElementById('ans3'), "#f57deb", "0%", false);
+    setBgColor(document.getElementById('ans4'), "#4dacc8", "0%", false);
+    setBgColor(document.getElementById('revealAns4'), "#00cc5f", "0%", true);
+    setBgColor(document.getElementById('revealAns3'), "rgb(241, 48, 48)", "0%", true);
+    setBgColor(document.getElementById('revealAns2'), "#f57deb", "0%", true);
+    setBgColor(document.getElementById('revealAns1'), "#4dacc8", "0%", true);
     var a = document.getElementById('answer5'); if(a != undefined) a.style.display = "none";
     
     document.getElementById('nextQButton').style.display = "none";

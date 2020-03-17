@@ -574,22 +574,20 @@ io.on('connection', (socket) => {
         });
 
     });
-    socket.on('addQuizContent', (data) => {
-        MongoClient.connect(url, function(err,db){
+
+    socket.on('deleteQuiz', (data) => {
+        MongoClient.connect(url, function(err, db){
             if(err) throw err;
             var dbo = db.db("classroomClicker");
             var query = {id: parseInt(data.id)};
-            dbo.collection('Quizzes').find(query).toArray(function(err, result){
+            dbo.collection('Quizzes').deleteOne(query, function(err, res){
                 if(err) throw err;
-                if(result[0] !== undefined){
-                    dbo.collection("Quizzes").updateOne(query, { $set: data }, function (err, result) {
-                        if (err) throw err;
-                    })
-                }
+                socket.emit("backToHostPage");
                 db.close();
             });
         });
     });
+
     socket.on('req-quiz-data', (data) => {
         //Check to see if id passed in url corresponds to id of quiz game in database
         MongoClient.connect(url, function (err, db) {

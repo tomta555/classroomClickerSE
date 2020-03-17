@@ -10,9 +10,7 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-// const bcrypt = require('bcrypt');
-// const saltRounds = 10;
-
+const sharedsession = require("express-socket.io-session");
 //Import classes
 const { LiveGames } = require('./utils/liveGames');
 const { Players } = require('./utils/players');
@@ -39,16 +37,16 @@ var url = "mongodb://localhost:27017/";
 mongoose.connect(configDB.url);
 
 //config app
+var sessionMiddleware = session({
+    secret: 'clsroclker',// session secret
+    resave: false,
+    saveUninitialized: false,
+})
 require('../public/config/passport')(passport);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
-app.use(session({
-    secret: 'clsroclker',
-    resave: false,
-    saveUninitialized: false
-
-})); // session secret
+app.use(sessionMiddleware);
 
 //Path
 const publicPath = path.join(__dirname, '../public');
@@ -59,6 +57,9 @@ app.use(passport.session()); // persistent login sessions
 app.use(flash());
 require('../public/config/routes')(app, passport);
 
+io.use(sharedsession(sessionMiddleware, {
+    autoSave: true
+}));
 
 
 
@@ -71,23 +72,29 @@ server.listen(port, () => {
 
 //When a connection to server is made from client
 io.on('connection', (socket) => {
-
     //When open pages
-    socket.on('checkID', function (id) {
-        MongoClient.connect(url, function (err, db) {
-            if (err) throw err;
-            //check if ObjID is 12 byte
-            if (Buffer.byteLength(id) == 12) {
-                var dbo = db.db('classroomClicker');
-                dbo.collection('user').find({ _id: ObjectID(id) }, function (err, result) {
-                    if (result != null) {
-                        socket.emit('already_logged_in')
-                    }
-                })
-            }
 
-        })
-    });
+
+    // socket.on('get-user-detail', function () {
+    //     var userID = socket.handshake.session.passport
+
+    //     MongoClient.connect(url, function (err, db) {
+    //         if (err) throw err;
+    //         console.log(userID.user)
+    //         var dbo = db.db('classroomClicker');
+    //         dbo.collection('users').find({ _id: ObjectID(userID.user) }, function (err, result) {
+    //             if (err) throw err;
+    //             // console.log(result)
+    //             // result
+    //             // get user data here
+    //             // socket.emit('user-detail', result)
+    //         })
+
+
+    //     })
+    // });
+
+
 
     //When host connects for the first time
     socket.on('host-join', (data) => {
@@ -268,7 +275,7 @@ io.on('connection', (socket) => {
     });
 
     //Sets data in player class to answer from player
-    socket.on('playerAnswer', function (num,type) {
+    socket.on('playerAnswer', function (num, type) {
         var player = players.getPlayer(socket.id);
         var hostId = player.hostId;
         var playerNum = players.getPlayers(hostId);
@@ -287,9 +294,9 @@ io.on('connection', (socket) => {
                 dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                     if (err) throw err;
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
-                    var NubAnsSA = res[0].questions[gameQuestion-1].answers.length;
+                    var NubAnsSA = res[0].questions[gameQuestion - 1].answers.length;
                     //Checks player answer with correct answer
-                    if(type == "4c" || type == "2c"){
+                    if (type == "4c" || type == "2c") {
                         if (num == correctAnswer) {
                             player.gameData.score += 100;
                             // player.answeredQuestion.push({});
@@ -297,19 +304,19 @@ io.on('connection', (socket) => {
                             socket.emit('answerResult', true);
                         }
                     }
-                    else if(type == "sa"){
-                        num= num.toUpperCase()
-                        for(var i=0 ;i<NubAnsSA;i++){
-                            tempCorrect = res[0].questions[gameQuestion-1].answers[i];
-                            tempCorrect= tempCorrect.toUpperCase();
-                            if(num == tempCorrect){
+                    else if (type == "sa") {
+                        num = num.toUpperCase()
+                        for (var i = 0; i < NubAnsSA; i++) {
+                            tempCorrect = res[0].questions[gameQuestion - 1].answers[i];
+                            tempCorrect = tempCorrect.toUpperCase();
+                            if (num == tempCorrect) {
                                 player.gameData.score += 100;
                                 // player.answeredQuestion.push({});
                                 io.to(game.pin).emit('getTime', socket.id);
                                 socket.emit('answerResult', true);
                             }
                         }
-                        
+
                     }
                     //Checks if all players answered
                     if (game.gameData.playersAnswered == playerNum.length) {
@@ -363,15 +370,15 @@ io.on('connection', (socket) => {
             var query = { id: parseInt(gameid) };
             dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                 if (err) throw err;
-    
+
                 var dbo = db.db('classroomClicker');
-                var query = { id:  parseInt(gameid)};
-                dbo.collection("Quizzes").find(query).toArray(function(err, res) {
+                var query = { id: parseInt(gameid) };
+                dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                     if (err) throw err;
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
-                    var type = res[0].questions[gameQuestion-1].type;
-                    io.to(game.pin).emit('questionOver', playerData, correctAnswer,type);
-                    
+                    var type = res[0].questions[gameQuestion - 1].type;
+                    io.to(game.pin).emit('questionOver', playerData, correctAnswer, type);
+
                     db.close();
                 });
             });
@@ -574,12 +581,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('deleteQuiz', (data) => {
-        MongoClient.connect(url, function(err, db){
-            if(err) throw err;
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
             var dbo = db.db("classroomClicker");
-            var query = {id: parseInt(data.id)};
-            dbo.collection('Quizzes').deleteOne(query, function(err, res){
-                if(err) throw err;
+            var query = { id: parseInt(data.id) };
+            dbo.collection('Quizzes').deleteOne(query, function (err, res) {
+                if (err) throw err;
                 socket.emit("backToHostPage");
                 db.close();
             });
@@ -645,7 +652,7 @@ io.on('connection', (socket) => {
 
     });
 
-    socket.on('ShowHW',(data)=>{
+    socket.on('ShowHW', (data) => {
         // MongoClient.connect(url, function (err, db) {
         //     if (err) throw err;
 
@@ -656,6 +663,6 @@ io.on('connection', (socket) => {
         //         db.close();
         //     });
         // });
-        socket.emit('DoHW',(data));
+        socket.emit('DoHW', (data));
     })
 });

@@ -6,8 +6,11 @@ module.exports = function(app, passport) {
         res.sendFile(path.join(__dirname,'../index.html'));
     });
     app.get('/profile',isLoggedIn, function(req, res) {
-        res.sendFile(path.join(__dirname,'../profile/teacher.html'));
+        res.sendFile(path.join(__dirname,'../profile/teacher.html'),{username : req.user.local.username});
     });
+    // app.get('/profile',isLoggedIn, function(req, res) {
+    //     res.render('profile.ejs',{username : req.user.local.username});
+    // });
     //----------Quiz----------
     app.get('/create_quiz', function(req, res) {
         res.sendFile(path.join(__dirname,'../create/quiz-creator/index.html'));

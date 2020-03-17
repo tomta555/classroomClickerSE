@@ -279,7 +279,6 @@ io.on('connection', (socket) => {
 
             var gameQuestion = game.gameData.question;
             var gameid = game.gameData.gameid;
-            console.log(gameid);
             MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
                 // console.log(num.toUpperCase())        
@@ -287,11 +286,8 @@ io.on('connection', (socket) => {
                 var query = { id: parseInt(gameid) };
                 dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                     if (err) throw err;
-                    console.log("b")
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
                     var NubAnsSA = res[0].questions[gameQuestion-1].answers.length;
-                    console.log(NubAnsSA)
-                    console.log("a")
                     //Checks player answer with correct answer
                     if(type == "4c" || type == "2c"){
                         if (num == correctAnswer) {
@@ -302,8 +298,11 @@ io.on('connection', (socket) => {
                         }
                     }
                     else if(type == "sa"){
+                        num= num.toUpperCase()
                         for(var i=0 ;i<NubAnsSA;i++){
-                            if(num == res[0].questions[gameQuestion-1].answers[i]){
+                            tempCorrect = res[0].questions[gameQuestion-1].answers[i];
+                            tempCorrect= tempCorrect.toUpperCase();
+                            if(num == tempCorrect){
                                 player.gameData.score += 100;
                                 // player.answeredQuestion.push({});
                                 io.to(game.pin).emit('getTime', socket.id);
@@ -312,7 +311,6 @@ io.on('connection', (socket) => {
                         }
                         
                     }
-
                     //Checks if all players answered
                     if (game.gameData.playersAnswered == playerNum.length) {
                         game.gameData.questionLive = false; //Question has been ended bc players all answered under time

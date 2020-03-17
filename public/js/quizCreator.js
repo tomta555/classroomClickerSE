@@ -77,8 +77,9 @@ function updateDatabase(reqtype, quizId){
                 break;
             case("sa"):
                 for (var j = 1; j <= countCorrect; j++){
-                    tempans = document.getElementById(j + 'correct' + i).value;
-                    answers[j - 1] = tempans.toUpperCase();
+                    // tempans = document.getElementById(j + 'correct' + i).value;
+                    // answers[j - 1] = tempans.toUpperCase();
+                    answers[j-1] = document.getElementById(j + 'correct' + i).value;
                }
             }
             questions.push({"question": question, "tag":tag, "type":qtype, "answers": answers, "correct": correct})

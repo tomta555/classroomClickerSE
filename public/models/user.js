@@ -9,7 +9,7 @@ var userSchema = mongoose.Schema({
         studentID : String,
         fname: String,
         lname: String,
-        // isTeacher: Boolean,
+        isTeacher: Boolean,
     }
 });
 

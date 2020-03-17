@@ -37,11 +37,13 @@
               </div>
 
               <div class="form-label-group">
-                <input type="password" id="confirmPassword" class="form-control" placeholder="Confirm Password"
-                  required />
+                <input type="password" id="confirmPassword" name="confirmPassword" class="form-control"
+                  placeholder="Confirm Password" required />
                 <label for="confirmPassword">Confirm Password</label>
               </div>
+
               <hr class="my-4">
+
               <div class="form-label-group">
                 <input type="text" id="fname" name="fname" class="form-control" placeholder="firstname" required />
                 <label for="fname">firstname</label>
@@ -50,9 +52,13 @@
                 <input type="text" id="lname" name="lname" class="form-control" placeholder="lastname" required />
                 <label for="lname">lastname</label>
               </div>
-              <div class="form-label-group">
-                <input type="number" id="studentID" name="studentID" class="form-control" placeholder="Student ID"
-                  required>
+              <div class="custom-control custom-checkbox mb-3">
+                <input type="checkbox" name="isTeacher" class="custom-control-input" id="isTeacher"
+                  onclick="teacherReg()">
+                <label class="custom-control-label" for="isTeacher">Are you a teacher ?</label>
+              </div>
+              <div class="form-label-group" id="stdIDdiv" style="display:block">
+                <input type="number" id="studentID" name="studentID" class="form-control" placeholder="Student ID">
                 <label for="studentID">Student ID</label>
               </div>
 
@@ -69,7 +75,19 @@
   <script src="../socket.io/socket.io.js"></script>
   <script src="../js/libs/jqueryLibrary.js"></script>
   <script src="../js/libs//deparam.js"></script>
-  <script src="../js/cookie.js"></script>
+  <script>
+    function teacherReg() {
+      let isTeacher = document.getElementById("isTeacher");
+      let stdID = document.getElementById("stdIDdiv");
+      if (isTeacher.checked == true) {
+        stdID.style.display = "none";
+      } else {
+        stdID.style.display = "block";
+      }
+
+    }
+
+  </script>
 
 </body>
 

@@ -18,12 +18,12 @@ socket.on('gameNamesData', function(data){
         editbutton.innerText = "edit";
         editbutton.setAttribute('onClick', "edit('"+data[i].id+"')");
         editbutton.setAttribute('id', "gameButton");
-        classarea.appendChild(button);
-        classarea.appendChild(editbutton);
+        // classarea.appendChild(button);
+        // classarea.appendChild(editbutton);
         classarea.setAttribute("class", "single-class-area");
-        // div.appendChild(button);
-        // div.appendChild(editbutton);
-        div.appendChild('classarea');
+        div.appendChild(button);
+        div.appendChild(editbutton);
+        // div.appendChild('classarea');
         div.appendChild(document.createElement('br'));
         div.appendChild(document.createElement('br'));
     }

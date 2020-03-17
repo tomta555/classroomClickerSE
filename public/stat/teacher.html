@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Score: Teacher Page</title>
+        <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel = "stylesheet" href = "../../assets/css/main.css" />
+        <link rel = "stylesheet" href = "../../assets/sass/libs/_vendor.scss" />
+     
+    </head>
+    
+    <body>
+        <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="/profile">profile</a></li>
+				<li class="current"><a href="/courses">courses</a></li>
+                <li><a href="#">quiz >></a>
+                    <ul>
+                        <li><a href="/host_quiz">host quiz</a></li>
+                        <li><a href="/join">join quiz</a></li>
+                    </ul>
+                </li>
+			</ul>
+        </nav>
+        
+        <!-- Header -->
+		<header id="header">
+			<div class="logo container">
+                <div class="form-field">
+                    <h1 id="mainTitle">Create Quiz</h1><br>
+                </div>
+            </div>
+        </header>
+        <!--=== Quiz Title ===-->
+        <div class= "container" style="text-align:center;">
+            <br>
+            <form >
+                <label><h3 id = "quizTitle">Quiz Title :</h3></label>
+                <input id = "name" type = "text" name="name" style="font-size: larger; font-weight: 1000;" autofocus>
+            </form>
+        </div>
+        <!--=== All questions ===-->
+        <div class="container">
+            <div id = "allQuestions" style="font-family: 'Open Sans Condensed', sans-serif; margin: 25px 0px;"></div>
+            <button onclick="addQuestion()" style="margin-bottom: 5%;">Add another question</button>
+            <!-- <h2 class="major"></h2>=== line === -->
+            <!-- <div style="text-align:right;">
+                <button style="background-color: rgb(24, 226, 24); margin:2%" onclick = "updateDatabase()">Create Quiz</button>
+                <br>
+                <button style="background-color: rgb(209, 61, 24); margin:2%" onclick = 'cancelQuiz()'>Cancel quiz & return to quiz selection</button>
+            </div> -->
+        </div>
+        
+        
+
+        
+        
+        <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../../js/libs/jqueryLibrary.js"></script>
+        <script src = "../../js/libs/deparam.js"></script>
+        <script src = "../../js/quizCreator.js"></script>
+      
+        <script src="../../assets/js/jquery.min.js"></script>
+        <script src="../../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../../assets/js/browser.min.js"></script>
+        <script src="../../assets/js/breakpoints.min.js"></script>
+        <script src="../../assets/js/util.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        
+    </body>
+</html>

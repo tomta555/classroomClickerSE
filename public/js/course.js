@@ -12,7 +12,7 @@ socket.on('HWData', function(data){
         var editbutton = document.createElement('button');
         
         button.innerHTML = data[i].name;
-        button.setAttribute('onClick', "startGame('" + data[i].id + "')");
+        button.setAttribute('onClick', "DoHW('" + data[i].id + "')");
         button.setAttribute('id', 'gameButton');
         
         editbutton.innerText = "edit";
@@ -49,6 +49,9 @@ socket.on('gameNamesData', function(data){
 
 function startGame(data){
     window.location.href="/host/" + "?id=" + data;
+}
+function DoHW(data){
+    window.location.href="/DoHW"+ "?id=" + data;
 }
 function edit(data){
     window.location.href="/editQuiz/" + "?id=" + data;

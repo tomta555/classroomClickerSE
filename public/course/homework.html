@@ -15,7 +15,7 @@
 		<nav id="nav">
 			<ul>
 				<li><a href="/profile">profile</a></li>
-				<li class="current"><a href="/course">courses</a></li>
+				<li class="current"><a href="/courses">courses</a></li>
                 <li><a href="/host_quiz">quiz</a></li>
 			</ul>
 		</nav>
@@ -32,66 +32,21 @@
         </header>
         
         <form action="/player/">
-                <div class="form-field">
-                <table>
-                    <div class="card-holder">
-                        <div class="card bg-gold " style="text-align:left;">
-                            <label class="choiseHead">1. Questions</label>
-                            <label class="choise">One
-                                <input type="radio" checked="checked" name="radio">
-                                <span class="checkmark"></span>
-                                </label>
-                                <label class="choise">Two
-                                <input type="radio" name="radio">
-                                <span class="checkmark"></span>
-                                </label>
-                                <label class="choise">Three
-                                <input type="radio" name="radio">
-                                <span class="checkmark"></span>
-                                </label>
-                                <label class="choise">Four
-                                <input type="radio" name="radio">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-field">
-                    <div class="card-holder">
-                        <div class="card bg-gold " style="text-align:left;">
-                            <label class="choiseHead">2. Questions </label>
-                                <label class="choise">True
-                                    <input type="radio" checked="checked" name="radio">
-                                    <span class="checkmark"></span>
-                                </label>
-                                <label class="choise">False
-                                    <input type="radio" name="radio">
-                                    <span class="checkmark"></span>
-                                </label>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-field">
-                    <div class="card-holder">
-                        <div class="card bg-gold " style="text-align:left;">
-                            <label class="choiseHead">3. Questions </label>
-                                <label class = "fText">Answer : 
-                                    <input type="text"  name="text">
-                                </label>
-                        </div>
-                    </div>
-                </div>
-                 <div class="form-field" style="text-align:right; margin-right: 8%">   
-                    <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = "window.location.href = 'index.html'" >Submit</button>
-                </div>
-                </table>
+            <table id="show-HW"></table>    
+        <div class="form-field" style="text-align:right; margin-right: 8%">   
+            <!-- <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = "window.location.href = 'index.html'" >Submit</button> -->
+            <!-- <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = DoHW() >Start</button> -->
+            <!-- <button onclick="DoHW()"> START </button> -->
+        </div>
         </form> 
         
         
 
         <script src = "../../socket.io/socket.io.js"></script>
-        <script src = "../../js/course.js"></script>
+        <script src = "../../js/libs/jqueryLibrary.js"></script>
+        <script src = "../../js/libs/deparam.js"></script>
+
+        <script src = "../js/HW.js"></script>
         <script src="../../assets/js/jquery.min.js"></script>
         <script src="../../assets/js/jquery.dropotron.min.js"></script>
         <script src="../../assets/js/jquery.scrolly.min.js"></script>

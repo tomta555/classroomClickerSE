@@ -46,8 +46,9 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
-
-    
+    app.get('/DoHW', function(req, res) {
+        res.sendFile(path.join(__dirname,'../course/homework.html'));
+    });    
     app.post('/signup', passport.authenticate('local-signup', {
         successRedirect : '/profile', // redirect to the secure profile section
         failureRedirect : '/signup', // redirect back to the signup page if there is an error

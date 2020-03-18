@@ -30,7 +30,7 @@ module.exports = function(app, passport) {
     app.get('/courses',isLoggedIn, function(req, res) {
         res.sendFile(path.join(__dirname,'../course/course.html'));
     });
-    app.get('/coursesInfo',isLoggedIn, function(req, res) {
+    app.get('/courseInfo',isLoggedIn, function(req, res) {
         res.sendFile(path.join(__dirname,'../course/info.html'));
     });
     app.get('/join', function(req, res) {

@@ -10,7 +10,6 @@ socket.on('connect',function(){
     var mainTitle = document.getElementById('mainTitle');
     var submitButton = document.getElementById('submitButton');
     var cancleButton = document.getElementById('cancleButton');
-    console.log(params.type==="editHw");
     switch( params.type.toString() ){
         case("createQuiz"):
             mainTitle.innerHTML="create Quiz";
@@ -22,12 +21,12 @@ socket.on('connect',function(){
             break;
         case("editQuiz"):
             mainTitle.innerHTML="edit Quiz";
-            socket.emit('req-quiz-data', params);
-            submitButton.setAttribute("onclick", "updateDatabase('editQuiz', 0)");
+            submitButton.setAttribute("onclick", `updateDatabase('editQuiz', ${params.id})`);
             submitButton.innerHTML="Save";
             cancleButton.innerHTML="cancle";
             mainTitle.innerHTML="Edit Quiz";
             document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteQuiz(${params.id})`)
+            socket.emit('req-quiz-data', params);
             break;
         case("createHw"):
             mainTitle.innerHTML="create Hw";
@@ -39,11 +38,11 @@ socket.on('connect',function(){
             break;
         case("editHw"):
             mainTitle.innerHTML="Edit Homework";
-            socket.emit('req-hw-data', params);
-            submitButton.setAttribute("onclick", "updateDatabase('editHw', 0)");
+            submitButton.setAttribute("onclick", `updateDatabase('editHw', ${params.id})`);
             submitButton.innerHTML="Save";
             cancleButton.innerHTML="cancle";
             document.getElementById('deleteQuizButton').setAttribute("onclick", ``)
+            socket.emit('req-hw-data', params);
             break;
     }
     // socket.emit('getTags',{"id":params.courseId});
@@ -56,15 +55,17 @@ socket.on('connect',function(){
 
 
 socket.on('gameData-edit',function(data){
-    document.getElementById('submitButton').setAttribute("onclick",`updateDatabase('edit', ${data.id})`);
     document.getElementById("name").value=`${data.name}`;
     // quizId = data.id;
     for(q in data.questions){
         addQuestion();
         fixedOpenTab(questionNum, data.questions[String(q)]);
-        for(i in data.questions[String(q)].tag){
-            addTagBox(questionNum, data.questions[String(q)].tag[String[i]], i);
-        }
+        // var tempBox = document.createElement("input");
+        // for(i in data.questions[String(q)].tag){
+        //     tempBox.value = data.questions[String(q)].tag[String[i]];
+        //     addTagBox(questionNum, tempBox, i);
+        // }
+        // tempBox.remove();
     }
 });
 function updateDatabase(reqtype, Id){
@@ -74,18 +75,15 @@ function updateDatabase(reqtype, Id){
     for (var i = 1; i <= questionNum; i++) {
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
-        var qtag = document.getElementsByClassName("tag"+i);
-        //get tags
-        tag = [];
-        if(qtag !== undefined){
-            for(k in qtag){
-                tag.push(k.innerText);
-            }
-        }
+        // var qtag = document.getElementsByClassName("tag"+i);
+        // tag = [];
+        // if(qtag !== undefined){
+        //     for(k in qtag){
+        //         tag.push(k.innerText);
+        //     }
+        // }
         var answers = [];
-        var qtype = document.getElementById(`type${i}`).innerText;
-        
-        // var correct = document.getElementById('correct' + i).value;
+        var qtype = document.getElementById('type'+i).innerText;
         var correct;
         switch(qtype){
             case("4c"):
@@ -108,7 +106,6 @@ function updateDatabase(reqtype, Id){
             questions.push({"question": question, "tag":tag, "type":qtype, "answers": answers, "correct": correct})
     }
     var data = { id: 0, "name": name, "questions": questions,"courseId": courseId };
-    console.log(data);
     switch(reqtype){
         case('createQuiz'):
             socket.emit('newQuiz',data);
@@ -154,52 +151,60 @@ function addQuestion(){
     thisQuestion = document.createElement("div");
     thisQuestion.setAttribute("id", `Question${questionNum}`);
     thisQuestion.innerHTML = `
-    <h3 id="questionName${questionNum}">Question ${questionCounter} :</h3>
-        <div class="tab">
-            <button class="tablinks${questionNum} active" onclick="openTab(event, '4c', ${questionNum})">4 choices</button>
-            <button class="tablinks${questionNum}" onclick="openTab(event, '2c', ${questionNum})">true or false</button>
-            <button class="tablinks${questionNum}" onclick="openTab(event, 'sa', ${questionNum})">Short Answer</button> 
-            <button style="background-color: rgb(240, 160, 56); "onclick="exportQeustion(${questionNum})" >export(not work yet)</button>
-            <button style="background-color: rgb(209, 61, 24); "onclick="deleteQuestion(${questionNum})" >Delete</button>
-        </div>
-        <br>
-        <div id = "tagbox${questionNum}" class="box">
-        </div>
-        <label>Tags : </label>
-        <input class = "question" id="tagInput${questionNum}" type="text">
-        <div class="dropdown">
-            <button class="dropbtn">v</button>
-            <div class="dropdown-content">
-                <p>hello</p>
+        <h3 id="questionName${questionNum}">Question ${questionCounter} :</h3>
+            <div class="tab">
+                <button class="tablinks${questionNum} active" onclick="openTab(event, '4c', ${questionNum})">4 choices</button>
+                <button class="tablinks${questionNum}" onclick="openTab(event, '2c', ${questionNum})">true or false</button>
+                <button class="tablinks${questionNum}" onclick="openTab(event, 'sa', ${questionNum})">Short Answer</button> 
+                <button style="background-color: rgb(240, 160, 56); "onclick="exportQeustion(${questionNum})" >export(not work yet)</button>
+                <button style="background-color: rgb(209, 61, 24); "onclick="deleteQuestion(${questionNum})" >Delete</button>
             </div>
-        </div>
-        <button class="addTagBut" onclick="addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), 0)">Add</button>
-        <br>
-        <label>Question : </label>
-        <input class = "question" id = "q${questionNum}" type = "text">
-        <br>
-        <br>
-        <div id="tabcontent${questionNum}">
-            <div id="type${questionNum}" style = "display:none">4c</div>
-            <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
-            <label>Answer 1: </label>
-            <input id = "${questionNum}a1" type = "text">
-            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input>
-            <label>Answer 2: </label>
-            <input id = "${questionNum}a2" type = "text">
             <br>
-            <br>
-            <input type = "radio" id = "radio3${questionNum}" name = "correct${questionNum}" value = 3></input>
-            <label>Answer 3: </label>
-            <input id = "${questionNum}a3"  type = "text>
-            <input type = "radio" id = "radio4${questionNum}" name = "correct${questionNum}" value = 4></input>
-            <label>Answer 4: </label>
-            <input id = "${questionNum}a4"  type = "text">
-        </div> 
-        <br>
-        <label>Score : </label>
-        <input id="score${questionNum}" type="text" class="question"></input>    
-    <br>`;
+            <div class="questionBox">
+                <div class="questionMain">
+                    <label>Question : </label>
+                    <input class = "question" id = "q${questionNum}" type = "text">
+                    <br>
+                    <br>
+                    <div id="tabcontent${questionNum}">
+                        <div id="type${questionNum}" style = "display:none">4c</div>
+                        <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
+                        <label>Answer 1: </label>
+                        <input id = "${questionNum}a1" type = "text" autofocus/>
+                        <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input>
+                        <label>Answer 2: </label>
+                        <input id = "${questionNum}a2" type = "text" autofocus/>
+                        <br>
+                        <br>
+                        <input type = "radio" id = "radio3${questionNum}" name = "correct${questionNum}" value = 3></input>
+                        <label>Answer 3: </label>
+                        <input id = "${questionNum}a3"  type = "text"autofocus/>
+                        <input type = "radio" id = "radio4${questionNum}" name = "correct${questionNum}" value = 4></input>
+                        <label>Answer 4: </label>
+                        <input id = "${questionNum}a4"  type = "text" autofocus/>
+                    </div>
+                </div>
+                <div class="Line"></div>
+                <div class="questionDetail">
+                    <div id = "tagbox${questionNum}">
+                    </div>
+                    
+                    <label>Tags :
+                        <input list="browsers" name="myBrowser" id="tagInput1"/>
+                    </label>
+                        <datalist id="browsers">
+                            <option value="Tag1">
+                            <option value="Tag2">
+                            <option value="Tag3">
+                        </datalist>
+                    <button class="addTagBut" onclick="addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), 0)">Add</button>
+                    
+                    <br>
+                    <label>Score : </label>
+                    <input id="score${questionNum}" type="text" class="Answer"></input>    
+                </div>
+            </div>
+        <br>`;
     questionTable.appendChild(thisQuestion);
 }
 function deleteQuestion(i) {

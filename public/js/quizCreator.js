@@ -60,28 +60,35 @@ socket.on('gameData-edit',function(data){
     for(q in data.questions){
         addQuestion();
         fixedOpenTab(questionNum, data.questions[String(q)]);
-        // var tempBox = document.createElement("input");
-        // for(i in data.questions[String(q)].tag){
-        //     tempBox.value = data.questions[String(q)].tag[String[i]];
-        //     addTagBox(questionNum, tempBox, i);
-        // }
-        // tempBox.remove();
+        var tagInput = document.getElementById(`tagInput${parseInt(q)+1}`);
+        var tags = data.questions[String(q)].tag;
+        for(i=0; i<tags.length; i++){
+            tagInput.value = tags[i];
+            addTagBox(questionNum, tagInput, i);
+        }
     }
 });
 function updateDatabase(reqtype, Id){
+    var alertText;
+    var alertFlag = false;
     var questions = [];
-    var tag;
+    var tags;
     var name = document.getElementById('name').value;
+    if(name == "" || name == undefined){
+        alertFlag = true;
+        alertText += `<div>The quiz must have a name</div>`;
+    }
     for (var i = 1; i <= questionNum; i++) {
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
-        // var qtag = document.getElementsByClassName("tag"+i);
-        // tag = [];
-        // if(qtag !== undefined){
-        //     for(k in qtag){
-        //         tag.push(k.innerText);
-        //     }
-        // }
+        var qtag = document.getElementById("tagbox"+i);
+        var messages = qtag.getElementsByClassName("tag-message");
+        tags = [];
+        if(qtag !== undefined){
+            for(k=0;k<messages.length;k++){
+                tags.push(messages[k].innerText);
+            }
+        }
         var answers = [];
         var qtype = document.getElementById('type'+i).innerText;
         var correct;
@@ -103,9 +110,10 @@ function updateDatabase(reqtype, Id){
                     answers[j - 1] = tempans.toUpperCase();
                }
             }
-            questions.push({"question": question, "tag":tag, "type":qtype, "answers": answers, "correct": correct})
+            questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct})
     }
     var data = { id: 0, "name": name, "questions": questions,"courseId": courseId };
+    console.log(data);
     switch(reqtype){
         case('createQuiz'):
             socket.emit('newQuiz',data);
@@ -130,16 +138,19 @@ function addTagBox(questionNum, tagInput, tagNum){
     var tagbox = document.getElementById(`tagbox${questionNum}`);
     var thistag = document.createElement("div");
     var delBut = document.createElement("button");
+    var Message = document.createElement("div");
 
+    Message.innerHTML = tagInput.value;
+    Message.className += "tag-message";
     delBut.innerText = 'x';
     delBut.setAttribute("onclick", `document.getElementById('tag${questionNum}_${tagNum}').remove()`)
     thistag.className += ` tag${questionNum}`; 
     thistag.className += " questionTag";
-    thistag.innerHTML = tagInput.value;
-    thistag.setAttribute('id', `tag${questionNum}_${tagNum}`)
+    thistag.appendChild(Message);
     thistag.appendChild(delBut);
-    tagNum += 1;
+    thistag.setAttribute('id', `tag${questionNum}_${tagNum}`)
     tagbox.appendChild(thistag);
+    tagNum += 1;
     document.getElementsByClassName('addTagBut')[questionNum-1].setAttribute('onclick', `addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), ${tagNum})`);
     tagInput.value = "";
 }
@@ -222,10 +233,14 @@ function deleteQuestion(i) {
 }
 function radioCheck(i) {
     var allRadio = document.getElementsByName(`correct${i}`);
-    var quizType;
-    for(var j=0; j<4;j++){
-        if(allRadio[j].checked == true) return allRadio[j].value;
+    var found;
+    for(var j=0; j<4; j++){
+        if(allRadio[j].checked == true){
+            found = true;
+            return allRadio[j].value;
+        } 
     }
+    if(!found) return "not found";
 }
 
 function fixedOpenTab(id, data){
@@ -268,10 +283,12 @@ function fixedOpenTab(id, data){
             quizType = "Short Answer";
             tabcontent = `
             <div id="type${id}" style = "display:none">sa</div>
-            <label>Correct Answer :</label>
-            <input class = "question" id = "correct${id}" value='${data.correct}' type = "text">
-            <br>
-            <br>`
+            <label>Correct Answer :</label>`
+            for(i in data.answers){
+                tabcontent += `
+                    <input class = "question" id = "${parseInt(i)+1}correct${id}" value='${data.answers[i]}' type = "text">
+                `;
+            }
     }
     targetQuestion.innerHTML = tabcontent;
     //make sure that there are no weird symbol (' or ")
@@ -285,7 +302,9 @@ function fixedOpenTab(id, data){
     if(data.type == "4c" || data.type == "2c"){
         document.getElementById(`radio${data.correct}${id}`).checked = true;
     }else{
-        document.getElementById(`correct${id}`).value = data.correct;
+        for (i in data.answers){
+            document.getElementById(`${parseInt(i)+1}correct${id}`).value = data.answers[i];
+        }
     }
     var tablinks = document.getElementsByClassName(`tablinks${questionNum}`);
     for (i = 0; i < tablinks.length; i++) {
@@ -354,7 +373,6 @@ function addbuttonAns() {
     AnsDiv.innerHTML = document.getElementById('countCorrect').innerHTML;
     document.getElementById('allCorrect').appendChild(AnsDiv);
     AnsDiv.getElementsByTagName("input")[0].setAttribute("id", `${countCorrect}correct${questionNum}`);
-    console.log(countCorrect);
 }
 
 //Called when user wants to exit quiz creator
@@ -365,7 +383,7 @@ function cancelQuiz() {
 }
 
 socket.on('backToHostPage', function (data) {
-    window.location.href = `/courseInfo?courseId=${courseId}`;
+    // window.location.href = `/courseInfo?courseId=${courseId}`;
 });
 
 function randomColor() {

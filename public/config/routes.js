@@ -27,10 +27,10 @@ module.exports = function(app, passport) {
     app.get('/host_quiz', function(req, res) {
         res.sendFile(path.join(__dirname,'../create/host_quiz.html'));
     });
-    app.get('/courses',isLoggedIn, function(req, res) {
+    app.get('/courses', function(req, res) {
         res.sendFile(path.join(__dirname,'../course/course.html'));
     });
-    app.get('/courseInfo',isLoggedIn, function(req, res) {
+    app.get('/courseInfo', function(req, res) {
         res.sendFile(path.join(__dirname,'../course/info.html'));
     });
     app.get('/join', function(req, res) {

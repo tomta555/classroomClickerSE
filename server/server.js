@@ -298,10 +298,11 @@ io.on('connection', (socket) => {
                         }
                     }
                     else if(type == "sa"){
-                        num= num.toUpperCase()
+                        const regex = / |,/gi;
+                        num = num.replace(regex,"").toUpperCase()
                         for(var i=0 ;i<NubAnsSA;i++){
                             tempCorrect = res[0].questions[gameQuestion-1].answers[i];
-                            tempCorrect= tempCorrect.toUpperCase();
+                            tempCorrect = tempCorrect.replace(regex,"").toUpperCase();
                             if(num == tempCorrect){
                                 player.gameData.score += 100;
                                 // player.answeredQuestion.push({});

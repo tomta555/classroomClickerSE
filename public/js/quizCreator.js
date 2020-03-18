@@ -4,21 +4,46 @@ var questionCounter = 0;
 var tags = [];
 var params = jQuery.deparam(window.location.search);
 var countCorrect = 1;
+var courseId = params.courseId;
 // var quizId;
 socket.on('connect',function(){
-    if(params.id == undefined){
-        addQuestion();
-        document.getElementById('submitButton').setAttribute("onclick","updateDatabase('create', 0)");
-        document.getElementById('submitButton').innerHTML="Create Quiz";
-        document.getElementById('cancleButton').innerHTML="Cancle Quiz";
-        document.getElementById('mainTitle').innerHTML="Create Quiz";
-    }else{
-        socket.emit('req-quiz-data', params);
-        document.getElementById('submitButton').setAttribute("onclick", "updateDatabase('edit', 0)");
-        document.getElementById('submitButton').innerHTML="Save";
-        document.getElementById('cancleButton').innerHTML="cancle";
-        document.getElementById('mainTitle').innerHTML="Edit Quiz";
-        document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteQuiz(${params.id})`)
+    var mainTitle = document.getElementById('mainTitle');
+    var submitButton = document.getElementById('submitButton');
+    var cancleButton = document.getElementById('cancleButton');
+    switch( params.type.toString() ){
+        case("createQuiz"):
+            mainTitle.innerHTML="create Quiz";
+            addQuestion();
+            submitButton.setAttribute("onclick","updateDatabase('createQuiz', 0)");
+            submitButton.innerHTML="Create Quiz";
+            cancleButton.innerHTML="Cancle Quiz";
+            mainTitle.innerHTML="Create Quiz";
+            break;
+        case("editQuiz"):
+            mainTitle.innerHTML="edit Quiz";
+            submitButton.setAttribute("onclick", `updateDatabase('editQuiz', ${params.id})`);
+            submitButton.innerHTML="Save";
+            cancleButton.innerHTML="cancle";
+            mainTitle.innerHTML="Edit Quiz";
+            document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteQuiz(${params.id})`)
+            socket.emit('req-quiz-data', params);
+            break;
+        case("createHw"):
+            mainTitle.innerHTML="create Hw";
+            addQuestion();
+            submitButton.setAttribute("onclick","updateDatabase('createHw', 0)");
+            submitButton.innerHTML="Create Quiz";
+            cancleButton.innerHTML="Cancle Quiz";
+            mainTitle.innerHTML="Create Quiz";
+            break;
+        case("editHw"):
+            mainTitle.innerHTML="Edit Homework";
+            submitButton.setAttribute("onclick", `updateDatabase('editHw', ${params.id})`);
+            submitButton.innerHTML="Save";
+            cancleButton.innerHTML="cancle";
+            document.getElementById('deleteQuizButton').setAttribute("onclick", ``)
+            socket.emit('req-hw-data', params);
+            break;
     }
     // socket.emit('getTags',{"id":params.courseId});
 });
@@ -30,38 +55,42 @@ socket.on('connect',function(){
 
 
 socket.on('gameData-edit',function(data){
-    document.getElementById('submitButton').setAttribute("onclick",`updateDatabase('edit', ${data.id})`);
     document.getElementById("name").value=`${data.name}`;
     // quizId = data.id;
     for(q in data.questions){
         addQuestion();
         fixedOpenTab(questionNum, data.questions[String(q)]);
-        for(i in data.questions[String(q)].tag){
-            addTagBox(questionNum, data.questions[String(q)].tag[String[i]], i);
+        var tagInput = document.getElementById(`tagInput${parseInt(q)+1}`);
+        var tags = data.questions[String(q)].tag;
+        for(i=0; i<tags.length; i++){
+            tagInput.value = tags[i];
+            addTagBox(questionNum, tagInput, i);
         }
     }
 });
-function updateDatabase(reqtype, quizId){
+function updateDatabase(reqtype, Id){
+    var alertText;
+    var alertFlag = false;
     var questions = [];
-    var tag;
+    var tags;
     var name = document.getElementById('name').value;
-    console.log(questionNum);
+    if(name == "" || name == undefined){
+        alertFlag = true;
+        alertText += `<div>The quiz must have a name</div>`;
+    }
     for (var i = 1; i <= questionNum; i++) {
-        console.log(i);
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
-        var qtag = document.getElementsByClassName("tag"+i);
-        //get tags
-        tag = [];
+        var qtag = document.getElementById("tagbox"+i);
+        var messages = qtag.getElementsByClassName("tag-message");
+        tags = [];
         if(qtag !== undefined){
-            for(k in qtag){
-                tag.push(k.innerText);
+            for(k=0;k<messages.length;k++){
+                tags.push(messages[k].innerText);
             }
         }
         var answers = [];
-        var qtype = document.getElementById(`type${i}`).innerText;
-        
-        // var correct = document.getElementById('correct' + i).value;
+        var qtype = document.getElementById('type'+i).innerText;
         var correct;
         switch(qtype){
             case("4c"):
@@ -82,17 +111,26 @@ function updateDatabase(reqtype, quizId){
                     answers[j-1] = document.getElementById(j + 'correct' + i).value;
                }
             }
-            questions.push({"question": question, "tag":tag, "type":qtype, "answers": answers, "correct": correct})
+            questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct})
     }
-    var quiz = { id: 0, "name": name, "questions": questions };
+    var data = { id: 0, "name": name, "questions": questions,"courseId": courseId };
+    console.log(data);
     switch(reqtype){
-        case('create'):
-            socket.emit('newQuiz',quiz);
+        case('createQuiz'):
+            socket.emit('newQuiz',data);
             break;
-        case('edit'):
-            quiz.id = quizId;
-            socket.emit('editQuiz',quiz);
-    }
+        case('editQuiz'):
+            data.id = Id;
+            socket.emit('editQuiz',data);
+            break;
+        case('createHw'):
+            socket.emit('newHw',data);
+            break;
+        case('editHw'):
+            data.id = Id;
+            socket.emit('editHw',data);
+            break;
+        }
 };
 function deleteQuiz(quizId){
     socket.emit('deleteQuiz',{"id":quizId});
@@ -101,16 +139,19 @@ function addTagBox(questionNum, tagInput, tagNum){
     var tagbox = document.getElementById(`tagbox${questionNum}`);
     var thistag = document.createElement("div");
     var delBut = document.createElement("button");
+    var Message = document.createElement("div");
 
+    Message.innerHTML = tagInput.value;
+    Message.className += "tag-message";
     delBut.innerText = 'x';
     delBut.setAttribute("onclick", `document.getElementById('tag${questionNum}_${tagNum}').remove()`)
     thistag.className += ` tag${questionNum}`; 
     thistag.className += " questionTag";
-    thistag.innerHTML = tagInput.value;
-    thistag.setAttribute('id', `tag${questionNum}_${tagNum}`)
+    thistag.appendChild(Message);
     thistag.appendChild(delBut);
-    tagNum += 1;
+    thistag.setAttribute('id', `tag${questionNum}_${tagNum}`)
     tagbox.appendChild(thistag);
+    tagNum += 1;
     document.getElementsByClassName('addTagBut')[questionNum-1].setAttribute('onclick', `addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), ${tagNum})`);
     tagInput.value = "";
 }
@@ -122,52 +163,60 @@ function addQuestion(){
     thisQuestion = document.createElement("div");
     thisQuestion.setAttribute("id", `Question${questionNum}`);
     thisQuestion.innerHTML = `
-    <h3 id="questionName${questionNum}">Question ${questionCounter} :</h3>
-        <div class="tab">
-            <button class="tablinks${questionNum} active" onclick="openTab(event, '4c', ${questionNum})">4 choices</button>
-            <button class="tablinks${questionNum}" onclick="openTab(event, '2c', ${questionNum})">true or false</button>
-            <button class="tablinks${questionNum}" onclick="openTab(event, 'sa', ${questionNum})">Short Answer</button> 
-            <button style="background-color: rgb(240, 160, 56); "onclick="exportQeustion(${questionNum})" >export(not work yet)</button>
-            <button style="background-color: rgb(209, 61, 24); "onclick="deleteQuestion(${questionNum})" >Delete</button>
-        </div>
-        <br>
-        <div id = "tagbox${questionNum}" class="box">
-        </div>
-        <label>Tags : </label>
-        <input class = "question" id="tagInput${questionNum}" type="text">
-        <div class="dropdown">
-            <button class="dropbtn">v</button>
-            <div class="dropdown-content">
-                <p>hello</p>
+        <h3 id="questionName${questionNum}">Question ${questionCounter} :</h3>
+            <div class="tab">
+                <button class="tablinks${questionNum} active" onclick="openTab(event, '4c', ${questionNum})">4 choices</button>
+                <button class="tablinks${questionNum}" onclick="openTab(event, '2c', ${questionNum})">true or false</button>
+                <button class="tablinks${questionNum}" onclick="openTab(event, 'sa', ${questionNum})">Short Answer</button> 
+                <button style="background-color: rgb(240, 160, 56); "onclick="exportQeustion(${questionNum})" >export(not work yet)</button>
+                <button style="background-color: rgb(209, 61, 24); "onclick="deleteQuestion(${questionNum})" >Delete</button>
             </div>
-        </div>
-        <button class="addTagBut" onclick="addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), 0)">Add</button>
-        <br>
-        <label>Question : </label>
-        <input class = "question" id = "q${questionNum}" type = "text">
-        <br>
-        <br>
-        <div id="tabcontent${questionNum}">
-            <div id="type${questionNum}" style = "display:none">4c</div>
-            <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
-            <label>Answer 1: </label>
-            <input id = "${questionNum}a1" type = "text">
-            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input>
-            <label>Answer 2: </label>
-            <input id = "${questionNum}a2" type = "text">
             <br>
-            <br>
-            <input type = "radio" id = "radio3${questionNum}" name = "correct${questionNum}" value = 3></input>
-            <label>Answer 3: </label>
-            <input id = "${questionNum}a3"  type = "text>
-            <input type = "radio" id = "radio4${questionNum}" name = "correct${questionNum}" value = 4></input>
-            <label>Answer 4: </label>
-            <input id = "${questionNum}a4"  type = "text">
-        </div> 
-        <br>
-        <label>Score : </label>
-        <input id="score${questionNum}" type="text" class="question"></input>    
-    <br>`;
+            <div class="questionBox">
+                <div class="questionMain">
+                    <label>Question : </label>
+                    <input class = "question" id = "q${questionNum}" type = "text">
+                    <br>
+                    <br>
+                    <div id="tabcontent${questionNum}">
+                        <div id="type${questionNum}" style = "display:none">4c</div>
+                        <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
+                        <label>Answer 1: </label>
+                        <input id = "${questionNum}a1" type = "text" autofocus/>
+                        <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input>
+                        <label>Answer 2: </label>
+                        <input id = "${questionNum}a2" type = "text" autofocus/>
+                        <br>
+                        <br>
+                        <input type = "radio" id = "radio3${questionNum}" name = "correct${questionNum}" value = 3></input>
+                        <label>Answer 3: </label>
+                        <input id = "${questionNum}a3"  type = "text"autofocus/>
+                        <input type = "radio" id = "radio4${questionNum}" name = "correct${questionNum}" value = 4></input>
+                        <label>Answer 4: </label>
+                        <input id = "${questionNum}a4"  type = "text" autofocus/>
+                    </div>
+                </div>
+                <div class="Line"></div>
+                <div class="questionDetail">
+                    <div id = "tagbox${questionNum}">
+                    </div>
+                    
+                    <label>Tags :
+                        <input list="browsers" name="myBrowser" id="tagInput1"/>
+                    </label>
+                        <datalist id="browsers">
+                            <option value="Tag1">
+                            <option value="Tag2">
+                            <option value="Tag3">
+                        </datalist>
+                    <button class="addTagBut" onclick="addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), 0)">Add</button>
+                    
+                    <br>
+                    <label>Score : </label>
+                    <input id="score${questionNum}" type="text" class="Answer"></input>    
+                </div>
+            </div>
+        <br>`;
     questionTable.appendChild(thisQuestion);
 }
 function deleteQuestion(i) {
@@ -185,10 +234,14 @@ function deleteQuestion(i) {
 }
 function radioCheck(i) {
     var allRadio = document.getElementsByName(`correct${i}`);
-    var quizType;
-    for(var j=0; j<4;j++){
-        if(allRadio[j].checked == true) return allRadio[j].value;
+    var found;
+    for(var j=0; j<4; j++){
+        if(allRadio[j].checked == true){
+            found = true;
+            return allRadio[j].value;
+        } 
     }
+    if(!found) return "not found";
 }
 
 function fixedOpenTab(id, data){
@@ -231,10 +284,12 @@ function fixedOpenTab(id, data){
             quizType = "Short Answer";
             tabcontent = `
             <div id="type${id}" style = "display:none">sa</div>
-            <label>Correct Answer :</label>
-            <input class = "question" id = "correct${id}" value='${data.correct}' type = "text">
-            <br>
-            <br>`
+            <label>Correct Answer :</label>`
+            for(i in data.answers){
+                tabcontent += `
+                    <input class = "question" id = "${parseInt(i)+1}correct${id}" value='${data.answers[i]}' type = "text">
+                `;
+            }
     }
     targetQuestion.innerHTML = tabcontent;
     //make sure that there are no weird symbol (' or ")
@@ -248,7 +303,9 @@ function fixedOpenTab(id, data){
     if(data.type == "4c" || data.type == "2c"){
         document.getElementById(`radio${data.correct}${id}`).checked = true;
     }else{
-        document.getElementById(`correct${id}`).value = data.correct;
+        for (i in data.answers){
+            document.getElementById(`${parseInt(i)+1}correct${id}`).value = data.answers[i];
+        }
     }
     var tablinks = document.getElementsByClassName(`tablinks${questionNum}`);
     for (i = 0; i < tablinks.length; i++) {
@@ -317,7 +374,6 @@ function addbuttonAns() {
     AnsDiv.innerHTML = document.getElementById('countCorrect').innerHTML;
     document.getElementById('allCorrect').appendChild(AnsDiv);
     AnsDiv.getElementsByTagName("input")[0].setAttribute("id", `${countCorrect}correct${questionNum}`);
-    console.log(countCorrect);
 }
 
 //Called when user wants to exit quiz creator
@@ -328,7 +384,7 @@ function cancelQuiz() {
 }
 
 socket.on('backToHostPage', function (data) {
-    window.location.href = "/host_quiz";
+    // window.location.href = `/courseInfo?courseId=${courseId}`;
 });
 
 function randomColor() {

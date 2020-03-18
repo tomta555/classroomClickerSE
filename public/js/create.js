@@ -1,7 +1,8 @@
 var socket = io();
+var params = jQuery.deparam(window.location.search);
 
 socket.on('connect', function(){
-    socket.emit('requestDbNames');//Get database names to display to user
+    socket.emit('requestDbNames', {"courseId": params.courseId});//Get database names to display to user
 });
 
 socket.on('gameNamesData', function(data){

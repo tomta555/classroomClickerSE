@@ -147,21 +147,21 @@ function addQuestion(){
         <br>
         <br>
         <div id="tabcontent${questionNum}">
-            <div id="type${questionNum}" style = "display:none">4c</div>
-            <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
-            <label>Answer 1: </label>
-            <input id = "${questionNum}a1" type = "text">
-            <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input>
-            <label>Answer 2: </label>
-            <input id = "${questionNum}a2" type = "text">
-            <br>
-            <br>
-            <input type = "radio" id = "radio3${questionNum}" name = "correct${questionNum}" value = 3></input>
-            <label>Answer 3: </label>
-            <input id = "${questionNum}a3"  type = "text>
-            <input type = "radio" id = "radio4${questionNum}" name = "correct${questionNum}" value = 4></input>
-            <label>Answer 4: </label>
-            <input id = "${questionNum}a4"  type = "text">
+        <div id="type${questionNum}" style = "display:none">4c</div>
+        <input type = "radio" id = "radio1${questionNum}" name = "correct${questionNum}" value = 1></input>
+        <label>Answer 1: </label>
+        <input id = "${questionNum}a1" type = "text" autofocus/>
+        <input type = "radio" id = "radio2${questionNum}" name = "correct${questionNum}" value = 2></input>
+        <label>Answer 2: </label>
+        <input id = "${questionNum}a2" type = "text" autofocus/>
+        <br>
+        <br>
+        <input type = "radio" id = "radio3${questionNum}" name = "correct${questionNum}" value = 3></input>
+        <label>Answer 3: </label>
+        <input id = "${questionNum}a3"  type = "text"autofocus/>
+        <input type = "radio" id = "radio4${questionNum}" name = "correct${questionNum}" value = 4></input>
+        <label>Answer 4: </label>
+        <input id = "${questionNum}a4"  type = "text" autofocus/>
         </div> 
         <br>
         <label>Score : </label>

@@ -1,8 +1,13 @@
 var socket = io();
+var params = jQuery.deparam(window.location.search);
 
 socket.on('connect', function(){
-    socket.emit('requestDbHW');//Get database names to display to user
-    socket.emit('requestDbNames');
+    socket.emit('requestDbHW', {"courseId": params.courseId});//Get database names to display to user
+    socket.emit('requestDbNames', {"courseId": params.courseId});
+    var createHwButton = document.getElementById("createHwButton");
+    var createQuizButton = document.getElementById("createQuizButton");
+    createHwButton.setAttribute("onclick", `window.location.href = '../create?courseId=${params.courseId}&type=createHw'`);
+    createQuizButton.setAttribute("onclick", `window.location.href = '../create?courseId=${params.courseId}&type=createQuiz'`);
 });
 
 socket.on('HWData', function(data){
@@ -10,13 +15,14 @@ socket.on('HWData', function(data){
         var div = document.getElementById('hw-list');
         var button = document.createElement('button');
         var editbutton = document.createElement('button');
-        
+        var mydata = `id=${data[i].id}&courseId=${params.courseId}&type=editHw`;
+
         button.innerHTML = data[i].name;
         button.setAttribute('onClick', "DoHW('" + data[i].id + "')");
         button.setAttribute('id', 'gameButton');
         
         editbutton.innerText = "edit";
-        editbutton.setAttribute('onClick', "edit('"+data[i].id+"')");
+        editbutton.setAttribute('onClick', `edit("${mydata}")`);
         editbutton.setAttribute('id', "gameButton");
         editbutton.setAttribute('class',"editButton");
         div.appendChild(button);
@@ -31,13 +37,14 @@ socket.on('gameNamesData', function(data){
         var div = document.getElementById('quiz-list');
         var button = document.createElement('button');
         var editbutton = document.createElement('button');
+        var mydata = `id=${data[i].id}&courseId=${params.courseId}&type=editQuiz`;
         
         button.innerHTML = data[i].name;
         button.setAttribute('onClick', "startGame('" + data[i].id + "')");
         button.setAttribute('id', 'gameButton');
         
         editbutton.innerText = "edit";
-        editbutton.setAttribute('onClick', "edit('"+data[i].id+"')");
+        editbutton.setAttribute('onClick', `edit("${mydata}")`);
         editbutton.setAttribute('id', "gameButton");
         editbutton.setAttribute('class',"editButton");
         div.appendChild(button);
@@ -54,5 +61,5 @@ function DoHW(data){
     window.location.href="/DoHW"+ "?id=" + data;
 }
 function edit(data){
-    window.location.href="/editQuiz/" + "?id=" + data;
+    window.location.href="/create_quiz/" + "?" + data;
 }

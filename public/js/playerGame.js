@@ -6,12 +6,22 @@ var score = 0;
 
 var params = jQuery.deparam(window.location.search); //Gets the id from url
 
+var pushPlayerAnswerDetails = { round:0,
+                        pid:'',
+                        score:0,
+                        answer:[]
+                        }
 
 socket.on('connect', function() {
     //Tell server that it is host connection from game view
     socket.emit('player-join-game', params);
     showAns(params.type);
+    socket.emit('get-user-detail');
 });
+
+socket.on('user-detail',function(udetail){
+    pushPlayerAnswerDetails.pid += udetail.local.studentID
+})
 
 function showAns(type){
     tableAns ='';
@@ -50,6 +60,9 @@ function answerSubmitted(num,type){
     if(playerAnswered == false){
         playerAnswered = true;
 
+
+        pushPlayerAnswerDetails.answer.push(num)
+        
         socket.emit('playerAnswer', num,type);//Sends player answer to server
         document.body.style.backgroundColor = "rgb(238, 138, 20)"
         document.getElementById('waitans').style.display = "block";
@@ -71,13 +84,13 @@ function answerSubmitted(num,type){
 }
 
 function shortAnswerSubmitted(){
-    answer= document.getElementById('inputanswer5').value;
+    answer = document.getElementById('inputanswer5').value;
     console.log(answer)
     answerSubmitted(answer,"sa");
 }
 
 function backButton() {
-    window.location.href = "../../join.html";
+    window.location.href = "../../join.html"; //maybe this need to edit
 }
 
 //Get results on last question
@@ -127,6 +140,7 @@ socket.on('questionOver', function(playerdata,correctAns,type){
 
 socket.on('newScore', function(data){
     document.getElementById('scoreText').innerHTML = "Score: " + data;
+    pushPlayerAnswerDetails.score += data
 });
 
 socket.on('nextQuestionPlayer', function(type){
@@ -139,7 +153,7 @@ socket.on('nextQuestionPlayer', function(type){
 });
 
 socket.on('hostDisconnect', function(){
-    window.location.href = "../../";
+    window.location.href = "../../"; //may be this need to edit
 });
 
 socket.on('playerGameData', function(data){
@@ -152,6 +166,7 @@ socket.on('playerGameData', function(data){
 });
 
 socket.on('GameOver', function(data){
+    console.log(pushPlayerAnswerDetails)
     document.body.style.backgroundColor = "#c70011";
     document.getElementById('finish').style.display = "block";
     document.getElementById('finish').innerText = "FINISH!";
@@ -167,5 +182,7 @@ socket.on('GameOver', function(data){
     document.getElementById('answer3').style.display = "none";
     document.getElementById('answer4').style.display = "none";
     document.getElementById('answer5').style.display = "none";
+
+    // console.log(pushPlayerAnswerDetails)
 });
 

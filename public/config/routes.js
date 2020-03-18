@@ -6,7 +6,7 @@ module.exports = function(app, passport) {
         res.sendFile(path.join(__dirname,'../index.html'));
     });
     app.get('/profile',isLoggedIn, function(req, res) {
-        res.sendFile(path.join(__dirname,'../profile/teacher.html'),{username : req.user.local.username});
+        res.sendFile(path.join(__dirname,'../profile/teacher.html'));
     });
     // app.get('/profile',isLoggedIn, function(req, res) {
     //     res.render('profile.ejs',{username : req.user.local.username});

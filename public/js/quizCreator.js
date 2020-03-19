@@ -113,7 +113,7 @@ function updateDatabase(reqtype, Id){
             }
             questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct})
     }
-    var data = { id: 0, "name": name, "questions": questions,"courseId": courseId };
+    var data = { id: 0, roundPlayed: 0 , "name": name, "questions": questions,"courseId": courseId};
     console.log(data);
     switch(reqtype){
         case('createQuiz'):

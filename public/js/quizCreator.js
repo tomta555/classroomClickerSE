@@ -5,8 +5,10 @@ var tags = [];
 var params = jQuery.deparam(window.location.search);
 var countCorrect = 1;
 var courseId = params.courseId;
+var uId;
 // var quizId;
 socket.on('connect',function(){
+    socket.emit('get-user-detail');
     var mainTitle = document.getElementById('mainTitle');
     var submitButton = document.getElementById('submitButton');
     var cancleButton = document.getElementById('cancleButton');
@@ -47,12 +49,13 @@ socket.on('connect',function(){
     }
     // socket.emit('getTags',{"id":params.courseId});
 });
-
+socket.on('user-detail',function(udetail){
+    uId = udetail._id;
+})
 // socket.on('TagsData', function(data){
 //     var tags = document.getElementsByClassName('dropdown-content');
     
 // });
-
 
 socket.on('gameData-edit',function(data){
     document.getElementById("name").value=`${data.name}`;
@@ -109,7 +112,7 @@ function updateDatabase(reqtype, Id){
         if(baseScore == '') baseScore = 0;
         questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": baseScore})
     }
-    var data = { id: 0, "name": name, "questions": questions,"courseId": courseId };
+    var data = { id: 0, "name": name, "questions": questions,"courseId": courseId,"user": uId};
     switch(reqtype){
         case('createQuiz'):
             socket.emit('newQuiz',data);

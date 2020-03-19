@@ -92,6 +92,16 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('get-courses', (data) => {
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection('courses').find({"teacher" : { $in : [data] }}).toArray(function (err, result) {
+                if (err) throw err;
+                socket.emit('course-detail', result);
+            });
+        })
+    });
 
 
     //When host connects for the first time

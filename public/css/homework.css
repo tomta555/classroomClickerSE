@@ -100,6 +100,9 @@
     background: linear-gradient(to bottom, #864cbf 70%,#888 30%);
 }
 
+
+
+
 .body {
   font-size: 15px;
 }
@@ -117,7 +120,7 @@
   color: white;
   font-weight: 800;
   height: 4em;
-  width: 35em;
+  width: 50%;
   padding: 0.5em 1em;
   border-radius: 0.25em;  
   display: table-cell;
@@ -172,4 +175,6 @@ table {
   user-select: none;
   color: white;
   }
+
+
   

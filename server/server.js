@@ -520,13 +520,13 @@ io.on('connection', (socket) => {
     });
 
     //Give user game names data
-    socket.on('requestDbNames', function () {
+    socket.on('requestDbNames', function (data) {
 
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
-
             var dbo = db.db('classroomClicker');
-            dbo.collection("Quizzes").find().toArray(function (err, res) {
+            query = {courseId: data.courseId}
+            dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                 if (err) throw err;
                 socket.emit('gameNamesData', res);
                 db.close();
@@ -534,13 +534,13 @@ io.on('connection', (socket) => {
         });
     });
 
-    socket.on('requestDbHW', function () {
+    socket.on('requestDbHW', function (data) {
 
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
-
             var dbo = db.db('classroomClicker');
-            dbo.collection("Homeworks").find().toArray(function (err, res) {
+            query = {courseId: data.courseId}
+            dbo.collection("Homeworks").find(query).toArray(function (err, res) {
                 if (err) throw err;
                 socket.emit('HWData', res);
                 db.close();
@@ -608,6 +608,26 @@ io.on('connection', (socket) => {
 
     });
 
+    socket.on('req-hw-data', (data) => {
+        //Check to see if id passed in url corresponds to id of quiz game in database
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("classroomClicker");
+            var query = { id: parseInt(data.id) };
+            dbo.collection('Homeworks').find(query).toArray(function (err, result) {
+                if (err) throw err;
+                //A quiz was found with the id passed in url
+                if (result[0] !== undefined) {
+                    socket.emit('gameData-edit', result[0]);
+                } else {
+                    socket.emit('noGameFound');
+                }
+                db.close();
+            });
+        });
+
+    });
+
     socket.on('editQuiz', function (data) {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
@@ -620,7 +640,8 @@ io.on('connection', (socket) => {
             });
         });
     });
-    socket.on('newHomework', function (data) {
+
+    socket.on('newHw', function (data) {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
@@ -643,8 +664,18 @@ io.on('connection', (socket) => {
             });
 
         });
-
-
+    });
+    socket.on('editHw', function (data) {
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            var query = { id: parseInt(data.id) };
+            dbo.collection("Homeworks").updateOne(query, { $set: data }, function (err, result) {
+                if (err) throw err;
+                socket.emit('backToHostPage');
+                db.close();
+            });
+        });
     });
 
     socket.on('ShowHW',(data)=>{

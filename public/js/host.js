@@ -4,8 +4,7 @@ var params = jQuery.deparam(window.location.search);
 //When host connects to server
 socket.on('connect', function() {
 
-    document.getElementById('players').value = "";
-    
+    document.getElementById('players').value = "";    
     //Tell server that it is host connection
     socket.emit('host-join', params);
 });

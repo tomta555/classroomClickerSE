@@ -649,17 +649,18 @@ io.on('connection', (socket) => {
 
     });
 
-    socket.on('ShowHW',(data)=>{
-        // MongoClient.connect(url, function (err, db) {
-        //     if (err) throw err;
-
-        //     var dbo = db.db('classroomClicker');
-        //     dbo.collection("Homeworks").find().toArray(function (err, res) {
-        //         if (err) throw err;
-        //         // socket.emit('HWData', res);
-        //         db.close();
-        //     });
-        // });
-        socket.emit('DoHW',(data));
-    })
+    socket.on('ShowHW', function (data){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("Homeworks").find().toArray(function (err, res) {
+                if (err) throw err;
+                socket.emit('DoHW',res[data.id-1]);
+                console.log(res[data.id-1]);
+                db.close();
+            });
+        });
+        console.log("I'm here with id = " + data.id);
+    });
+    
 });

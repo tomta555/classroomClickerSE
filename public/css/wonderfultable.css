@@ -10,9 +10,10 @@
     width:100%;
     table-layout: fixed;
   }
-  .score-Box{
+  .score-box{
     width:100%;
-    display:flex;
+    display:inline-block;
+    vertical-align: top;
   }
   .score-left{
     height: 100%;
@@ -34,11 +35,11 @@
     /* background-color: rgba(95, 92, 92, 0.3); */
     background-color: rgb(185, 118, 216);
     margin-bottom: 0px;
+    overflow: hidden;
    }
   .tb-content{
     height:300px;
     /* overflow-x:auto;  */
-    background-color: rgb(226, 188, 243);
     margin-top: 0px;
     border: 1px solid rgba(255,255,255,0.3);
   }
@@ -53,10 +54,7 @@
     margin-top: 0px;
     border: 1px solid rgba(255,255,255,0.3);
   }
-  .bigfont-score{
-    font-family: 'Open Sans Condensed', sans-serif;
-    font-size: large;
-  }
+
 
   th{
     font-family: 'Open Sans Condensed', sans-serif;

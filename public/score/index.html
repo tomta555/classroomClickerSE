@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Course</title>
+        <link rel = "stylesheet" href = "../css/homework.css" />
+        <link rel = "stylesheet" href = "../css/score.css" />
+        <!-- <link rel = "stylesheet" href = "../../css/quizCreator.css" />  -->
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel = "stylesheet" href = "../../assets/css/course.css" />
+    </head>
+
+    <body>
+
+
+
+        <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="/profile">profile</a></li>
+				<li class="current"><a href="/courses">courses</a></li>
+                <li><a href="/host_quiz">quiz</a></li>
+			</ul>
+		</nav>
+
+        <!-- Header -->
+
+        <header id="header">
+			<div class="logo container">
+				<div >
+                    <p>HOMEWORK</p>
+                    <!-- <h1><a style="color: rgb(82, 230, 95);" id = "logo" href = "quiz-creator/"><u>Course</u></a></h1> -->
+				</div>
+			</div>
+        </header>
+
+        <div class="scoreBox">
+            <div class="totalScore">
+                <h3>Your score:</h3>
+                <h3>30</h3>
+            </div>
+            <div class="line"></div>
+        <div class="scoreDetail">
+            <table>
+                <td style="width:30%">min:</td>
+                <td style="width:30%">mean:</td>
+                <td style="width:30%">max:</td>
+            </table>    
+        </div>
+        </div><br><br>
+
+    
+        <div id="questionBox">
+            <h3>Question</h3><br>
+            <input type="checkbox">
+            <label>Answer1</label>
+            <input type="checkbox">
+            <label>Answer2</label>
+            <br><br>
+            <input type="checkbox">
+            <label>Answer3</label>
+            <input type="checkbox">
+            <label>Answer4</label>
+        </div>
+        
+        <form action="/player/">
+            <table id="show-HW"></table>    
+        <div class="form-field" style="text-align:right; margin-right: 8%">   
+            <!-- <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = "window.location.href = 'index.html'" >Submit</button> -->
+            <!-- <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = DoHW() >Start</button> -->
+            <!-- <button onclick="DoHW()"> START </button> -->
+        </div>
+        </form> 
+        
+        
+
+        <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../../js/libs/jqueryLibrary.js"></script>
+        <script src = "../../js/libs/deparam.js"></script>
+
+        <script src = "../js/HW.js"></script>
+        <script src="../../assets/js/jquery.min.js"></script>
+        <script src="../../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../../assets/js/browser.min.js"></script>
+        <script src="../../assets/js/breakpoints.min.js"></script>
+        <script src="../../assets/js/util.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        
+        
+    </body>
+    
+</html>

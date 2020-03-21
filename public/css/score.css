@@ -1,0 +1,36 @@
+.scoreBox{
+    width: 100%;
+    display: flex;
+    background-color: rgb(207, 140, 255);
+    border: 3px solid rebeccapurple;
+}
+
+.scoreBox .totalScore {
+    width: 30%;
+    text-align: center;
+    display: block;
+    position: relative;
+    padding: 1%;
+    background-color: rgb(209, 81, 255);
+}
+
+.scoreBox .Line {
+    width: 0.5%;
+    display: block;
+    position: relative;
+    background-color: gray;
+}
+
+.scoreBox .scoreDetail {
+    width: 70%;
+    display: inline-block;
+    /* position: relative; */
+    padding: 1%;
+    text-align: center;
+}
+
+#questionBox{
+    display: block;
+    margin-left: 10%;
+    font-size: 100%;
+}

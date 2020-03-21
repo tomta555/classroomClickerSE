@@ -31,12 +31,12 @@ socket.on('connect',function(){
             socket.emit('req-quiz-data', params);
             break;
         case("createHw"):
-            mainTitle.innerHTML="create Hw";
+            mainTitle.innerHTML="create Homework";
             addQuestion();
             submitButton.setAttribute("onclick","updateDatabase('createHw', 0)");
-            submitButton.innerHTML="Create Quiz";
-            cancleButton.innerHTML="Cancle Quiz";
-            mainTitle.innerHTML="Create Quiz";
+            submitButton.innerHTML="Create Homework";
+            cancleButton.innerHTML="Cancle Homework";
+            mainTitle.innerHTML="Create Homework";
             break;
         case("editHw"):
             mainTitle.innerHTML="Edit Homework";
@@ -115,9 +115,9 @@ function updateDatabase(reqtype, Id){
         // baseScore
         baseScore = parseInt(document.getElementById(`score${i}`).value);
         if(baseScore == '') baseScore = 0;
-        questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": baseScore})
+        questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": parseInt(baseScore)})
     }
-    var data = { id: 0, "name": name, "questions": questions,"courseId": courseId,"user": uId};
+    var data = { id: 0,roundPlayed: 0, "name": name, "questions": questions,"courseId": courseId,"user": uId};
     switch(reqtype){
         case('createQuiz'):
             socket.emit('newQuiz',data);
@@ -135,11 +135,6 @@ function updateDatabase(reqtype, Id){
             break;
         }
 };
-
-function deleteQuiz(quizId){
-    socket.emit('deleteQuiz',{"id":quizId});
-}
-
 function addTagBox(questionNum, tagInput, tagNum){
     if(tagInput.value == ''){
         alert("tag must not be blank");
@@ -181,7 +176,8 @@ function addQuestion(){
                 <button style="background-color: rgb(240, 160, 56); "onclick="exportQeustion(${questionNum})" >export(not work yet)</button>
                 <button style="background-color: rgb(209, 61, 24); "onclick="deleteQuestion(${questionNum})" >Delete</button>
             </div>
-            <br>
+            
+            
             <div class="questionBox">
                 <div class="questionMain">
                     <label>Question : </label>
@@ -220,7 +216,7 @@ function addQuestion(){
                             <option value="Tag3">
                         </datalist>
                     <button class="addTagBut" onclick="addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), 0)">Add</button>
-                    
+                    <br>
                     <br>
                     <label>Score : </label>
                     <input id="score${questionNum}" type="text" class="Answer"></input>    
@@ -366,15 +362,22 @@ function addbuttonAns() {
     AnsDiv.getElementsByTagName("input")[0].setAttribute("id", `${countCorrect}correct${questionNum}`);
 }
 
+function deleteQuiz(quizId){
+    if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
+        window.location.href = `/courseInfo?courseId=${courseId}`;
+        socket.emit('deleteQuiz',{"id":quizId});
+    }
+}
+
 //Called when user wants to exit quiz creator
 function cancelQuiz() {
     if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
-        window.location.href = "/host_quiz";
+        window.location.href = "/courseInfo?courseId=${courseId}`";
     }
 }
 
 socket.on('backToHostPage', function (data) {
-    // window.location.href = `/courseInfo?courseId=${courseId}`;
+    window.location.href = `/courseInfo?courseId=${courseId}`;
 });
 
 function randomColor() {

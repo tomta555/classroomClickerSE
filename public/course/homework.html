@@ -25,19 +25,21 @@
         <header id="header">
 			<div class="logo container">
 				<div >
-                    <p>HOMEWORK</p>
+                    <h1 id="mainTitle">HOMEWORK</h1>
                     <!-- <h1><a style="color: rgb(82, 230, 95);" id = "logo" href = "quiz-creator/"><u>Course</u></a></h1> -->
 				</div>
 			</div>
         </header>
-        
-        <form action="/player/">
-            <table id="show-HW"></table>    
-        <div class="form-field" style="text-align:right; margin-right: 8%">   
-            <!-- <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = "window.location.href = 'index.html'" >Submit</button> -->
-            <!-- <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = DoHW() >Start</button> -->
-            <!-- <button onclick="DoHW()"> START </button> -->
-        </div>
+
+
+        <form id="show-HW" action='/DoHW' method='post'>
+            <table >
+                <button onclick="DoHW()"> START </button>                
+            </table>    
+        <!-- <div class="form-field" style="text-align:right; margin-right: 8%">   
+            <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = "window.location.href = 'index.html'" >Submit</button>
+            <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = DoHW() >Start</button>
+        </div>   -->
         </form> 
         
         

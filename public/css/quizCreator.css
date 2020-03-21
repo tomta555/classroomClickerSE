@@ -36,27 +36,27 @@
 .questionBox{
     width:100%;
     display:flex;
-    border: 3px solid rebeccapurple;
+   
 }
 .questionBox .questionMain{
-    width:71%;
+    width:67%;
     display:block;
     position: relative;
     padding:1%;
-    background-color: rgb(209, 81, 255);
+    background-color:  rgb(221, 195, 240); ; 
 }
 .questionBox .Line{
     width:0.5%;
     display:block;
     position: relative;
-    background-color: gray;
+    background-color: rgb(140, 140, 140);
 }
 .questionBox .questionDetail{
-    width: 29%;
+    width: 33%;
     display:block;
     position: relative;
     padding:1%;
-    background-color: rgb(207, 140, 255);
+    background-color: rgb(221, 195, 240); 
 }
 .questionTag{
     font-size: small;

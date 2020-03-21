@@ -49,6 +49,9 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
     app.get('/stat_teacherPage', function (req, res) {
         res.sendFile(path.join(__dirname, '../stat/teacher.html'));
     });
+    app.get('/stat_studentPage', function (req, res) {
+        res.sendFile(path.join(__dirname, '../stat/student.html'));
+    });
     app.get('/signup', function (req, res) {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });

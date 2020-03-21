@@ -4,7 +4,7 @@ var questionCounter = 0;
 var tags = [];
 var params = jQuery.deparam(window.location.search);
 var countCorrect = 1;
-var courseId = params.courseId;
+var courseId = parseInt(params.courseId);
 var uName;
 // var quizId;
 socket.on('connect',function(){
@@ -129,7 +129,7 @@ function updateDatabase(reqtype, Id){
             socket.emit('editQuiz',data);
             break;
         case('createHw'):
-            data.submitedStd = [];
+            data.submittedStd = [];
             socket.emit('newHw',data);
             break;
         case('editHw'):

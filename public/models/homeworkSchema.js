@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 
 var hwSchema = mongoose.Schema({
     hwid:Number,
+    courseId:Number,
     stdId:String,
     // round:Number,
     answer:[String],

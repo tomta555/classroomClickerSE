@@ -96,15 +96,16 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
                         }
                         
                     }
+                    homework.courseId = req.body.courseid
                     homework.hwid = req.body.hwid
                     homework.totalScore = totalScore
                     homework.save(function (err) {
                         if (err)
                             throw err;
                     });
-                    dbo.collection('Homeworks').updateOne({id:parseInt(req.body.hwid)}, {$push:{submitedStd:homework.stdId}})
+                    dbo.collection('Homeworks').updateOne({id:parseInt(req.body.hwid)}, {$push:{submittedStd:homework.stdId}})
                     db.close();
-                    res.redirect("/courseInfoStu?courseId="+req.body.courseid);
+                    res.redirect("/DoHW?id="+req.body.hwid+"&courseId="+req.body.courseid);
                 })
             })
         })

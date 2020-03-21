@@ -699,9 +699,9 @@ io.on('connection', (socket) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            dbo.collection("Homeworks").find().toArray(function (err, res) {
+            dbo.collection("Homeworks").findOne({ id : parseInt(data.id)},function (err, res) {
                 if (err) throw err;
-                socket.emit('DoHW',res[data.id-1]);
+                socket.emit('DoHW',res);
                 // console.log(res[data.id-1]);
                 db.close();
             });
@@ -748,6 +748,29 @@ io.on('connection', (socket) => {
                 db.close();
             })
         })    
+    })
+    socket.on('get-hw',(params)=>{
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("Homeworks").findOne({$and: [{courseId:parseInt(params.courseId)},{id:parseInt(params.id)}]}, function (err, result) {
+                if (err) throw err;
+                socket.emit('check-hw',result)
+                db.close();
+            })
+        })   
+    })
+    socket.on('get-already-done-hw',function(params){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("submittedHomework").findOne({$and: [{courseId:parseInt(params.courseId)},{hwid:parseInt(params.id)}]}, function (err, result) {
+                if (err) throw err;
+                socket.emit('already-done-hw',result)
+                db.close();
+            })
+        })  
+
     })
 
 });

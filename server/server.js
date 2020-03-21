@@ -735,6 +735,32 @@ io.on('connection', (socket) => {
             })
         }
     });
+
+    socket.on('get-users', function(){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("users").find({}).toArray(function (err, res) {
+                if (err) throw err;
+                socket.emit('users-detail', res);
+                db.close();
+            });
+        })
+    });
+
+    socket.on('get-course-detail', function(data){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            var query = {id: parseInt(data.id)};
+            dbo.collection("courses").findOne(query, function (err, result) {
+                if (err) throw err;
+                socket.emit('course-detail', result)
+                db.close();
+            })
+        })
+    });
+
     socket.on('get-game-id',function(){
         var player = players.getPlayer(socket.id);
         var hostId = player.hostId;
@@ -749,5 +775,16 @@ io.on('connection', (socket) => {
             })
         })    
     })
-
+    socket.on('update-course', function(data){
+        data.id = parseInt(data.id);
+        delete data._id;
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("courses").updateOne({id: data.id}, {$set: data}, function (err, result) {
+                if (err) throw err;
+                db.close();
+            })
+        })
+    })
 });

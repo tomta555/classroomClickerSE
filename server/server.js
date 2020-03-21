@@ -96,13 +96,33 @@ io.on('connection', (socket) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            dbo.collection('courses').find({"teacher" : { $in : [data] }}).toArray(function (err, result) {
+            dbo.collection('courses').find({"teachers" : { $in : [data] }}).toArray(function (err, result) {
                 if (err) throw err;
                 socket.emit('course-detail', result);
             });
         })
     });
-
+    socket.on('addCourse', (data)=>{
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection('courses').find({}).toArray(function (err, result) {
+                if (err) throw err;
+                var num = Object.keys(result).length;
+                if (num == 0) {
+                    data.id = 1
+                    num = 1
+                } else {
+                    data.id = parseInt(result[num - 1].id) + 1;
+                }
+                dbo.collection("courses").insertOne(data, function (err, res) {
+                    if (err) throw err;
+                    db.close();
+                });
+                db.close();    
+            });
+        });
+    });
 
     //When host connects for the first time
     socket.on('host-join', (data) => {

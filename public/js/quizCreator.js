@@ -78,6 +78,7 @@ function updateDatabase(reqtype, Id){
     for (let i = 1; i <= questionNum; i++) {
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
+        var qtag = document.getElementById(`tagbox${i}`);
         var messages = qtag.getElementsByClassName("tag-message");
         var tags = [];
         var baseScore;
@@ -97,6 +98,10 @@ function updateDatabase(reqtype, Id){
                 var answer4 = document.getElementById(i + 'a4').value;
                 correct = radioCheck(i);
                 answers = [answer1, answer2, answer3, answer4];
+                if(answer1 == '' || answer2 == '' || answer3 == '' || answer4 == ''){
+                    alertText += 'answer(s) must not blank.';
+                    added = true;
+                } 
                 break;
             case ("2c"):
                 correct = radioCheck(i);
@@ -108,7 +113,7 @@ function updateDatabase(reqtype, Id){
                 break;
         }
         // baseScore
-        baseScore = document.getElementById(`score${i}`).value;
+        baseScore = parseInt(document.getElementById(`score${i}`).value);
         if(baseScore == '') baseScore = 0;
         questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": baseScore})
     }
@@ -207,7 +212,7 @@ function addQuestion(){
                     </div>
                     
                     <label>Tags :
-                        <input list="browsers" name="myBrowser" id="tagInput1"/>
+                        <input list="browsers" name="myBrowser" id="tagInput${questionNum}"/>
                     </label>
                         <datalist id="browsers">
                             <option value="Tag1">
@@ -251,6 +256,10 @@ function radioCheck(i) {
 }
 
 function addDataToQuestion(questionNum, data){
+    var tablinks = document.getElementsByClassName(`tablinks${questionNum}`);
+    var tagInput = document.getElementById(`tagInput${questionNum}`);
+    var scoreInput = document.getElementById(`score${questionNum}`);
+    var tags = data.tag;
     document.getElementById(`q${questionNum}`).value = data.question;
     switch(data.type){
         case("4c"):
@@ -273,19 +282,21 @@ function addDataToQuestion(questionNum, data){
     if(data.type == "4c" || data.type == "2c"){
         document.getElementById(`radio${data.correct}${questionNum}`).checked = true;
     }
-    var tablinks = document.getElementsByClassName(`tablinks${questionNum}`);
     for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].className.replace(" active", "");
         if(tablinks[i].innerHTML == quizType){
             tablinks[i].className += " active";
         }
     }
-    var tagInput = document.getElementById(`tagInput${questionNum}`);
-    var tags = data.tag;
+    
     for(i=0; i<tags.length; i++){
         tagInput.value = tags[i];
         addTagBox(questionNum, tagInput, i);
     }
+    tagInput.value = "";
+
+    scoreInput.value = data.score;
+
 }
 
 function openTab(evt, quizType, id){

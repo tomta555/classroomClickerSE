@@ -6,6 +6,7 @@ var timer;
 var questionNumber = 0;
 var time;
 var type_Q;
+var SAcorrectAns;
 var latestPlayerCount = 0;
 var latestPlayerInGame = 0;
 //When host connects to server
@@ -21,6 +22,7 @@ socket.on('noGameFound', function () {
 
 socket.on('gameQuestions', function (data) {
     questionNumber += 1; 
+    document.getElementById('timerText').style.display = "block";
     switch (data.type) {
         case "4c":
             type_Q = "4c"
@@ -66,8 +68,18 @@ socket.on('gameQuestions', function (data) {
         case "sa":
             type_Q = "sa"
             document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / ";  // Add total number of questions
-            document.getElementById('QA123').innerHTML = `<h2 id = 'question'>${data.q1}</h2>`
+            document.getElementById('QA123').innerHTML = `
+                <h2 id = 'question'>${data.q1}</h2>
+                <div id = "SAAnsTable"></div>`
+            document.getElementById('foot-nav').style.webkitAnimation = "slide-up 500ms";
+            document.getElementById('foot-nav').style.animation = "slide-up 500ms";
+            document.getElementById('Inform').style.webkitAnimationDelay = "1s";
+            document.getElementById('Inform').style.animationDelay = "1s";
+            document.getElementById('Inform').style.display = "block";
+            
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
+            SAcorrectAns = data.correct // show correct answer but it still bug with undefined
+    
             updateTimer();
             break;
     }
@@ -92,6 +104,9 @@ socket.on('questionOver', function (playerData, correct) {
     var total = 0;
 
     document.getElementById('playersAnswered').innerHTML = "Players Answered " + latestPlayerCount + " / " + latestPlayerInGame;
+    var nextQTable = `<a onclick = "nextQuestion()">Next Question >></a>`;
+    document.getElementById('timerText').style.display = "none";
+    document.getElementById('nextQButton').innerHTML = nextQTable;
 
     if (type_Q == '4c') {
     
@@ -192,7 +207,7 @@ socket.on('questionOver', function (playerData, correct) {
         document.getElementById('revealAns3').style.display = "block";
         document.getElementById('revealAns4').style.display = "block";
         // Next question button
-        document.getElementById('nextQButton').style.display = "inline-block";
+        document.getElementById('nextQButton').style.display = "block";
     
     
     } else if (type_Q == '2c') {
@@ -238,11 +253,15 @@ socket.on('questionOver', function (playerData, correct) {
         document.getElementById('revealAns1').style.display = "block";
         document.getElementById('revealAns2').style.display = "block";
         
-        document.getElementById('nextQButton').style.display = "inline-block";
+        document.getElementById('nextQButton').style.display = "block";
     } else if (type_Q == 'sa') {
-        
-        document.getElementById('nextQButton').style.display = "inline-block";
-
+        var SAAnsTable = `<br><br><h3>Correct Answer:<br><br><span id = "SAcorrectAns">${SAcorrectAns}</span></h3>`;
+        document.getElementById('SAAnsTable').innerHTML = SAAnsTable;
+        document.getElementById('SAAnsTable').style.display = "block";
+        document.getElementById('nextQButton').style.display = "block";
+        document.getElementById('foot-nav').style.webkitAnimation = "slide-down 500ms";
+        document.getElementById('foot-nav').style.animation = "slide-down 500ms";
+        document.getElementById('Inform').style.display = "none";
     }
 });
 
@@ -267,7 +286,11 @@ function nextQuestion() {
     setBgColor(document.getElementById('revealAns3'), "rgb(241, 48, 48)", "0%", true);
     setBgColor(document.getElementById('revealAns2'), "#f57deb", "0%", true);
     setBgColor(document.getElementById('revealAns1'), "#4dacc8", "0%", true);
-    var a = document.getElementById('answer5'); if(a != undefined) a.style.display = "none";
+    var a = document.getElementById('answer5'); 
+    if(a != undefined){
+        a.style.display = "none";
+        document.getElementById('SAAnsTable').style.display = "none";
+    }
     
     document.getElementById('nextQButton').style.display = "none";
     document.getElementById('playersAnswered').style.display = "block";
@@ -340,7 +363,7 @@ socket.on('GameOver', function (data) {
 });
 
 function backButton() {
-    window.location.href = "../../create";
+    window.location.href = "../../create/host_quiz.html";
 }
 
 socket.on('getTime', function (player) {

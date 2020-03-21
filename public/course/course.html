@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Course</title>
+        <link rel = "stylesheet" href = "../css/course.css">
         <link rel = "stylesheet" href = "../css/info.css" />
         <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
         <meta charset="utf-8" />
@@ -36,37 +37,67 @@
             <br>
         
             <div id = "game-list"></div> 
-                <div id="courseList" class="form-field" style="text-align:center;">
-                        <button class = "backButton" style=" font-size:44px;" onclick = "window.location.href = 'course/info.html?courseId=1'" >COURSE1<br>
-                            <label style = "font-size:25px">Description...here...</label><br><br><br>
-                            <label style = "font-size:18px;">Homekwork...here...</label>
-                        </button>
+                <div class="form-field">
+                    <button class = "backButton" style="width: 378.56px; height: 313.2px; font-size:44px;" onclick = "window.location.href = 'course/info.html'" >COURSE1<br>
+                        <label style = "font-size:25px">Description...here...</label><br><br><br>
+                        <label style = "font-size:18px;">Homework...here...</label>
+                    </button>
 
-                        <button class = "backButton" style=" font-size:44px;" onclick = "window.location.href = 'course/info.html?courseId=2'" >COURSE2<br>
-                            <label style = "font-size:25px">Description...here...</label><br><br><br>
-                            <label style = "font-size:18px;">Homekwork...here...</label>
-                        </button>
+                    <button class = "backButton" style="width: 378.56px; height: 313.2px; font-size:44px;" onclick = "window.location.href = 'course/info.html'" >COURSE2<br>
+                        <label style = "font-size:25px">Description...here...</label><br><br><br>
+                        <label style = "font-size:18px;">Homework...here...</label>
+                    </button>
 
-                        <button class = "backButton" style=" font-size:44px;" onclick = "window.location.href = 'course/info.html?courseId=3'" >COURSE3<br>
-                            <label style = "font-size:25px">Description...here...</label><br><br><br>
-                            <label style = "font-size:18px;">Homekwork...here...</label>
-                        </button>
+                    <button class = "backButton" style="width: 378.56px; height: 313.2px; font-size:44px;" onclick = "window.location.href = 'course/info.html'" >COURSE3<br>
+                        <label style = "font-size:25px">Description...here...</label><br><br><br>
+                        <label style = "font-size:18px;">Homework...here...</label>
+                    </button>
+
+                    <button class = "backButton" style="width: 378.56px; height: 313.2px; font-size:44px;" onclick = "window.location.href = 'course/info.html'" >COURSE4<br>
+                        <label style = "font-size:25px">Description...here...</label><br><br><br>
+                        <label style = "font-size:18px;">Homework...here...</label>
+                    </button>
+                            
+                    <button class = "createCard" onclick="document.getElementById('createPopUp').style.display='block'">
+                        <div>Add New Course</div><br>
+                        <div class = "plus"><img src = "../img/plus.png"></div>
+                    </button>
+                            
+                    <div id = "createPopUp" class = "modal">
+                        <span onclick="document.getElementById('createPopUp').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <form class="modal-content animate" action="/action_page.php">
+                                
+                            <div class="container" style = "padding: 16px 4%; width: 100%">
+                                <br>
+                                <label for="courseid"><b>Course ID</b></label>
+                                <input style="width: 100%;" type="text" name="courseid" required>
+                            
+                                <label for="coursename"><b>Course Name</b></label>
+                                <input style="width: 100%;" type="text" name="coursename" required>
+
+                                <label for="coursedesc"><b>Course Description</b></label>
+                                <textarea style="width: 100%;" name="coursedesc"></textarea>
+                                <br>
+                            </div>
+                            <div class="confirm-container">
+                                <button type="submit">Add Course</button>
+                                <button type="button" onclick="document.getElementById('createPopUp').style.display='none'" class="cancelbtn">Cancel</button>
+                            </div>
+                            
+                        </form>
                     </div>
-                    <br>
-                    <br>
-                    <br>
-                    <button style="background-color:#864cbf; font-size:22px; " onclick = "window.location.href = '/create_course'" >create new course</button>
-                 
-
+                    
+                    <!-- <button style="background-color:#864cbf; font-size:22px; " onclick = "window.location.href = '/create_course'" >create new course</button> -->
+                </div>
         <br>
         <br>
-
 
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../js/libs/jqueryLibrary.js"></script>
         <script src = "../js/libs/deparam.js"></script>
         <script src = "../js/courseMain.js"></script>
         <!-- <script src = "../../js/create.js"></script> -->
+        <script src = "../js/addCourse.js"></script>
 
         <script src="../../assets/js/jquery.min.js"></script>
         <script src="../../assets/js/jquery.dropotron.min.js"></script>

@@ -303,28 +303,22 @@ io.on('connection', (socket) => {
                     if (err) throw err;
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
                     var NubAnsSA = res[0].questions[gameQuestion - 1].answers.length;
+                    var isCorrect = false;
+                    var score = res[0].questions[gameQuestion - 1].score;
                     //Checks player answer with correct answer
-                    if (type == "4c" || type == "2c") {
-                        if (num == correctAnswer) {
-                            player.gameData.score += 100;
-                            // player.answeredQuestion.push({});
-                            io.to(game.pin).emit('getTime', socket.id);
-                            socket.emit('answerResult', true);
-                        }
-                    }
-                    else if (type == "sa") {
+                    if (type == "sa") {
                         num = num.toUpperCase()
                         for (var i = 0; i < NubAnsSA; i++) {
                             tempCorrect = res[0].questions[gameQuestion - 1].answers[i];
                             tempCorrect = tempCorrect.toUpperCase();
-                            if (num == tempCorrect) {
-                                player.gameData.score += 100;
-                                // player.answeredQuestion.push({});
-                                io.to(game.pin).emit('getTime', socket.id);
-                                socket.emit('answerResult', true);
-                            }
+                            if(num == tempCorrect) isCorrect = true;
                         }
-
+                    }
+                    if (num == correctAnswer || iscorrect) {
+                        player.gameData.score += score;
+                        // player.answeredQuestion.push({});
+                        io.to(game.pin).emit('getTime', socket.id);
+                        socket.emit('answerResult', true);
                     }
                     //Checks if all players answered
                     if (game.gameData.playersAnswered == playerNum.length) {

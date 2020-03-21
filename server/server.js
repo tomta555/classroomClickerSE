@@ -55,7 +55,7 @@ app.use(express.static(publicPath));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
-require('../public/config/routes')(app, passport);
+require('../public/config/routes')(app, passport,MongoClient,url,ObjectID);
 
 io.use(sharedsession(sessionMiddleware, {
     autoSave: true
@@ -686,11 +686,11 @@ io.on('connection', (socket) => {
             dbo.collection("Homeworks").find().toArray(function (err, res) {
                 if (err) throw err;
                 socket.emit('DoHW',res[data.id-1]);
-                console.log(res[data.id-1]);
+                // console.log(res[data.id-1]);
                 db.close();
             });
         });
-        console.log("I'm here with id = " + data.id);
+        // console.log("I'm here with id = " + data.id);
     });
 
     socket.on('pushPlayedData', function (playedData) {
@@ -714,6 +714,7 @@ io.on('connection', (socket) => {
                     // result
                     // get user data here
                     socket.emit('user-detail', result)
+                    db.close();
                 })
             })
         }

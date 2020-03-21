@@ -7,10 +7,10 @@ var score = 0;
 var params = jQuery.deparam(window.location.search); //Gets the id from url
 
 var playedData = {
-    questionid : 0, // how to get ?
+    questionid : 0, 
     answer : [],
-    pid    : '',
-    round  : 0, // how to get ?
+    stdId    : '',
+    round  : 0, 
     score  : 0
 }
 
@@ -30,7 +30,7 @@ socket.on('retrieve-game-id',function(gameid,round){
 
 
 socket.on('user-detail', function (udetail) {
-    playedData.pid += udetail.local.studentID
+    playedData.stdId += udetail.local.studentID
 })
 
 function showAns(type) {

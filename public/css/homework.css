@@ -111,7 +111,6 @@
   margin: 20px;
   margin-left: 10%;
   margin-right: 10%;
- 
 }
 
 .card {
@@ -147,6 +146,8 @@
   background: linear-gradient(110deg, #8c65a5 60%, #b390ca 60%);
 }
 
+
+
 .homeworkList button{
   background: #fdcd3b;
   color: #000;
@@ -161,6 +162,7 @@ table {
   position: relative;
   display: flex;
 }
+
 
 .fText {
   display: block;

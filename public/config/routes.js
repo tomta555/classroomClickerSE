@@ -34,7 +34,7 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
     app.get('/host_quiz', function (req, res) {
         res.sendFile(path.join(__dirname, '../create/host_quiz.html'));
     });
-    app.get('/courses', function (req, res) {
+    app.get('/courses', isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../course/course.html'));
     });
     app.get('/courseInfo', function (req, res) {
@@ -73,8 +73,8 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
         var totalScore = 0
         var key = []
         for (k in req.body) key.push(k)
-        key.shift()
-
+        key.shift();
+        key.shift();
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
@@ -99,9 +99,9 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
                         if (err)
                             throw err;
                     });
+                    dbo.collection('Homeworks').updateOne({id:parseInt(req.body.hwid)}, {$push:{submitedStd:homework.stdId}})
                     db.close();
-
-                    res.redirect
+                    res.redirect("/courseInfoStu?courseId="+req.body.courseid);
                 })
             })
         })

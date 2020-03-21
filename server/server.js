@@ -78,7 +78,7 @@ io.on('connection', (socket) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            dbo.collection('courses').find({"teachers" : { $in : [data] }}).toArray(function (err, result) {
+            dbo.collection('courses').find({$or:[{"teachers":{$in : [data]}}, {"students":{$in:[data]}}]}).toArray(function (err, result) {
                 if (err) throw err;
                 socket.emit('course-detail', result);
             });
@@ -316,7 +316,7 @@ io.on('connection', (socket) => {
                             if(num == tempCorrect) isCorrect = true;
                         }
                     }
-                    if (num == correctAnswer || iscorrect) {
+                    if (num == correctAnswer || isCorrect) {
                         player.gameData.score += score;
                         // player.answeredQuestion.push({});
                         io.to(game.pin).emit('getTime', socket.id);

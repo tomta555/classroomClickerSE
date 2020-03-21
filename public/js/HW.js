@@ -11,6 +11,7 @@ socket.on('connect', function() {
 function DoHW(){
     document.getElementById('show-HW').innerHTML = "";
     document.getElementById('show-HW').innerHTML = `<input type="text" name="hwid" value="${params.id}" style="display:none">`;
+    document.getElementById('show-HW').innerHTML += `<input type="text" name="courseid" value="${params.courseId}" style="display:none">`;
     socket.emit('ShowHW',params);
 };
 

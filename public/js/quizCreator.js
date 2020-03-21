@@ -5,7 +5,7 @@ var tags = [];
 var params = jQuery.deparam(window.location.search);
 var countCorrect = 1;
 var courseId = params.courseId;
-var uId;
+var uName;
 // var quizId;
 socket.on('connect',function(){
     socket.emit('get-user-detail');
@@ -50,7 +50,7 @@ socket.on('connect',function(){
     // socket.emit('getTags',{"id":params.courseId});
 });
 socket.on('user-detail',function(udetail){
-    uId = udetail._id;
+    uName = udetail.local.username;
 })
 // socket.on('TagsData', function(data){
 //     var tags = document.getElementsByClassName('dropdown-content');
@@ -113,13 +113,15 @@ function updateDatabase(reqtype, Id){
                 break;
         }
         // baseScore
-        baseScore = parseInt(document.getElementById(`score${i}`).value);
+        baseScore = document.getElementById(`score${i}`).value;
         if(baseScore == '') baseScore = 0;
+        else parseInt(baseScore);
         questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": parseInt(baseScore)})
     }
-    var data = { id: 0,roundPlayed: 0, "name": name, "questions": questions,"courseId": courseId,"user": uId};
+    var data = { id: 0, "name": name, "questions": questions,"courseId": courseId,"creator": uName};
     switch(reqtype){
         case('createQuiz'):
+            data.roundPlayed = 0;
             socket.emit('newQuiz',data);
             break;
         case('editQuiz'):
@@ -127,6 +129,7 @@ function updateDatabase(reqtype, Id){
             socket.emit('editQuiz',data);
             break;
         case('createHw'):
+            data.submitedStd = [];
             socket.emit('newHw',data);
             break;
         case('editHw'):
@@ -272,6 +275,7 @@ function addDataToQuestion(questionNum, data){
             quizType = "Short Answer";
             for (i in data.answers){
                 document.getElementById(`${parseInt(i)+1}correct${questionNum}`).value = data.answers[i];
+                if(i != data.answers.length-1) addbuttonAns();
             }
             break;
     }

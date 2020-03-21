@@ -364,6 +364,7 @@ socket.on('GameOver', function (data) {
 
 function backButton() {
     window.location.href = "../../create/host_quiz.html";
+    // edit
 }
 
 socket.on('getTime', function (player) {

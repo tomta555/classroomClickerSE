@@ -25,6 +25,18 @@ section, summary, time, mark, audio, video {
 	font: inherit;
 	vertical-align: baseline;}
 
+.score-box, .score-left, .score-right{
+	vertical-align: top;
+}
+.score-left td{
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size:large;
+}
+.score-right td{
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size:large;
+}
+
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
 	display: block;}
@@ -2236,12 +2248,12 @@ input, select, textarea {
 .tab {
 	overflow: hidden;
 	border: 1px solid #ccc;
-	background-color: #c065eb;
+	background-color:  rgb(205, 127, 255);;
   }
   
   /* Style the buttons inside the tab */
   .tab button {
-	background-color: inherit;
+	background-color:  rgb(180, 102, 240); ;
 	float: left;
 	border: none;
 	outline: none;

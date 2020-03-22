@@ -36,6 +36,9 @@ module.exports = function(app, passport) {
     app.get('/join', function(req, res) {
         res.sendFile(path.join(__dirname,'../join.html'));
     });
+    app.get('/stat_teacherPage', function(req, res) {
+        res.sendFile(path.join(__dirname,'../stat/teacher.html'));
+    });
     app.get('/signup', function(req, res) {
         res.render('signup.ejs', { message: req.flash('signupMessage') });
     });

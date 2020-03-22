@@ -677,7 +677,7 @@ io.on('connection', (socket) => {
                     db.close();
                 });
                 db.close();
-                socket.emit('CreateHW', num);
+                socket.emit('backToHostPage');
             });
 
         });

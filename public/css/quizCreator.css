@@ -77,17 +77,17 @@
     position: relative;
     display:inline-block;
     margin: 0px 10px;
-    padding: 0px 0px 0px 10px;
+    padding: 0px 0px 0px 5px;
     color:white;
     border-radius: 10%;
 }
-.questionTag div{
+.questionTag .tag-message{
   margin: 0px;
   padding: 0px;
   display: inline;
 }
 .questionTag button{
-    margin-left: 10px;
+    margin-left: 5px;
     max-width: 20px;
     max-height: 20px;
     font-size:xx-small;

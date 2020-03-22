@@ -67,6 +67,7 @@ socket.on('gameData-edit',function(data){
 });
 
 function updateDatabase(reqtype, Id){
+    console.log(reqtype);
     var alertText;
     var alertFlag = false;
     var questions = [];
@@ -119,6 +120,7 @@ function updateDatabase(reqtype, Id){
         questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": parseInt(baseScore)})
     }
     var data = { id: 0, "name": name, "questions": questions,"courseId": courseId,"creator": uName};
+    console.log(data);
     switch(reqtype){
         case('createQuiz'):
             data.roundPlayed = 0;
@@ -376,12 +378,12 @@ function deleteQuiz(quizId){
 //Called when user wants to exit quiz creator
 function cancelQuiz() {
     if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
-        window.location.href = "/courseInfo?courseId=${courseId}`";
+        window.location.href = `/courseInfo?courseId=${courseId}`;
     }
 }
 
 socket.on('backToHostPage', function (data) {
-    window.location.href = `/courseInfo?courseId=${courseId}`;
+    window.location.href = `/courseInfo?courseId=`+courseId;
 });
 
 function randomColor() {

@@ -30,30 +30,43 @@ module.exports = function (passport) {
                     // if there are any errors, return the error
                     if (err)
                         return done(err);
-
                     // check to see if theres already a user with that username
                     if (user) {
                         return done(null, false, req.flash('signupMessage', 'This username is already taken.'));
                     } else {
-
-                        // if there is no user with that username
-                        // create the user
-                        var newUser = new User();
-
-                        // set the user's local credentials
-                        // set data to database here
-                        newUser.local.username = username;
-                        newUser.local.password = newUser.generateHash(password);
-                        newUser.local.studentID = req.body.studentID
-                        newUser.local.fname = req.body.fname
-                        newUser.local.lname = req.body.lname
-                        // newUser.local.isTeacher = req.body.isTeacher
-                        // save the user
-                        newUser.save(function (err) {
+                        User.findOne({ 'local.studentID': req.body.studentID }, function (err, stdID) {
                             if (err)
-                                throw err;
-                            return done(null, newUser);
-                        });
+                                return done(err);
+                            // check to see if theres already a user with that username
+                            if (stdID) {
+                                return done(null, false, req.flash('signupMessage', 'This studentID is already taken.'));
+                            } else {
+                                if (password != req.body.confirmPassword)
+                                    return done(null, false, req.flash('signupMessage', 'Confirm password mismatch.'));
+                                // if there is no user with that username
+                                // create the user
+                                var newUser = new User();
+
+                                // set the user's local credentials
+                                // set data to database here
+                                newUser.local.username = username;
+                                newUser.local.password = newUser.generateHash(password);
+                                newUser.local.fname = req.body.fname
+                                newUser.local.lname = req.body.lname
+                                if (req.body.isTeacher == 'on') {
+                                    newUser.local.isTeacher = true
+                                } else {
+                                    newUser.local.isTeacher = false
+                                    newUser.local.studentID = req.body.studentID
+                                }
+                                // save the user
+                                newUser.save(function (err) {
+                                    if (err)
+                                        throw err;
+                                    return done(null, newUser);
+                                });
+                            }
+                        })
                     }
                 });
             });
@@ -72,7 +85,6 @@ module.exports = function (passport) {
                 // if there are any errors, return the error before anything else
                 if (err)
                     return done(err);
-
                 // if no user is found, return the message
                 if (!user)
                     return done(null, false, req.flash('loginMessage', 'No user found.')); // req.flash is the way to set flashdata using connect-flash
@@ -82,6 +94,7 @@ module.exports = function (passport) {
                     return done(null, false, req.flash('loginMessage', 'Oops! Wrong password.')); // create the loginMessage and save it to session as flashdata
 
                 // all is well, return successful user
+                // console.log(user)
                 return done(null, user);
             });
 

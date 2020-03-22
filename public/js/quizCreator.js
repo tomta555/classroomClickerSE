@@ -5,8 +5,10 @@ var tags = [];
 var params = jQuery.deparam(window.location.search);
 var countCorrect = 1;
 var courseId = params.courseId;
+var uName;
 // var quizId;
 socket.on('connect',function(){
+    socket.emit('get-user-detail');
     var mainTitle = document.getElementById('mainTitle');
     var submitButton = document.getElementById('submitButton');
     var cancleButton = document.getElementById('cancleButton');
@@ -47,51 +49,47 @@ socket.on('connect',function(){
     }
     // socket.emit('getTags',{"id":params.courseId});
 });
-
+socket.on('user-detail',function(udetail){
+    uName = udetail.local.username;
+})
 // socket.on('TagsData', function(data){
 //     var tags = document.getElementsByClassName('dropdown-content');
     
 // });
 
-
 socket.on('gameData-edit',function(data){
     document.getElementById("name").value=`${data.name}`;
-    // quizId = data.id;
     for(q in data.questions){
         addQuestion();
-        fixedOpenTab(questionNum, data.questions[String(q)]);
-        var tagInput = document.getElementById(`tagInput${parseInt(q)+1}`);
-        var tags = data.questions[String(q)].tag;
-        for(i=0; i<tags.length; i++){
-            tagInput.value = tags[i];
-            addTagBox(questionNum, tagInput, i);
-        }
+        openTab("newQuestion", data.questions[String(q)].type, questionNum);
+        addDataToQuestion(questionNum, data.questions[String(q)])
     }
 });
+
 function updateDatabase(reqtype, Id){
     var alertText;
     var alertFlag = false;
     var questions = [];
-    var tags;
     var name = document.getElementById('name').value;
     if(name == "" || name == undefined){
         alertFlag = true;
         alertText += `<div>The quiz must have a name</div>`;
     }
-    for (var i = 1; i <= questionNum; i++) {
+    for (let i = 1; i <= questionNum; i++) {
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
-        var qtag = document.getElementById("tagbox"+i);
+        var qtag = document.getElementById(`tagbox${i}`);
         var messages = qtag.getElementsByClassName("tag-message");
-        tags = [];
-        if(qtag !== undefined){
-            for(k=0;k<messages.length;k++){
-                tags.push(messages[k].innerText);
-            }
-        }
+        var tags = [];
+        var baseScore;
         var answers = [];
         var qtype = document.getElementById('type'+i).innerText;
         var correct;
+        // tags 
+        for(k=0;k<messages.length;k++){
+            tags.push(messages[k].innerText);
+        }
+        // answer & correct 
         switch(qtype){
             case("4c"):
                 var answer1 = document.getElementById(i + 'a1').value;
@@ -100,22 +98,30 @@ function updateDatabase(reqtype, Id){
                 var answer4 = document.getElementById(i + 'a4').value;
                 correct = radioCheck(i);
                 answers = [answer1, answer2, answer3, answer4];
+                if(answer1 == '' || answer2 == '' || answer3 == '' || answer4 == ''){
+                    alertText += 'answer(s) must not blank.';
+                    added = true;
+                } 
                 break;
             case ("2c"):
                 correct = radioCheck(i);
                 break;
             case("sa"):
                 for (var j = 1; j <= countCorrect; j++){
-                    tempans = document.getElementById(j + 'correct' + i).value;
-                    answers[j - 1] = tempans.toUpperCase();
-               }
-            }
-            questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct})
+                    answers[j-1] = document.getElementById(j + 'correct' + i).value;
+                }
+                break;
+        }
+        // baseScore
+        baseScore = document.getElementById(`score${i}`).value;
+        if(baseScore == '') baseScore = 0;
+        else parseInt(baseScore);
+        questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": parseInt(baseScore)})
     }
-    var data = { id: 0, "name": name, "questions": questions,"courseId": courseId };
-    console.log(data);
+    var data = { id: 0, "name": name, "questions": questions,"courseId": courseId,"creator": uName};
     switch(reqtype){
         case('createQuiz'):
+            data.roundPlayed = 0;
             socket.emit('newQuiz',data);
             break;
         case('editQuiz'):
@@ -123,6 +129,7 @@ function updateDatabase(reqtype, Id){
             socket.emit('editQuiz',data);
             break;
         case('createHw'):
+            data.submitedStd = [];
             socket.emit('newHw',data);
             break;
         case('editHw'):
@@ -132,6 +139,10 @@ function updateDatabase(reqtype, Id){
         }
 };
 function addTagBox(questionNum, tagInput, tagNum){
+    if(tagInput.value == ''){
+        alert("tag must not be blank");
+        return;
+    }
     var tagbox = document.getElementById(`tagbox${questionNum}`);
     var thistag = document.createElement("div");
     var delBut = document.createElement("button");
@@ -151,6 +162,7 @@ function addTagBox(questionNum, tagInput, tagNum){
     document.getElementsByClassName('addTagBut')[questionNum-1].setAttribute('onclick', `addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), ${tagNum})`);
     tagInput.value = "";
 }
+
 function addQuestion(){
     var questionTable = "";
     questionCounter += 1;
@@ -199,7 +211,7 @@ function addQuestion(){
                     </div>
                     
                     <label>Tags :
-                        <input list="browsers" name="myBrowser" id="tagInput1"/>
+                        <input list="browsers" name="myBrowser" id="tagInput${questionNum}"/>
                     </label>
                         <datalist id="browsers">
                             <option value="Tag1">
@@ -216,6 +228,7 @@ function addQuestion(){
         <br>`;
     questionTable.appendChild(thisQuestion);
 }
+
 function deleteQuestion(i) {
     questionCounter -= 1;
     document.getElementById(`Question${i}`).remove();
@@ -227,8 +240,8 @@ function deleteQuestion(i) {
             counter++;
         }
     }
-
 }
+
 function radioCheck(i) {
     var allRadio = document.getElementsByName(`correct${i}`);
     var found;
@@ -241,86 +254,66 @@ function radioCheck(i) {
     if(!found) return "not found";
 }
 
-function fixedOpenTab(id, data){
-    var targetQuestion = document.getElementById(`tabcontent${id}`);
-    var tabcontent = `
-            <br>
-            <label>Question : </label>
-            <input class = "question" id = "q${id}" type = "text" value='${data.question}'>
-            <br>
-            <br>`;
+function addDataToQuestion(questionNum, data){
+    var tablinks = document.getElementsByClassName(`tablinks${questionNum}`);
+    var tagInput = document.getElementById(`tagInput${questionNum}`);
+    var scoreInput = document.getElementById(`score${questionNum}`);
+    var tags = data.tag;
+    document.getElementById(`q${questionNum}`).value = data.question;
     switch(data.type){
         case("4c"):
             quizType = "4 choices";
-            tabcontent = `
-            <div id="type${id}" style = "display:none">4c</div>
-            
-            <input type = "radio" id = "radio1${id}" name = "correct${id}" value = 1></input>
-            <label>Answer 1: </label>
-            <input id = "${id}a1" type = "text" value='${data.answers[0]}'>
-            <input type = "radio" id = "radio2${id}" name = "correct${id}" value = 2></input>
-            <label>Answer 2: </label>
-            <input id = "${id}a2" type = "text" value='${data.answers[1]}'>
-            <br>
-            <br>
-            <input type = "radio" id = "radio3${id}" name = "correct${id}" value = 3></input>
-            <label>Answer 3: </label>
-            <input id = "${id}a3"  type = "text" value='${data.answers[2]}'>
-            <input type = "radio" id = "radio4${id}" name = "correct${id}" value = 4></input>
-            <label>Answer 4: </label>
-            <input id = "${id}a4"  type = "text" value='${data.answers[3]}'>`
+            document.getElementById(`${questionNum}a1`).value = data.answers[0];
+            document.getElementById(`${questionNum}a2`).value = data.answers[1];
+            document.getElementById(`${questionNum}a3`).value = data.answers[2];
+            document.getElementById(`${questionNum}a4`).value = data.answers[3];
             break;
         case("2c"):
             quizType = "true or false";
-            tabcontent = `
-            <div id="type${id}" style = "display:none">2c</div>
-            <input type = "radio" id = "radio1${id}" name = "correct${id}" value = 1></input> <label>True</lebel>
-            <input type = "radio" id = "radio2${id}" name = "correct${id}" value = 2></input> <label>False</lebel>`
             break;
         case("sa"):
             quizType = "Short Answer";
-            tabcontent = `
-            <div id="type${id}" style = "display:none">sa</div>
-            <label>Correct Answer :</label>`
-            for(i in data.answers){
-                tabcontent += `
-                    <input class = "question" id = "${parseInt(i)+1}correct${id}" value='${data.answers[i]}' type = "text">
-                `;
+            for (i in data.answers){
+                document.getElementById(`${parseInt(i)+1}correct${questionNum}`).value = data.answers[i];
+                if(i != data.answers.length-1) addbuttonAns();
             }
-    }
-    targetQuestion.innerHTML = tabcontent;
-    //make sure that there are no weird symbol (' or ")
-    document.getElementById(`q${id}`).value = data.question;
-    if(data.type == "4c"){
-        document.getElementById(`${id}a1`).value = data.answers[0];
-        document.getElementById(`${id}a2`).value = data.answers[1];
-        document.getElementById(`${id}a3`).value = data.answers[2];
-        document.getElementById(`${id}a4`).value = data.answers[3];
+            break;
     }
     if(data.type == "4c" || data.type == "2c"){
-        document.getElementById(`radio${data.correct}${id}`).checked = true;
-    }else{
-        for (i in data.answers){
-            document.getElementById(`${parseInt(i)+1}correct${id}`).value = data.answers[i];
-        }
+        document.getElementById(`radio${data.correct}${questionNum}`).checked = true;
     }
-    var tablinks = document.getElementsByClassName(`tablinks${questionNum}`);
     for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+        tablinks[i].className.replace(" active", "");
         if(tablinks[i].innerHTML == quizType){
             tablinks[i].className += " active";
         }
     }
-}
-function openTab(evt, quizType, id){
-    if(evt.currentTarget.className == "active") return;
-    //unactive all tablinks
-    tablinks = document.getElementsByClassName(`tablinks${id}`);
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    
+    for(i=0; i<tags.length; i++){
+        tagInput.value = tags[i];
+        addTagBox(questionNum, tagInput, i);
     }
-    //active the target tablink
-    evt.currentTarget.className += " active";
+    tagInput.value = "";
+
+    scoreInput.value = data.score;
+
+}
+
+function openTab(evt, quizType, id){
+    var evtTarget = evt.currentTarget;
+    //unactive all tablinks
+    
+    if(evtTarget != undefined){
+        if(evtTarget.className == "active"){
+            return;
+        }else{
+            tablinks = document.getElementsByClassName(`tablinks${id}`);
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            evtTarget.className += " active";
+        }
+    }
     var targetQuestion = document.getElementById(`tabcontent${id}`);
     var tabcontent;
     switch (quizType) {

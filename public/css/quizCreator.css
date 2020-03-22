@@ -58,6 +58,18 @@
     padding:1%;
     background-color: rgb(221, 195, 240); 
 }
+.questionBox button{
+  margin: 0.5%;
+  padding: 1% 5%;
+  font-size: large;
+}
+.questionBox .listHolder{
+  height: 250px;
+  overflow-y: scroll;
+}
+.questionBox .questionList{
+  border-bottom: 3px solid azure;
+}
 .questionTag{
     font-size: small;
     text-align: center;

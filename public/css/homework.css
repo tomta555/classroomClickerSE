@@ -100,6 +100,9 @@
     background: linear-gradient(to bottom, #864cbf 70%,#888 30%);
 }
 
+
+
+
 .body {
   font-size: 15px;
 }
@@ -108,7 +111,6 @@
   margin: 20px;
   margin-left: 10%;
   margin-right: 10%;
- 
 }
 
 .card {
@@ -117,7 +119,7 @@
   color: white;
   font-weight: 800;
   height: 4em;
-  width: 35em;
+  width: 50%;
   padding: 0.5em 1em;
   border-radius: 0.25em;  
   display: table-cell;
@@ -144,6 +146,8 @@
   background: linear-gradient(110deg, #8c65a5 60%, #b390ca 60%);
 }
 
+
+
 .homeworkList button{
   background: #fdcd3b;
   color: #000;
@@ -159,6 +163,7 @@ table {
   display: flex;
 }
 
+
 .fText {
   display: block;
   position: relative;
@@ -172,4 +177,6 @@ table {
   user-select: none;
   color: white;
   }
+
+
   

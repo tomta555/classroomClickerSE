@@ -2,6 +2,7 @@
 <html>
     <head>
         <title>Course</title>
+        <link rel = "stylesheet" href = "../css/course.css">
         <link rel = "stylesheet" href = "../css/info.css" />
         <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
         <meta charset="utf-8" />
@@ -16,7 +17,7 @@
 		<nav id="nav">
 			<ul>
 				<li><a href="/profile">profile</a></li>
-				<li class="current"><a href="/course">courses</a></li>
+				<li class="current"><a href="/courses">courses</a></li>
                 <li><a href="/host_quiz">quiz</a></li>
 			</ul>
 		</nav>
@@ -62,14 +63,46 @@
                     </div>                
                 </div>
             </div>
-        
         <br>
         <br>
+        <div id = "addPopUp" class = "modal" style="display: none;">
+            <span onclick="document.getElementById('addPopUp').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <div class="modal-content animate">
+                <div class= "questionBox">
+                    <div class="questionMain" style="width: 49.75%; background-color: rgb(179, 108, 247); text-align: center; color: aliceblue;"> 
+                        Not in course  
+                    </div>
+                    <div class="Line"></div>
+                    <div class="questionMain" style="width: 49.75%; background-color: rgb(179, 108, 247); text-align: center; color: aliceblue;">
+                        already in course
+                    </div>
+                    <br>
+                </div>
+                <div class="container questionBox" style = "padding: 16px 4%; width: 100%">
+                    <div class="questionMain listHolder" id="notInCourse" style="width: 49.75%; text-align: right;" >
+                        
+                    </div>
+                    <div class="Line"></div>
+                    <div class="questionMain listHolder" id="InCourse" style="width: 49.75%;">
+                        
+                    </div>
+                </div>
+                <div class="confirm-container">
+                    <button onclick="updateCourse()">save</button>
+                    <button type="button" onclick="document.getElementById('addPopUp').style.display='none'" class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+        <div style="width: 100%; text-align: center;">
+            <button onclick="getTeacher()">Add Teachers</button>
+            <button onclick="getStudent()">Add Students</button>
+        </div>
+
 
         <script src = "../../js/libs/jqueryLibrary.js"></script>
         <script src = "../../js/libs/deparam.js"></script>
         <script src = "../../socket.io/socket.io.js"></script>
-        <script src = "../../js/course.js"></script>
+        <script src = "../js/course.js"></script>
 
         <script src="../../assets/js/jquery.min.js"></script>
         <script src="../../assets/js/jquery.dropotron.min.js"></script>

@@ -10,9 +10,7 @@ const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
-// const bcrypt = require('bcrypt');
-// const saltRounds = 10;
-
+const sharedsession = require("express-socket.io-session");
 //Import classes
 const { LiveGames } = require('./utils/liveGames');
 const { Players } = require('./utils/players');
@@ -39,16 +37,16 @@ var url = "mongodb://localhost:27017/";
 mongoose.connect(configDB.url);
 
 //config app
+var sessionMiddleware = session({
+    secret: 'clsroclker',// session secret
+    resave: false,
+    saveUninitialized: false,
+})
 require('../public/config/passport')(passport);
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json())
-app.use(session({
-    secret: 'clsroclker',
-    resave: false,
-    saveUninitialized: false
-
-})); // session secret
+app.use(sessionMiddleware);
 
 //Path
 const publicPath = path.join(__dirname, '../public');
@@ -57,8 +55,11 @@ app.use(express.static(publicPath));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
-require('../public/config/routes')(app, passport);
+require('../public/config/routes')(app, passport,MongoClient,url,ObjectID);
 
+io.use(sharedsession(sessionMiddleware, {
+    autoSave: true
+}));
 
 
 
@@ -72,21 +73,37 @@ server.listen(port, () => {
 //When a connection to server is made from client
 io.on('connection', (socket) => {
 
-    //When open pages
-    socket.on('checkID', function (id) {
+   
+    socket.on('get-courses', (data) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
-            //check if ObjID is 12 byte
-            if (Buffer.byteLength(id) == 12) {
-                var dbo = db.db('classroomClicker');
-                dbo.collection('user').find({ _id: ObjectID(id) }, function (err, result) {
-                    if (result != null) {
-                        socket.emit('already_logged_in')
-                    }
-                })
-            }
-
+            var dbo = db.db('classroomClicker');
+            dbo.collection('courses').find({$or:[{"teachers":{$in : [data]}}, {"students":{$in:[data]}}]}).toArray(function (err, result) {
+                if (err) throw err;
+                socket.emit('course-detail', result);
+            });
         })
+    });
+    socket.on('addCourse', (data)=>{
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection('courses').find({}).toArray(function (err, result) {
+                if (err) throw err;
+                var num = Object.keys(result).length;
+                if (num == 0) {
+                    data.id = 1
+                    num = 1
+                } else {
+                    data.id = parseInt(result[num - 1].id) + 1;
+                }
+                dbo.collection("courses").insertOne(data, function (err, res) {
+                    if (err) throw err;
+                    db.close();
+                });
+                db.close();    
+            });
+        });
     });
 
     //When host connects for the first time
@@ -268,7 +285,7 @@ io.on('connection', (socket) => {
     });
 
     //Sets data in player class to answer from player
-    socket.on('playerAnswer', function (num,type) {
+    socket.on('playerAnswer', function (num, type) {
         var player = players.getPlayer(socket.id);
         var hostId = player.hostId;
         var playerNum = players.getPlayers(hostId);
@@ -279,7 +296,6 @@ io.on('connection', (socket) => {
 
             var gameQuestion = game.gameData.question;
             var gameid = game.gameData.gameid;
-            console.log(gameid);
             MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
                 // console.log(num.toUpperCase())        
@@ -287,37 +303,30 @@ io.on('connection', (socket) => {
                 var query = { id: parseInt(gameid) };
                 dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                     if (err) throw err;
-                    console.log("b")
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
-                    var NubAnsSA = res[0].questions[gameQuestion-1].answers.length;
-                    console.log(NubAnsSA)
-                    console.log("a")
+                    var NubAnsSA = res[0].questions[gameQuestion - 1].answers.length;
+                    var isCorrect = false;
+                    var score = res[0].questions[gameQuestion - 1].score;
                     //Checks player answer with correct answer
-                    if(type == "4c" || type == "2c"){
-                        if (num == correctAnswer) {
-                            player.gameData.score += 100;
-                            // player.answeredQuestion.push({});
-                            io.to(game.pin).emit('getTime', socket.id);
-                            socket.emit('answerResult', true);
+                    if (type == "sa") {
+                        num = num.toUpperCase()
+                        for (var i = 0; i < NubAnsSA; i++) {
+                            tempCorrect = res[0].questions[gameQuestion - 1].answers[i];
+                            tempCorrect = tempCorrect.toUpperCase();
+                            if(num == tempCorrect) isCorrect = true;
                         }
                     }
-                    else if(type == "sa"){
-                        for(var i=0 ;i<NubAnsSA;i++){
-                            if(num == res[0].questions[gameQuestion-1].answers[i]){
-                                player.gameData.score += 100;
-                                // player.answeredQuestion.push({});
-                                io.to(game.pin).emit('getTime', socket.id);
-                                socket.emit('answerResult', true);
-                            }
-                        }
-                        
+                    if (num == correctAnswer || isCorrect) {
+                        player.gameData.score += score;
+                        // player.answeredQuestion.push({});
+                        io.to(game.pin).emit('getTime', socket.id);
+                        socket.emit('answerResult', true);
                     }
-
                     //Checks if all players answered
                     if (game.gameData.playersAnswered == playerNum.length) {
                         game.gameData.questionLive = false; //Question has been ended bc players all answered under time
                         var playerData = players.getPlayers(game.hostId);
-                        io.to(game.pin).emit('questionOver', playerData, correctAnswer);//Tell everyone that question is over
+                        io.to(game.pin).emit('questionOver', playerData, correctAnswer, type);//Tell everyone that question is over
                     } else {
                         //update host screen of num players answered
                         io.to(game.pin).emit('updatePlayersAnswered', {
@@ -365,15 +374,15 @@ io.on('connection', (socket) => {
             var query = { id: parseInt(gameid) };
             dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                 if (err) throw err;
-    
+
                 var dbo = db.db('classroomClicker');
-                var query = { id:  parseInt(gameid)};
-                dbo.collection("Quizzes").find(query).toArray(function(err, res) {
+                var query = { id: parseInt(gameid) };
+                dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                     if (err) throw err;
                     var correctAnswer = res[0].questions[gameQuestion - 1].correct;
-                    var type = res[0].questions[gameQuestion-1].type;
-                    io.to(game.pin).emit('questionOver', playerData, correctAnswer,type);
-                    
+                    var type = res[0].questions[gameQuestion - 1].type;
+                    io.to(game.pin).emit('questionOver', playerData, correctAnswer, type);
+
                     db.close();
                 });
             });
@@ -513,7 +522,15 @@ io.on('connection', (socket) => {
     });
 
     //When the host starts the game
-    socket.on('startGame', () => {
+    socket.on('startGame', function (params) {
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("Quizzes").updateOne({ id: parseInt(params.id) }, { $inc: { roundPlayed: 1 } }, function (err, result) {
+                if (err) throw err;
+                db.close();
+            })
+        })
         var game = games.getGame(socket.id);//Get the game based on socket.id
         game.gameLive = true;
         socket.emit('gameStarted', game.hostId);//Tell player and host that game has started
@@ -525,7 +542,7 @@ io.on('connection', (socket) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            query = {courseId: data.courseId}
+            query = { courseId: data.courseId }
             dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                 if (err) throw err;
                 socket.emit('gameNamesData', res);
@@ -539,7 +556,7 @@ io.on('connection', (socket) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            query = {courseId: data.courseId}
+            query = { courseId: data.courseId }
             dbo.collection("Homeworks").find(query).toArray(function (err, res) {
                 if (err) throw err;
                 socket.emit('HWData', res);
@@ -576,12 +593,12 @@ io.on('connection', (socket) => {
     });
 
     socket.on('deleteQuiz', (data) => {
-        MongoClient.connect(url, function(err, db){
-            if(err) throw err;
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
             var dbo = db.db("classroomClicker");
-            var query = {id: parseInt(data.id)};
-            dbo.collection('Quizzes').deleteOne(query, function(err, res){
-                if(err) throw err;
+            var query = { id: parseInt(data.id) };
+            dbo.collection('Quizzes').deleteOne(query, function (err, res) {
+                if (err) throw err;
                 socket.emit("backToHostPage");
                 db.close();
             });
@@ -678,17 +695,96 @@ io.on('connection', (socket) => {
         });
     });
 
-    socket.on('ShowHW',(data)=>{
-        // MongoClient.connect(url, function (err, db) {
-        //     if (err) throw err;
+    socket.on('ShowHW', function (data){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("Homeworks").find().toArray(function (err, res) {
+                if (err) throw err;
+                socket.emit('DoHW',res[data.id-1]);
+                // console.log(res[data.id-1]);
+                db.close();
+            });
+        });
+        // console.log("I'm here with id = " + data.id);
+    });
 
-        //     var dbo = db.db('classroomClicker');
-        //     dbo.collection("Homeworks").find().toArray(function (err, res) {
-        //         if (err) throw err;
-        //         // socket.emit('HWData', res);
-        //         db.close();
-        //     });
-        // });
-        socket.emit('DoHW',(data));
+    socket.on('pushPlayedData', function (playedData) {
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("PlayedQuizzes").insertOne(playedData, function (err, result) {
+                if (err) throw err;
+                db.close();
+            })
+        })
+    })
+    socket.on('get-user-detail', function () {
+        var userID = socket.handshake.session.passport
+        if (socket.handshake.session.passport != undefined) {
+            MongoClient.connect(url, function (err, db) {
+                if (err) throw err;
+                var dbo = db.db('classroomClicker');
+                dbo.collection('users').findOne({ _id: ObjectID(userID.user) }, function (err, result) {
+                    if (err) throw err;
+                    // result
+                    // get user data here
+                    socket.emit('user-detail', result)
+                    db.close();
+                })
+            })
+        }
+    });
+
+    socket.on('get-users', function(){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("users").find({}).toArray(function (err, res) {
+                if (err) throw err;
+                socket.emit('users-detail', res);
+                db.close();
+            });
+        })
+    });
+
+    socket.on('get-course-detail', function(data){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            var query = {id: parseInt(data.id)};
+            dbo.collection("courses").findOne(query, function (err, result) {
+                if (err) throw err;
+                socket.emit('course-detail', result)
+                db.close();
+            })
+        })
+    });
+
+    socket.on('get-game-id',function(){
+        var player = players.getPlayer(socket.id);
+        var hostId = player.hostId;
+        var game = games.getGame(hostId)
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("Quizzes").findOne({id:parseInt(game.gameData.gameid)}, function (err, result) {
+                if (err) throw err;
+                socket.emit('retrieve-game-id',game.gameData.gameid,result.roundPlayed)
+                db.close();
+            })
+        })    
+    })
+    socket.on('update-course', function(data){
+        data.id = parseInt(data.id);
+        delete data._id;
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("courses").updateOne({id: data.id}, {$set: data}, function (err, result) {
+                if (err) throw err;
+                db.close();
+            })
+        })
     })
 });

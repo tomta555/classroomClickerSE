@@ -37,7 +37,7 @@ socket.on('updatePlayerLobby', function(data){
 
 //Tell server to start game if button is clicked
 function startGame(){
-    socket.emit('startGame');
+    socket.emit('startGame',params);
 }
 
 function endGame(){

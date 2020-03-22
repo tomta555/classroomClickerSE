@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Course</title>
+        <link rel = "stylesheet" href = "../css/info.css" />
+        <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel = "stylesheet" href = "../../assets/css/course.css" />
+        
+    </head>
+
+    <body>
+
+        <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li><a href="/profile">profile</a></li>
+				<li class="current"><a href="/course">courses</a></li>
+                <li><a href="/host_quiz">quiz</a></li>
+			</ul>
+		</nav>
+
+        <!-- Header -->
+
+        <header id="header">
+			<div class="logo container">
+				<div >
+                    <p>HOMEWORK</p>
+                    <!-- <h1><a style="color: rgb(82, 230, 95);" id = "logo" href = "quiz-creator/"><u>Course</u></a></h1> -->
+				</div>
+			</div>
+        </header>
+        
+        
+            <!-- <a style="background-color: rgb(202, 26, 13);" id = "back" class="button" href = "../" >Back</a> -->
+            <br>
+        
+            <!-- <div id = "game-list"></div> -->
+            <div class = "collection">
+                <div class="card-holder" style ="width: 48%">
+                    <div class="card bg-gold " style="text-align:left;">
+                        Doing Homework<br><br>
+                        <div style = "font-size: 18px ">
+                            <div id = "hw-list" class="homeworkList"></div>
+                        </div>
+                    </div>
+                </div> 
+                
+            </div>
+
+           <div class = "collection">
+                <div class="card-holder">
+                    <div class="card bg-gold " style="text-align:left;">
+                        Done HOMEWORK<br><br>
+                        <div style = "font-size: 18px ">
+                            <div id = "done-hw-list" class="homeworkList"></div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="card-holder">
+                    <div class="card bg-gold " style="text-align:left;">
+                        Done QUIZ<br><br>
+                        <div style = "font-size: 18px ">
+                            <div id = "quiz-list" class="homeworkList"></div>
+                        </div>
+                    </div>
+                                
+                </div>
+            </div> 
+           
+                
+           
+        
+        <br>
+        <br>
+            
+        <script src = "../../js/libs/jqueryLibrary.js"></script>
+        <script src = "../../js/libs/deparam.js"></script>
+        <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../../js/course.js"></script>
+
+        <script src="../../assets/js/jquery.min.js"></script>
+        <script src="../../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../../assets/js/browser.min.js"></script>
+        <script src="../../assets/js/breakpoints.min.js"></script>
+        <script src="../../assets/js/util.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        
+    </body>
+</html>

@@ -110,12 +110,15 @@ socket.on('gameNamesData', function(data){
 function startGame(data){
     window.location.href="/host/" + "?id=" + data;
 }
+
 function DoHW(hwId,cId){
     window.location.href="/DoHW"+ "?id="+ hwId +"&courseId="+ cId;
 }
+
 function edit(data){
     window.location.href="/create_quiz/" + "?" + data;
 }
+
 function getTeacher(){
     document.getElementById('addPopUp').style.display= "block";
     var InCourse = document.getElementById('InCourse');
@@ -128,6 +131,7 @@ function getTeacher(){
     for(t in teacherNotInCourse){
         addToNotInCourse(teacherNotInCourse[t], 'teacher', notInCourse);
     }
+    document.getElementById('updateCourse').setAttribute('onclick',"updateCourse('teacher')")
 }
 
 function getStudent(){
@@ -142,6 +146,7 @@ function getStudent(){
     for(t in studentNotInCourse){
         addToNotInCourse(studentNotInCourse[t], 'student', notInCourse);
     }
+    document.getElementById('updateCourse').setAttribute('onclick',"updateCourse('student')")
 }
 
 function addToInCourse(t, type, target){
@@ -175,31 +180,10 @@ function addToNotInCourse(t, type, target){
 function manage(username, type, func){
     var InCourse = document.getElementById('InCourse');
     var notInCourse = document.getElementById('notInCourse');
+    //delete the element
     document.getElementById(username).remove();
-    if(func == 'add'){
-        addToInCourse(username, type, InCourse);
-        if(type == "teacher"){
-            courseDetail.teachers.push(username);
-            teacherInCourse.push(username);
-            removeFromArray(teacherNotInCourse, username);
-        }else{
-            courseDetail.students.push(username);
-            studentInCourse.push(username);
-            removeFromArray(studentNotInCourse, username);
-        }
-    }
-    if(func == 'remove'){
-        addToNotInCourse(username, type, notInCourse);
-        if(type == "teacher"){
-            removeFromArray(courseDetail.teachers,username);
-            removeFromArray(teacherInCourse, username)
-            teacherNotInCourse.push(username);
-        }else{
-            removeFromArray(courseDetail.students, username);
-            removeFromArray(studentInCourse, username)
-            studentNotInCourse.push(username);
-        }
-    }
+    //add element to the right place 
+    func == 'add' ? addToInCourse(username, type, InCourse):addToNotInCourse(username, type, notInCourse);
 }
 
 function removeFromArray(array, value){
@@ -209,7 +193,30 @@ function removeFromArray(array, value){
     }
 }
 
-function updateCourse(){
+function updateCourse(type){
+    var InCourse = document.getElementById('InCourse').getElementsByTagName('label');
+    var notInCourse = document.getElementById('notInCourse').getElementsByTagName('label');
+    if(type == "teacher"){
+        teacherInCourse = [];
+        teacherNotInCourse = [];
+        for(i=0;i<InCourse.length;i++){
+            teacherInCourse.push(InCourse[i].innerText);
+        }
+        for(i=0;i<notInCourse.length;i++){
+            teacherNotInCourse.push(notInCourse[i].innerText);
+        }
+        courseDetail.teachers = teacherInCourse;
+    }else{
+        studentInCourse = [];
+        studentNotInCourse = [];
+        for(i=0;i<InCourse.length;i++){
+            studentInCourse.push(InCourse[i].innerText);
+        }
+        for(i=0;i<notInCourse.length;i++){
+            studentNotInCourse.push(notInCourse[i].innerText);
+        }
+        courseDetail.students = studentInCourse;
+    }
     socket.emit('update-course', courseDetail);
     document.getElementById('addPopUp').style.display= "none";
 }

@@ -23,7 +23,7 @@ $(document).ready(function () {
         for(let i=0; i<data.length; i++){
             showCourse(data[i]);
         }
-        showAddCourseButton();
+        if(udetail.local.isTeacher) showAddCourseButton();
     });
     
 });

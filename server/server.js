@@ -605,6 +605,19 @@ io.on('connection', (socket) => {
         });
     });
 
+    socket.on('deleteHw', (data) => {
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("classroomClicker");
+            var query = { id: parseInt(data.id) };
+            dbo.collection('Homeworks').deleteOne(query, function (err, res) {
+                if (err) throw err;
+                socket.emit("backToHostPage");
+                db.close();
+            });
+        });
+    });
+
     socket.on('req-quiz-data', (data) => {
         //Check to see if id passed in url corresponds to id of quiz game in database
         MongoClient.connect(url, function (err, db) {

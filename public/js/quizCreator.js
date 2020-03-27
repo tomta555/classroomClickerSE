@@ -12,6 +12,7 @@ socket.on('connect',function(){
     var mainTitle = document.getElementById('mainTitle');
     var submitButton = document.getElementById('submitButton');
     var cancleButton = document.getElementById('cancleButton');
+    var deleteQuizButton
     switch( params.type.toString() ){
         case("createQuiz"):
             mainTitle.innerHTML="create Quiz";
@@ -43,7 +44,7 @@ socket.on('connect',function(){
             submitButton.setAttribute("onclick", `updateDatabase('editHw', ${params.id})`);
             submitButton.innerHTML="Save";
             cancleButton.innerHTML="cancle";
-            document.getElementById('deleteQuizButton').setAttribute("onclick", ``)
+            document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteHw(${params.id})`)
             socket.emit('req-hw-data', params);
             break;
     }
@@ -372,6 +373,13 @@ function deleteQuiz(quizId){
     if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
         window.location.href = `/courseInfo?courseId=${courseId}`;
         socket.emit('deleteQuiz',{"id":quizId});
+    }
+}
+
+function deleteHw(Id){
+    if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
+        window.location.href = `/courseInfo?courseId=${courseId}`;
+        socket.emit('deleteHw',{"id":Id});
     }
 }
 

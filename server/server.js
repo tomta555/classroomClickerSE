@@ -538,7 +538,6 @@ io.on('connection', (socket) => {
 
     //Give user game names data
     socket.on('requestDbNames', function (data) {
-
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
@@ -551,8 +550,20 @@ io.on('connection', (socket) => {
         });
     });
 
-    socket.on('requestDbHW', function (data) {
+    socket.on('get-all-quiz', function (){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            query = {};
+            dbo.collection("Quizzes").find(query).toArray(function (err, res) {
+                if (err) throw err;
+                socket.emit('all-quiz', res);
+                db.close();
+            });
+        });
+    });
 
+    socket.on('requestDbHW', function (data) {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');

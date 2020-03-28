@@ -36,6 +36,15 @@ socket.on('user-detail',function(user){
 
 socket.on('course-detail', function(data){
     courseDetail = data;
+    var des = document.getElementById('description');
+    des.innerHTML = `
+        <div id='desc'>${courseDetail.desc}</div>
+    `;
+    if(udetail.local.isTeacher){
+        des.innerHTML += `
+            <button id='descButton' onclick='editDesc()' style='margin:0px 25px'>edit</button>
+        `;
+    }
     socket.emit('get-users');
 });
 
@@ -131,7 +140,7 @@ function getTeacher(){
     for(t in teacherNotInCourse){
         addToNotInCourse(teacherNotInCourse[t], 'teacher', notInCourse);
     }
-    document.getElementById('updateCourse').setAttribute('onclick',"updateCourse('teacher')")
+    document.getElementById('updateCourse').setAttribute('onclick',"updateCourseMember('teacher')")
 }
 
 function getStudent(){
@@ -146,7 +155,7 @@ function getStudent(){
     for(t in studentNotInCourse){
         addToNotInCourse(studentNotInCourse[t], 'student', notInCourse);
     }
-    document.getElementById('updateCourse').setAttribute('onclick',"updateCourse('student')")
+    document.getElementById('updateCourse').setAttribute('onclick',"updateCourseMember('student')")
 }
 
 function addToInCourse(t, type, target){
@@ -193,7 +202,39 @@ function removeFromArray(array, value){
     }
 }
 
-function updateCourse(type){
+function editDesc(){
+    var desc = document.getElementById('desc').innerText;
+    var descBox = document.getElementById('description');
+    var descInput = document.createElement('input');
+    descInput.setAttribute('class', 'question');
+    descInput.setAttribute('id','descInput');
+    descInput.setAttribute('value', desc);
+    var confirmBut = document.createElement('button');
+    confirmBut.innerText = 'save';
+    confirmBut.setAttribute('onclick', 'updateCourseDesc()');
+    confirmBut.setAttribute('style', 'margin:0px 25px');
+    descBox.innerHTML = '';
+    descBox.appendChild(descInput);
+    descBox.appendChild(confirmBut);
+}
+
+function updateCourseDesc(){
+    var newDesc = document.getElementById('descInput').value;
+    var descBox = document.getElementById('description');
+    if(newDesc == ''){
+        if(!confirm('Is new description will be blank?')){
+            return;
+        }
+    }
+    descBox.innerHTML = `
+        <div id='desc'>${newDesc}</div>
+        <button id='descButton' onclick='editDesc()' style='margin:0px 25px'>edit</button>
+    `;
+    courseDetail.desc = newDesc;
+    socket.emit('update-course', courseDetail);
+}
+
+function updateCourseMember(type){
     var InCourse = document.getElementById('InCourse').getElementsByTagName('label');
     var notInCourse = document.getElementById('notInCourse').getElementsByTagName('label');
     if(type == "teacher"){

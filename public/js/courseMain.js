@@ -54,7 +54,7 @@ function showCourse(data){
     var courseList = document.getElementById("courseList");
     var course = `
         <button class = "backButton" style=" font-size:44px;" onclick = "window.location.href = '${link}'" >${data.name}<br>
-            <label style = "font-size:25px">Description...here...</label><br><br><br>
+            <label style = "font-size:25px">${data.desc}</label><br><br><br>
             <label style = "font-size:18px;">Homekwork...here...</label>
         </button>`;
     courseList.innerHTML += course;

@@ -1,5 +1,7 @@
 var socket = io();
 var udetail;
+var newCourseId;
+var allHomework;
 // Get the modal
 var modal = document.getElementById('createPopUp');
 
@@ -13,23 +15,40 @@ window.onclick = function(event) {
 $(document).ready(function () {
     socket.on('connect',function () {
         socket.emit('get-user-detail');
+        socket.emit('get-course-id');
     });
-
+    
     socket.on('user-detail',function(user){
         udetail = user;
-        socket.emit('get-courses', String(udetail.local.username));
+        socket.emit('get-all-homework');
     })
+    socket.on('allHw', function(data){
+        allHomework = data;
+        socket.emit('get-courses', String(udetail.local.username));
+    });
     socket.on('course-detail', function( data ){
         for(let i=0; i<data.length; i++){
-            showCourse(data[i]);
+            var n = 0;
+            for(let j=0; j<allHomework.length; j++){
+                if(allHomework[j].courseId == data[i].id){
+                    if(udetail.local.isTeacher){
+                        n++;
+                    }else if (!allHomework[j].submitedStd.includes(udetail.local.studentID) ){
+                        n++;
+                    }
+                } 
+            }
+            showCourse(data[i],n);
         }
         if(udetail.local.isTeacher) showAddCourseButton();
     });
-    
+    socket.on('new-course-id', (data) => {
+        newCourseId = parseInt(data);
+    });
 });
 
 function addCourse(){
-    var courseid = document.getElementById('courseid').value;
+    var courseid = newCourseId;
     var coursename = document.getElementById('coursename').value;
     var coursedesc = document.getElementById('coursedesc').value;
     var creator = udetail.local.username;
@@ -37,14 +56,15 @@ function addCourse(){
     var students = [];
     var tags = [];
     teachers.push(creator);
-    var course = {"id":courseid,"name":coursename,"desc":coursedesc, "creator":creator, "teachers":teachers, "students":students, "tags":tags};
+    var course = {"id":courseid,"name":coursename,"desc":coursedesc, "creator":creator, "teachers":teachers, "students":students, "tags":tags, "homeworks":[]};
     document.getElementById("addCourseButton").remove();
     showCourse(course);
     showAddCourseButton();
+    socket.emit('get-course-id');
     socket.emit("addCourse", course);
 }
 
-function showCourse(data){
+function showCourse(data, n){
     var link;
     if(udetail.local.isTeacher){
         link = `/courseInfo?courseId=${data.id}`; 
@@ -53,9 +73,9 @@ function showCourse(data){
     }
     var courseList = document.getElementById("courseList");
     var course = `
-        <button class = "backButton" style=" font-size:44px;" onclick = "window.location.href = '${link}'" >${data.name}<br>
+        <button id="course${data.id}" class = "backButton" style=" font-size:44px;" onclick = "window.location.href = '${link}'" >${data.name}<br>
             <label style = "font-size:25px">${data.desc}</label><br><br><br>
-            <label style = "font-size:18px;">Homekwork...here...</label>
+            <label style = "font-size:18px;">Homework ${n}.</label>
         </button>`;
     courseList.innerHTML += course;
 }

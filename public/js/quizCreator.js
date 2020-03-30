@@ -156,7 +156,7 @@ function updateDatabase(reqtype, Id){
             break;
         case('createHw'):
             data.submitedStd = [];
-            socket.emit('newHw',data);
+            socket.emit('newHw', data);
             break;
         case('editHw'):
             data.id = Id;

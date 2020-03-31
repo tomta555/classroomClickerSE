@@ -31,10 +31,12 @@ socket.on('all-quiz', function(data){
 function showCourse(course){
     var allCourse = document.getElementById('allCourse');
     var c = document.createElement('div');
-    var p = document.createElement('h3');
+    var p = document.createElement('h2');
     p.innerText = `${course.name}`;
     c.setAttribute('id', `${course.id}`);
-    c.setAttribute('style', 'background-color: red; margin: 0% 5%; padding: 2%;');
+    c.setAttribute('style', 'margin: 0% 5%; padding: 2%;');
+    c.setAttribute('class', 'bg-gold')
+    p.setAttribute('style', 'color: rgb(240, 232, 232);' );
     c.appendChild(p);
     allCourse.appendChild(c);
 }
@@ -45,8 +47,9 @@ function addQuiz(quiz){
         var button = document.createElement('button');
         button.innerHTML = quiz.name;
         button.setAttribute('onClick', "startGame('" + quiz.id + "')");
+        button.setAttribute('style', 'font-size: 200% ;margin:2% 5% 2% 5%; background-color:#fdcd3b; color: rgb(98, 98, 98);');
         c.appendChild(button);
-        c.appendChild(document.createElement('br'));
+        
     }
 }
 

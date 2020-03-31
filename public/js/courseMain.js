@@ -19,15 +19,12 @@ $(document).ready(function () {
         udetail = user;
         socket.emit('get-courses', String(udetail.local.username));
     })
-
     socket.on('course-detail', function( data ){
-        console.log(data);
         for(let i=0; i<data.length; i++){
             showCourse(data[i]);
         }
-        showAddCourseButton();
+        if(udetail.local.isTeacher) showAddCourseButton();
     });
-
     
 });
 

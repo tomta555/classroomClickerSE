@@ -12,6 +12,7 @@ socket.on('connect',function(){
     var mainTitle = document.getElementById('mainTitle');
     var submitButton = document.getElementById('submitButton');
     var cancleButton = document.getElementById('cancleButton');
+    var deleteQuizButton
     switch( params.type.toString() ){
         case("createQuiz"):
             mainTitle.innerHTML="create Quiz";
@@ -43,7 +44,7 @@ socket.on('connect',function(){
             submitButton.setAttribute("onclick", `updateDatabase('editHw', ${params.id})`);
             submitButton.innerHTML="Save";
             cancleButton.innerHTML="cancle";
-            document.getElementById('deleteQuizButton').setAttribute("onclick", ``)
+            document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteHw(${params.id})`)
             socket.emit('req-hw-data', params);
             break;
     }
@@ -67,6 +68,7 @@ socket.on('gameData-edit',function(data){
 });
 
 function updateDatabase(reqtype, Id){
+    console.log(reqtype);
     var alertText;
     var alertFlag = false;
     var questions = [];
@@ -119,6 +121,7 @@ function updateDatabase(reqtype, Id){
         questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": parseInt(baseScore)})
     }
     var data = { id: 0, "name": name, "questions": questions,"courseId": courseId,"creator": uName};
+    console.log(data);
     switch(reqtype){
         case('createQuiz'):
             data.roundPlayed = 0;
@@ -373,15 +376,22 @@ function deleteQuiz(quizId){
     }
 }
 
+function deleteHw(Id){
+    if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
+        window.location.href = `/courseInfo?courseId=${courseId}`;
+        socket.emit('deleteHw',{"id":Id});
+    }
+}
+
 //Called when user wants to exit quiz creator
 function cancelQuiz() {
     if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
-        window.location.href = "/courseInfo?courseId=${courseId}`";
+        window.location.href = `/courseInfo?courseId=${courseId}`;
     }
 }
 
 socket.on('backToHostPage', function (data) {
-    window.location.href = `/courseInfo?courseId=${courseId}`;
+    window.location.href = `/courseInfo?courseId=`+courseId;
 });
 
 function randomColor() {

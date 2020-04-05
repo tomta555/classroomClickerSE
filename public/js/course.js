@@ -42,7 +42,7 @@ socket.on('course-detail', function(data){
     `;
     if(udetail.local.isTeacher){
         des.innerHTML += `
-            <button id='descButton' onclick='editDesc()' style='margin:0px 25px'>edit</button>
+            <button id='descButton' onclick='editDesc()' style='margin:0px 25px' class="button-br">edit</button>
         `;
     }
     socket.emit('get-users');
@@ -72,7 +72,7 @@ socket.on('HWData', function(data){
         var mydata = `id=${data[i].id}&courseId=${params.courseId}&type=editHw`;
         button.innerHTML = data[i].name;
         if(udetail.local.isTeacher || data[i].submitedStd.includes(udetail.local.studentID)){
-            button.setAttribute('onClick', '');
+            button.setAttribute('onClick', ``);
         }else{
             button.setAttribute('onClick', `DoHW(${data[i].id},${params.courseId})`);
         }

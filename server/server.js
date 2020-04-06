@@ -698,6 +698,35 @@ io.on('connection', (socket) => {
 
     });
 
+    socket.on('get-hw-score',function (data){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("classroomClicker");
+            var query = { hwid: {$in: data}};
+            console.log(query);
+            dbo.collection('submittedHomework').find(query).toArray(function (err, result) {
+                if (err) throw err;
+                //A quiz was found with the id passed in url
+                socket.emit('hw-score', result);
+                db.close();
+            });
+        });
+    });
+
+    socket.on('get-quiz-score',function (data){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db("classroomClicker");
+            var query = { questionid: {$in: data}};
+            dbo.collection('PlayedQuizzes').find(query).toArray(function (err, result) {
+                if (err) throw err;
+                //A quiz was found with the id passed in url
+                socket.emit('quiz-score', result);
+                db.close();
+            });
+        });
+    });
+
     socket.on('editQuiz', function (data) {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;

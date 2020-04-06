@@ -1,11 +1,19 @@
 var socket = io();
 var params = jQuery.deparam(window.location.search);
+
 var udetail;
 var courseDetail;
+
+var homework_edit_innerhtml = '';
+var homework_score_innerhtml = '';
+var quiz_edit_innerhtml = '';
+var quiz_score_innerhtml = '';
+
 var teacherInCourse = [];
 var teacherNotInCourse = [];
 var studentInCourse = [];
 var studentNotInCourse = [];
+
 var modal = document.getElementById('addPopUp');
 
 // When the user clicks anywhere outside of the modal, close it
@@ -30,7 +38,6 @@ socket.on('user-detail',function(user){
         createHwButton.setAttribute("onclick", `window.location.href = '../create?courseId=${params.courseId}&type=createHw'`);
         createQuizButton.setAttribute("onclick", `window.location.href = '../create?courseId=${params.courseId}&type=createQuiz'`);
     }else{
-
     }
 });
 
@@ -62,11 +69,15 @@ socket.on('users-detail', function(data){
 
 socket.on('HWData', function(data){
     var div;
+    courseDetail.hw = [];
+    courseDetail.hwName = [];
     for(var i = 0; i < Object.keys(data).length; i++){
-        if(udetail.local.isTeacher || !data[i].submitedStd.includes(udetail.local.studentID)){
+        if(udetail.local.isTeacher || data[i].submitedStd.includes(udetail.local.studentID)){
             div = document.getElementById('hw-list');
+            courseDetail.hw.push(data[i].id);
+            courseDetail.hwName.push(data[i].name);
         }else{
-            div = document.getElementById('done-hw-list');
+            div = document.getElementById('doing-hw-list');
         }
         var button = document.createElement('button');
         var mydata = `id=${data[i].id}&courseId=${params.courseId}&type=editHw`;
@@ -93,7 +104,11 @@ socket.on('HWData', function(data){
 });
 
 socket.on('gameNamesData', function(data){
+    courseDetail.quiz = [];
+    courseDetail.quizName= [];
     for(var i = 0; i < Object.keys(data).length; i++){
+        courseDetail.quiz.push(data[i].id);
+        courseDetail.quizName.push(data[i].name);
         var div = document.getElementById('quiz-list');
         var button = document.createElement('button');
         var mydata = `id=${data[i].id}&courseId=${params.courseId}&type=editQuiz`;
@@ -156,6 +171,133 @@ function getStudent(){
         addToNotInCourse(studentNotInCourse[t], 'student', notInCourse);
     }
     document.getElementById('updateCourse').setAttribute('onclick',"updateCourseMember('student')")
+}
+
+function getScore(){
+    var hwList = document.getElementById('hw-list');
+    var quizList = document.getElementById('quiz-list');
+    var scoreButton = document.getElementById('pageButton');
+    if(homework_score_innerhtml == ''){
+        homework_edit_innerhtml = hwList.innerHTML;
+        quiz_edit_innerhtml = quizList.innerHTML;
+        socket.emit('get-hw-score', courseDetail.hw);
+        socket.emit('get-quiz-score', courseDetail.quiz);
+    }else{
+        hwList.innerHTML = homework_score_innerhtml;
+        quizList.innerHTML = quiz_score_innerhtml;
+    }
+    
+    scoreButton.setAttribute('onclick', 'getEdit()');
+    scoreButton.innerHTML = 'back to edit';
+}
+
+socket.on('hw-score', function(data){
+    var hwList = document.getElementById('hw-list');
+    var hw = [];
+    var score;
+    for(let i = 0; i < data.length; i++){
+        score = data[i].totalScore;
+        var newHw = true;
+        for(let j = 0; j < hw.length; j++){
+            if(hw[j].id == data[i].hwid){
+                if(hw[j].min > score) hw[j].min = score;
+                if(hw[j].max < score) hw[j].max = score;
+                hw[j].mean = ((hw[j].mean*hw[j].student) + score) / (hw[j].student+1);
+                hw[j].student += 1;
+                newHw = false;
+                break;
+            }
+        }
+        if(newHw){
+            hw.push({'id': data[i].hwid, 'min': score , 'mean': score, 'max': score, 'student': 1});
+        }
+    }
+    var t = '';
+    for(let i=0 ; i<courseDetail.hw.length; i++){
+        t += `
+            <button onclick='' >${courseDetail.hwName[i]}</button>
+        `;
+        for(let j = 0; j < hw.length; j++){
+            if(hw[j].id == courseDetail.hw[i]){
+                t += `
+                    <div style="background-color: red">
+                        student answered : ${hw[j].student}/${courseDetail.students.length} 
+                        <br>
+                        min/max : ${hw[j].min}/${hw[j].max} 
+                        <br> 
+                        mean : ${hw[j].mean}
+                    </div>
+                `;
+                break;
+            }
+        }
+        t += '<br>';
+
+    }
+    hwList.innerHTML = t
+    homework_score_innerhtml = t;
+});
+
+socket.on('quiz-score', function(data){
+    var quizList = document.getElementById('quiz-list');
+    var quiz = [];
+    var score;
+    for(let i = 0; i < data.length; i++){
+        score = data[i].score;
+        var newQuiz = true;
+        for(let j = 0; j < quiz.length; j++){
+            if(quiz[j].id == data[i].questionid){
+                if(quiz[j].round == data[i].round){
+                    if(quiz[j].min > score) quiz[j].min = score;
+                    if(quiz[j].max < score) quiz[j].max = score;
+                    quiz[j].mean = ((quiz[j].mean*quiz[j].student) + score) / (quiz[j].student+1);
+                    quiz[j].student += 1;
+                    newQuiz = false;
+                    break;
+                }else if(quiz[j].round > data[i].round){
+                    quiz.remove(quiz[j]);
+                }else {
+                    newQuiz = false;
+                }
+            }
+        }
+        if(newQuiz){
+            quiz.push({'id': data[i].questionid, 'min': score , 'mean': score, 'max': score, 'student': 1, 'round': data[i].round});
+        }
+    }
+    var t = '';
+    for(let i=0 ; i<courseDetail.quiz.length; i++){
+        t += `
+            <button onclick='' >${courseDetail.quizName[i]}</button>
+        `;
+        for(let j = 0; j < quiz.length; j++){
+            if(quiz[j].id == courseDetail.quiz[i]){
+                t += `
+                    <div style="background-color: red">
+                        student answered : ${quiz[j].student}/${courseDetail.students.length} 
+                        <br>
+                        min/max : ${quiz[j].min}/${quiz[j].max} 
+                        <br> 
+                        mean : ${quiz[j].mean}
+                    </div>
+                `;
+                break;
+            }
+        }
+        t += '<br>';
+
+    }
+    quizList.innerHTML = t
+    homework_score_innerhtml = t;
+});
+
+function getEdit(){
+    document.getElementById('hw-list').innerHTML = homework_edit_innerhtml;
+    document.getElementById('quiz-list').innerHTML = quiz_edit_innerhtml;
+    var scoreButton = document.getElementById('pageButton');
+    
+    scoreButton.setAttribute('onclick', 'getScore()');
+    scoreButton.innerHTML = 'score';
 }
 
 function addToInCourse(t, type, target){

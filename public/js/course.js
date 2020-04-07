@@ -83,7 +83,7 @@ socket.on('HWData', function(data){
         var mydata = `id=${data[i].id}&courseId=${params.courseId}&type=editHw`;
         button.innerHTML = data[i].name;
         if(udetail.local.isTeacher || data[i].submitedStd.includes(udetail.local.studentID)){
-            button.setAttribute('onClick', ``);
+            button.setAttribute('onClick', `hwStat(${courseDetail.hw[i]}, ${courseDetail.id})`);
         }else{
             button.setAttribute('onClick', `DoHW(${data[i].id},${params.courseId})`);
         }
@@ -215,7 +215,7 @@ socket.on('hw-score', function(data){
     var t = '';
     for(let i=0 ; i<courseDetail.hw.length; i++){
         t += `
-            <button onclick='' >${courseDetail.hwName[i]}</button>
+            <button onclick='hwStat(${courseDetail.hw[i]}, ${courseDetail.id})' >${courseDetail.hwName[i]}</button>
         `;
         for(let j = 0; j < hw.length; j++){
             if(hw[j].id == courseDetail.hw[i]){
@@ -268,7 +268,7 @@ socket.on('quiz-score', function(data){
     var t = '';
     for(let i=0 ; i<courseDetail.quiz.length; i++){
         t += `
-            <button onclick='' >${courseDetail.quizName[i]}</button>
+            <button onclick='quizStat(${courseDetail.quiz[i]}, ${courseDetail.id})' >${courseDetail.quizName[i]}</button>
         `;
         for(let j = 0; j < quiz.length; j++){
             if(quiz[j].id == courseDetail.quiz[i]){
@@ -284,8 +284,6 @@ socket.on('quiz-score', function(data){
                 break;
             }
         }
-        t += '<br>';
-
     }
     quizList.innerHTML = t
     homework_score_innerhtml = t;
@@ -298,6 +296,14 @@ function getEdit(){
     
     scoreButton.setAttribute('onclick', 'getScore()');
     scoreButton.innerHTML = 'score';
+}
+
+function hwStat(hwid, courseId){
+    window.location.href=`/stat_teacherPage/?id=${hwid}&courseId=${courseId}&type=homework`;
+}
+
+function quizStat(quizid, courseId){
+    window.location.href=`/stat_teacherPage/?id=${quizid}&courseId=${courseId}&type=quiz`;
 }
 
 function addToInCourse(t, type, target){
@@ -314,6 +320,7 @@ function addToInCourse(t, type, target){
     p.appendChild(document.createElement('br'));
     target.appendChild(p);
 }
+
 function addToNotInCourse(t, type, target){
     var p = document.createElement('div');
     p.className += " questionList";
@@ -328,6 +335,7 @@ function addToNotInCourse(t, type, target){
     p.appendChild(document.createElement('br'));
     target.appendChild(p);
 }
+
 function manage(username, type, func){
     var InCourse = document.getElementById('InCourse');
     var notInCourse = document.getElementById('notInCourse');

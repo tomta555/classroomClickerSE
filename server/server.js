@@ -703,7 +703,6 @@ io.on('connection', (socket) => {
             if (err) throw err;
             var dbo = db.db("classroomClicker");
             var query = { hwid: {$in: data}};
-            console.log(query);
             dbo.collection('submittedHomework').find(query).toArray(function (err, result) {
                 if (err) throw err;
                 //A quiz was found with the id passed in url

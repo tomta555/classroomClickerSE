@@ -54,7 +54,7 @@
           <table cellpadding="0" cellspacing="0" border="0">
             <thead>
               <tr>
-                <th>Quiz Title (Name Quiz)</th>
+                <th id="NAME">Quiz Title (Name Quiz)</th>
               </tr>
             </thead>
           </table>
@@ -63,7 +63,8 @@
           <table cellpadding="0" cellspacing="0" border="0">
             <thead>
               <tr>
-                <th>Title</th>
+                <th>Tag name</th>
+                <th>Full score</th>
                 <th>Max</th>
                 <th>Min</th>
                 <th>Average<a/th>
@@ -77,47 +78,24 @@
           <table cellpadding="0" cellspacing="0" border="0">
             <tbody >
               <tr>
-                <td>FULL SCORE: </td><td >100</td>
+                <td>FULL SCORE: </td><td id="overallFull">100</td>
               </tr>
               <tr>
-                <td>MAX: </td><td>80</td>
+                <td>MAX: </td><td id="overallMax">80</td>
               </tr>
               <tr>
-                <td>MIN: </td> <td>20</td>
+                <td>MIN: </td><td id="overallMin">20</td>
               </tr>
               <tr>
-                <td>AVERAGE: </td><td>50</td>
+                <td>AVERAGE: </td><td id="overallMean">50</td>
               </tr>
             </tbody>
           </table>
         </div> 
         <div class="score-right tbl-content">
           <table cellpadding="0" cellspacing="0" border="0">
-            <tbody>
-              <tr>
-                <td>TAG1 : Name of history</td>
-                <td>80</td>
-                <td>20</td>
-                <td>50</td>
-              </tr>
-              <tr>
-                <td>TAG2 : Name of food</td>
-                <td>80</td>
-                <td>20</td>
-                <td>50</td>
-              </tr>
-              <tr>
-                <td>TAG3 : Name of fish</td>
-                <td>80</td>
-                <td>20</td>
-                <td>50</td>
-              </tr>
-              <tr>
-                <td>TAG4 : Name of music</td>
-                <td>80</td>
-                <td>20</td>
-                <td>50</td>
-              </tr>
+            <tbody id="tagList"><!--Tag List-->
+              
             </tbody>
           </table>
         </div> 
@@ -141,42 +119,12 @@
       <div class="score-box" >
         <div class="tbl-content">
           <table cellpadding="0" cellspacing="0" border="0">
-            <tbody>
-              <tr>
+            <tbody id="studentList">
+              <!-- <tr>
                 <td>AAC</td>
                 <td>AUSTRALIAN COMPANY </td>
                 <td>$1.38</td>
-              </tr>
-              <tr>
-                <td>AAD</td>
-                <td>AUSENCO</td>
-                <td>$2.38</td>
-              </tr>
-              <tr>
-                <td>AAX</td>
-                <td>ADELAIDE</td>
-                <td>$3.22</td>
-              </tr>
-              <tr>
-                <td>XXD</td>
-                <td>ADITYA BIRLA</td>
-                <td>$1.02</td>
-              </tr>
-              <tr>
-                <td>AAC</td>
-                <td>AUSTRALIAN COMPANY </td>
-                <td>$1.38</td>
-              </tr>
-              <tr>
-                <td>AAD</td>
-                <td>AUSENCO</td>
-                <td>$2.38</td>
-              </tr>
-              <tr>
-                <td>AAX</td>
-                <td>ADELAIDE</td>
-                <td>$3.22</td>
-              </tr> 
+              </tr> -->
             </tbody>
           </table>
         </div>
@@ -196,18 +144,18 @@
             </div> -->
         
         
-        <script src = "../../socket.io/socket.io.js"></script>
-        <script src = "../../js/libs/jqueryLibrary.js"></script>
-        <script src = "../../js/libs/deparam.js"></script>
-        <script src = "../../stat_teacher.js"></script>
+        <script src = "../socket.io/socket.io.js"></script>
+        <script src = "../js/libs/jqueryLibrary.js"></script>
+        <script src = "../js/libs/deparam.js"></script>
+        <script src = "../js/stat_teacher.js"></script>
       
-        <script src="../../assets/js/jquery.min.js"></script>
-        <script src="../../assets/js/jquery.dropotron.min.js"></script>
-        <script src="../../assets/js/jquery.scrolly.min.js"></script>
-        <script src="../../assets/js/browser.min.js"></script>
-        <script src="../../assets/js/breakpoints.min.js"></script>
-        <script src="../../assets/js/util.js"></script>
-        <script src="../../assets/js/main.js"></script>
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../assets/js/browser.min.js"></script>
+        <script src="../assets/js/breakpoints.min.js"></script>
+        <script src="../assets/js/util.js"></script>
+        <script src="../assets/js/main.js"></script>
         
     </body>
 </html>

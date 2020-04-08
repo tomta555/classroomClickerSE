@@ -585,7 +585,7 @@ io.on('connection', (socket) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            query = { courseId: data.courseId }
+            query = { courseId: String(data.courseId) }
             dbo.collection("Homeworks").find(query).toArray(function (err, res) {
                 if (err) throw err;
                 socket.emit('HWData', res);
@@ -703,6 +703,7 @@ io.on('connection', (socket) => {
             if (err) throw err;
             var dbo = db.db("classroomClicker");
             var query = { hwid: {$in: data}};
+            console.log(query);
             dbo.collection('submittedHomework').find(query).toArray(function (err, result) {
                 if (err) throw err;
                 //A quiz was found with the id passed in url
@@ -779,9 +780,10 @@ io.on('connection', (socket) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            dbo.collection("Homeworks").find().toArray(function (err, res) {
+            query = {id:parseInt(data.id)};
+            dbo.collection("Homeworks").find(query).toArray(function (err, res) {
                 if (err) throw err;
-                socket.emit('DoHW',res[data.id-1]);
+                socket.emit('DoHW',res[0]);
                 // console.log(res[data.id-1]);
                 db.close();
             });
@@ -827,7 +829,17 @@ io.on('connection', (socket) => {
             });
         })
     });
-
+    socket.on('get-student-detail',function(stdId){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection('users').findOne({ "local.studentID": stdId }, function (err, result) {
+                if (err) throw err;
+                socket.emit('student-detail', result)
+                db.close();
+            })
+        })
+    });
     socket.on('get-course-detail', function(data){
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;

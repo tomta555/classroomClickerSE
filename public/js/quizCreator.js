@@ -170,6 +170,7 @@ function addTagBox(questionNum, tagInput, tagNum){
         return;
     }
     if(!courseData.tags.includes(tagInput.value)){
+        courseData.tags.push(tagInput.value);
         var browsers = document.getElementById('browsers');
         var opt = document.createElement('option');
         opt.setAttribute('value', tagInput.value);

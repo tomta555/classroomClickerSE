@@ -27,20 +27,35 @@ $(document).ready(function () {
         socket.emit('get-courses', String(udetail.local.username));
     });
     socket.on('course-detail', function( data ){
-        for(let i=0; i<data.length; i++){
-            var n = 0;
-            for(let j=0; j<allHomework.length; j++){
-                if(allHomework[j].courseId == data[i].id){
-                    if(udetail.local.isTeacher){
-                        n++;
-                    }else if (!allHomework[j].submitedStd.includes(udetail.local.studentID) ){
-                        n++;
-                    }
-                } 
+        if(data == undefined){
+            alert("Can't find that course.")
+        }else{
+            var addbutton = document.getElementById("addCourseButton");
+            if(addbutton != undefined) addbutton.remove();
+            if(data.length == undefined){
+                data.students.push(udetail.local.username);
+                socket.emit('update-course', data);
+                data = [data];
             }
-            showCourse(data[i],n);
+            for(let i=0; i<data.length; i++){
+                var n = 0;
+                for(let j=0; j<allHomework.length; j++){
+                    if(allHomework[j].courseId == data[i].id){
+                        if(udetail.local.isTeacher){
+                            n++;
+                        }else if (!allHomework[j].submitedStd.includes(udetail.local.studentID) ){
+                            n++;
+                        }
+                    } 
+                }
+                showCourse(data[i],n);
+            }
+            showAddCourseButton();
+            if(!udetail.local.isTeacher) {
+                var b = document.getElementById('addCourseButton');
+                b.setAttribute('onclick', "document.getElementById('addmePopUp').style.display='block'");
+            }
         }
-        if(udetail.local.isTeacher) showAddCourseButton();
     });
     socket.on('new-course-id', (data) => {
         newCourseId = parseInt(data);
@@ -62,9 +77,11 @@ function addCourse(){
     showAddCourseButton();
     socket.emit('get-course-id');
     socket.emit("addCourse", course);
+    document.getElementById('createPopUp').style.display='none';
 }
 
 function showCourse(data, n){
+    console.log(data);
     var link;
     if(udetail.local.isTeacher){
         link = `/courseInfo?courseId=${data.id}`; 
@@ -91,3 +108,9 @@ function showAddCourseButton(){
     courseList.innerHTML += addCourseButton;
 
 }
+
+function findCourse(id){
+    document.getElementById('addmePopUp').style.display='none';
+    socket.emit('get-course-detail', {'id': id});
+}
+

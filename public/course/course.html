@@ -42,9 +42,6 @@
                                 
                             <div class="container" style = "padding: 16px 4%; width: 100%">
                                 <br>
-                                <label for="courseid"><b>Course ID</b></label>
-                                <input style="width: 100%;" type="text" name="courseid" id="courseid" required>
-                            
                                 <label for="coursename"><b>Course Name</b></label>
                                 <input style="width: 100%;" type="text" name="coursename" id="coursename" required>
 
@@ -60,6 +57,23 @@
                         </form>
                     </div>
                     
+                    <div id = "addmePopUp" class = "modal">
+                        <span onclick="document.getElementById('addmePopUp').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <form class="modal-content animate">
+            
+                            <div class="container" style = "padding: 16px 4%; width: 100%">
+                                <br>
+                                <label for="coursename"><b>Course ID</b></label>
+                                <input style="width: 100%;" type="text" name="coursename" id="courseidToFind" required>
+                                <br>
+                            </div>
+                            <div class="confirm-container">
+                                <button type="button" onclick="findCourse(document.getElementById('courseidToFind').value)">Add</button>
+                                <button type="button" onclick="document.getElementById('addmePopUp').style.display='none'" class="cancelbtn">Cancel</button>
+                            </div>
+                            
+                        </form>
+                    </div>
                     <!-- <button style="background-color:#864cbf; font-size:22px; " onclick = "window.location.href = '/create_course'" >create new course</button> -->
                 </div>
         <br>

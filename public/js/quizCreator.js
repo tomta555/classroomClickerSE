@@ -1,17 +1,20 @@
 var socket = io();
+var params = jQuery.deparam(window.location.search);
+var courseId = params.courseId;
+var courseData;
 var questionNum = 0;
 var questionCounter = 0;
-var tags = [];
-var params = jQuery.deparam(window.location.search);
 var countCorrect = 1;
-var courseId = params.courseId;
 var uName;
 // var quizId;
 socket.on('connect',function(){
     socket.emit('get-user-detail');
+    socket.emit('get-course-detail',{"id":params.courseId});
     var mainTitle = document.getElementById('mainTitle');
+    var quizTitle = document.getElementById('quizTitle');
     var submitButton = document.getElementById('submitButton');
     var cancleButton = document.getElementById('cancleButton');
+    var deleteQuizButton
     switch( params.type.toString() ){
         case("createQuiz"):
             mainTitle.innerHTML="create Quiz";
@@ -37,25 +40,33 @@ socket.on('connect',function(){
             submitButton.innerHTML="Create Homework";
             cancleButton.innerHTML="Cancle Homework";
             mainTitle.innerHTML="Create Homework";
+            quizTitle.innerHTML="Homework title";
             break;
         case("editHw"):
             mainTitle.innerHTML="Edit Homework";
             submitButton.setAttribute("onclick", `updateDatabase('editHw', ${params.id})`);
             submitButton.innerHTML="Save";
             cancleButton.innerHTML="cancle";
-            document.getElementById('deleteQuizButton').setAttribute("onclick", ``)
+            document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteHw(${params.id})`);
+            quizTitle.innerHTML="Homework title";
             socket.emit('req-hw-data', params);
             break;
     }
-    // socket.emit('getTags',{"id":params.courseId});
 });
+
 socket.on('user-detail',function(udetail){
     uName = udetail.local.username;
-})
-// socket.on('TagsData', function(data){
-//     var tags = document.getElementsByClassName('dropdown-content');
-    
-// });
+});
+
+socket.on('course-detail', function(data){
+    courseData = data;
+    var tags = document.getElementById('browsers');
+    for(i=0; i<data.tags.length; i++){
+        var t = document.createElement('option');
+        t.setAttribute('value', data.tags[i]);
+        tags.appendChild(t);
+    }
+});
 
 socket.on('gameData-edit',function(data){
     document.getElementById("name").value=`${data.name}`;
@@ -67,28 +78,41 @@ socket.on('gameData-edit',function(data){
 });
 
 function updateDatabase(reqtype, Id){
-    console.log(reqtype);
-    var alertText;
-    var alertFlag = false;
     var questions = [];
     var name = document.getElementById('name').value;
     if(name == "" || name == undefined){
-        alertFlag = true;
-        alertText += `<div>The quiz must have a name</div>`;
+        alert("name must not blank");
+        return;
     }
     for (let i = 1; i <= questionNum; i++) {
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
+        if(question == "" || question == undefined){
+            alert(`at question${i} : question must not blank`);
+            return;
+        }
         var qtag = document.getElementById(`tagbox${i}`);
         var messages = qtag.getElementsByClassName("tag-message");
         var tags = [];
-        var baseScore;
+        var baseScore = document.getElementById(`score${i}`).value;
+        if(baseScore == ''){
+            if(confirm(`at question${i} : if you don't inseart score the score will be 0`)){
+                baseScore = 0;
+            }else{
+                return ;
+            } 
+        }else{
+            parseInt(baseScore);
+        }
         var answers = [];
         var qtype = document.getElementById('type'+i).innerText;
         var correct;
         // tags 
         for(k=0;k<messages.length;k++){
             tags.push(messages[k].innerText);
+            if(!courseData.tags.includes(messages[k].innerText)){
+                courseData.tags.push(messages[k].innerText);
+            }
         }
         // answer & correct 
         switch(qtype){
@@ -100,8 +124,8 @@ function updateDatabase(reqtype, Id){
                 correct = radioCheck(i);
                 answers = [answer1, answer2, answer3, answer4];
                 if(answer1 == '' || answer2 == '' || answer3 == '' || answer4 == ''){
-                    alertText += 'answer(s) must not blank.';
-                    added = true;
+                    alert(`at question${i} : every answer must not blank`);
+                    return;
                 } 
                 break;
             case ("2c"):
@@ -113,14 +137,14 @@ function updateDatabase(reqtype, Id){
                 }
                 break;
         }
-        // baseScore
-        baseScore = document.getElementById(`score${i}`).value;
-        if(baseScore == '') baseScore = 0;
-        else parseInt(baseScore);
+        if(correct == "not found" || answers[0] == ''){
+            alert(`at question${i} : the question must have at least 1 correct answer`);
+            return;
+        }
         questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": parseInt(baseScore)})
     }
     var data = { id: 0, "name": name, "questions": questions,"courseId": courseId,"creator": uName};
-    console.log(data);
+    socket.emit('update-course',courseData);
     switch(reqtype){
         case('createQuiz'):
             data.roundPlayed = 0;
@@ -132,7 +156,7 @@ function updateDatabase(reqtype, Id){
             break;
         case('createHw'):
             data.submitedStd = [];
-            socket.emit('newHw',data);
+            socket.emit('newHw', data);
             break;
         case('editHw'):
             data.id = Id;
@@ -144,6 +168,13 @@ function addTagBox(questionNum, tagInput, tagNum){
     if(tagInput.value == ''){
         alert("tag must not be blank");
         return;
+    }
+    if(!courseData.tags.includes(tagInput.value)){
+        courseData.tags.push(tagInput.value);
+        var browsers = document.getElementById('browsers');
+        var opt = document.createElement('option');
+        opt.setAttribute('value', tagInput.value);
+        browsers.appendChild(opt);
     }
     var tagbox = document.getElementById(`tagbox${questionNum}`);
     var thistag = document.createElement("div");
@@ -163,6 +194,7 @@ function addTagBox(questionNum, tagInput, tagNum){
     tagNum += 1;
     document.getElementsByClassName('addTagBut')[questionNum-1].setAttribute('onclick', `addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), ${tagNum})`);
     tagInput.value = "";
+    
 }
 
 function addQuestion(){
@@ -215,11 +247,6 @@ function addQuestion(){
                     <label>Tags :
                         <input list="browsers" name="myBrowser" id="tagInput${questionNum}"/>
                     </label>
-                        <datalist id="browsers">
-                            <option value="Tag1">
-                            <option value="Tag2">
-                            <option value="Tag3">
-                        </datalist>
                     <button class="addTagBut" onclick="addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), 0)">Add</button>
                     <br>
                     <br>
@@ -375,6 +402,13 @@ function deleteQuiz(quizId){
     }
 }
 
+function deleteHw(Id){
+    if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
+        window.location.href = `/courseInfo?courseId=${courseId}`;
+        socket.emit('deleteHw',{"id":Id});
+    }
+}
+
 //Called when user wants to exit quiz creator
 function cancelQuiz() {
     if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
@@ -396,11 +430,3 @@ function setBGColor() {
     var randColor = randomColor();
     document.getElementById('question-field').style.backgroundColor = randColor;
 }
-
-
-
-
-
-
-
-

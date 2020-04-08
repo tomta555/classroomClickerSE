@@ -4,10 +4,10 @@
         <title>Course</title>
         <link rel = "stylesheet" href = "../css/course.css">
         <link rel = "stylesheet" href = "../css/info.css" />
-        <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
+        <link rel = "stylesheet" href = "../css/quizCreator.css"/> 
         <meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-        <link rel = "stylesheet" href = "../../assets/css/course.css" />
+        <link rel = "stylesheet" href = "../assets/css/course.css" />
         
     </head>
 
@@ -27,7 +27,7 @@
         <header id="header">
 			<div class="logo container">
 				<div >
-                    <h1 id="mainTitle">HOMEWORK</h1>
+                    <h1 id="mainTitle">COURSE</h1>
                     <!-- <h1><a style="color: rgb(82, 230, 95);" id = "logo" href = "quiz-creator/"><u>Course</u></a></h1> -->
 				</div>
 			</div>
@@ -38,7 +38,9 @@
             <br>
         
             <!-- <div id = "game-list"></div> -->
-            
+            <div id="description" style="display:flex; height: 75px; text-align: center; margin: 0% 10%; align-items: center;">
+            </div>
+
             <div class = "collection">
                 <div class="card-holder">
                     <div class="card bg-gold " style="text-align:left;">
@@ -62,7 +64,17 @@
                         <button id="createQuizButton" style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '../create?courseId=1'" >Create New QUIZ</button>
                     </div>                
                 </div>
+                <div class ="card-holder">
+                    
+                        <div style="width: 100%; text-align: center;">
+                            <button onclick="getTeacher()">Add Teachers</button>
+                            <button onclick="getStudent()">Add Students</button>
+                            <button onclick="getScore()" id="pageButton">Score</button>
+                        </div>
+                    
+                </div>        
             </div>
+           
         <br>
         <br>
         <div id = "addPopUp" class = "modal" style="display: none;">
@@ -88,29 +100,26 @@
                     </div>
                 </div>
                 <div class="confirm-container">
-                    <button onclick="updateCourse()">save</button>
+                    <button id='updateCourse' onclick="updateCourse()">save</button>
                     <button type="button" onclick="document.getElementById('addPopUp').style.display='none'" class="cancelbtn">Cancel</button>
                 </div>
             </div>
         </div>
-        <div style="width: 100%; text-align: center;">
-            <button onclick="getTeacher()">Add Teachers</button>
-            <button onclick="getStudent()">Add Students</button>
-        </div>
+        
+       
 
-
-        <script src = "../../js/libs/jqueryLibrary.js"></script>
-        <script src = "../../js/libs/deparam.js"></script>
+        <script src = "../js/libs/jqueryLibrary.js"></script>
+        <script src = "../js/libs/deparam.js"></script>
         <script src = "../../socket.io/socket.io.js"></script>
         <script src = "../js/course.js"></script>
 
-        <script src="../../assets/js/jquery.min.js"></script>
-        <script src="../../assets/js/jquery.dropotron.min.js"></script>
-        <script src="../../assets/js/jquery.scrolly.min.js"></script>
-        <script src="../../assets/js/browser.min.js"></script>
-        <script src="../../assets/js/breakpoints.min.js"></script>
-        <script src="../../assets/js/util.js"></script>
-        <script src="../../assets/js/main.js"></script>
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../assets/js/browser.min.js"></script>
+        <script src="../assets/js/breakpoints.min.js"></script>
+        <script src="../assets/js/util.js"></script>
+        <script src="../assets/js/main.js"></script>
         
     </body>
 </html>

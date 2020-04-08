@@ -25,12 +25,10 @@ window.onclick = function(event) {
 
 socket.on('connect', function(){
     socket.emit('get-user-detail');
-    socket.emit('get-course-detail', {"id": parseInt(params.courseId)});
-    socket.emit('requestDbHW', {"courseId": params.courseId});//Get database names to display to user
-    socket.emit('requestDbNames', {"courseId": params.courseId});
 });
 
 socket.on('user-detail',function(user){
+    socket.emit('get-course-detail', {"id": parseInt(params.courseId)});
     udetail = user;
     if(user.local.isTeacher){
         var createHwButton = document.getElementById("createHwButton");
@@ -45,14 +43,19 @@ socket.on('course-detail', function(data){
     courseDetail = data;
     var des = document.getElementById('description');
     des.innerHTML = `
-        <div id='desc'>${courseDetail.desc}</div>
+    <div id='name' style="width:100%">Course name : ${courseDetail.name} | Course ID : ${courseDetail.id}</div>
+    <br>
+    <div id='desc' style="width:100%" >Description : ${courseDetail.desc}</div>
+    <br>
     `;
     if(udetail.local.isTeacher){
         des.innerHTML += `
-            <button id='descButton' onclick='editDesc()' style='margin:0px 25px' class="button-br">edit</button>
+        <button id='descButton' onclick='editDesc()' style='position:static; margin:0px 25px ; padding:2px; font-size:20px; right:20px'>edit description</button>
         `;
     }
     socket.emit('get-users');
+    socket.emit('requestDbHW', {"courseId": params.courseId});//Get database names to display to user
+    socket.emit('requestDbNames', {"courseId": params.courseId});
 });
 
 socket.on('users-detail', function(data){
@@ -72,10 +75,10 @@ socket.on('HWData', function(data){
     courseDetail.hw = [];
     courseDetail.hwName = [];
     for(var i = 0; i < Object.keys(data).length; i++){
+        courseDetail.hw.push(data[i].id);
+        courseDetail.hwName.push(data[i].name);
         if(udetail.local.isTeacher || data[i].submitedStd.includes(udetail.local.studentID)){
             div = document.getElementById('hw-list');
-            courseDetail.hw.push(data[i].id);
-            courseDetail.hwName.push(data[i].name);
         }else{
             div = document.getElementById('doing-hw-list');
         }
@@ -242,9 +245,11 @@ socket.on('quiz-score', function(data){
     var quizList = document.getElementById('quiz-list');
     var quiz = [];
     var score;
+    var thisStudentScore = 0;
     for(let i = 0; i < data.length; i++){
-        score = data[i].score;
+        score = data[i].totalScore;
         var newQuiz = true;
+        if (udetail.local.stdId == data.stdId) thisStudentScore = score; 
         for(let j = 0; j < quiz.length; j++){
             if(quiz[j].id == data[i].questionid){
                 if(quiz[j].round == data[i].round){
@@ -272,15 +277,27 @@ socket.on('quiz-score', function(data){
         `;
         for(let j = 0; j < quiz.length; j++){
             if(quiz[j].id == courseDetail.quiz[i]){
-                t += `
-                    <div style="background-color: red">
-                        student answered : ${quiz[j].student}/${courseDetail.students.length} 
-                        <br>
-                        min/max : ${quiz[j].min}/${quiz[j].max} 
-                        <br> 
-                        mean : ${quiz[j].mean}
-                    </div>
-                `;
+                if(udetail.local.isTeacher){
+                    t += `
+                        <div style="background-color: red">
+                            student answered : ${quiz[j].student}/${courseDetail.students.length} 
+                            <br>
+                            min/max : ${quiz[j].min}/${quiz[j].max} 
+                            <br> 
+                            mean : ${quiz[j].mean}
+                        </div>
+                    `;
+                }else{
+                    t += `
+                        <div style="background-color: red">
+                            your score : ${thisStudentScore} 
+                            <br>
+                            min/max : ${quiz[j].min}/${quiz[j].max} 
+                            <br> 
+                            mean : ${quiz[j].mean}
+                        </div>
+                    `;
+                }
                 break;
             }
         }
@@ -353,23 +370,34 @@ function removeFromArray(array, value){
 }
 
 function editDesc(){
-    var desc = document.getElementById('desc').innerText;
+    var desc = courseDetail.desc;
+    var name = courseDetail.name;
     var descBox = document.getElementById('description');
-    var descInput = document.createElement('input');
-    descInput.setAttribute('class', 'question');
-    descInput.setAttribute('id','descInput');
-    descInput.setAttribute('value', desc);
-    var confirmBut = document.createElement('button');
-    confirmBut.innerText = 'save';
-    confirmBut.setAttribute('onclick', 'updateCourseDesc()');
-    confirmBut.setAttribute('style', 'margin:0px 25px');
-    descBox.innerHTML = '';
-    descBox.appendChild(descInput);
-    descBox.appendChild(confirmBut);
+    // var descInput = document.createElement('input');
+    // descInput.setAttribute('class', 'question');
+    // descInput.setAttribute('id','descInput');
+    // descInput.setAttribute('value', desc);
+    // var confirmBut = document.createElement('button');
+    // confirmBut.innerText = 'save';
+    // confirmBut.setAttribute('onclick', 'updateCourseDesc()');
+    // confirmBut.setAttribute('style', 'margin:0px 25px');
+    // descBox.innerHTML = '';
+    // descBox.appendChild(descInput);
+    // descBox.appendChild(confirmBut);
+    descBox.innerHTML = `
+    <label>Course name :</label>
+    <input id='nameInput' style="width:60%" type="text" value="${name}">
+    <br>
+    <label>Course description :</label>
+    <input id='descInput' style="width:60%" type="text" value="${desc}">
+    <br>
+    <button id='descButton' onclick='updateCourseDesc()' style='position:static; margin:0px 25px ; padding:2px; font-size:20px right:20px'>save</button>
+    `;
 }
 
 function updateCourseDesc(){
     var newDesc = document.getElementById('descInput').value;
+    var newName = document.getElementById('nameInput').value;
     var descBox = document.getElementById('description');
     if(newDesc == ''){
         if(!confirm('Is new description will be blank?')){
@@ -377,9 +405,13 @@ function updateCourseDesc(){
         }
     }
     descBox.innerHTML = `
-        <div id='desc'>${newDesc}</div>
-        <button id='descButton' onclick='editDesc()' style='margin:0px 25px'>edit</button>
-    `;
+    <div id='name' style="width:100%">Course name : ${newName} | Course ID : ${courseDetail.id}</div>
+    <br>
+    <div id='desc' style="width:100%" >Description : ${newDesc}</div>
+    <br>
+    <button id='descButton' onclick='editDesc()' style='position:static; margin:0px 25px ; padding:2px; font-size:20px right:20px'>edit description</button>
+    `
+    courseDetail.name = newName;
     courseDetail.desc = newDesc;
     socket.emit('update-course', courseDetail);
 }

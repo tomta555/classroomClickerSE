@@ -3,6 +3,7 @@
 
 <head>
     <title>Homework score</title>
+    <link rel="stylesheet" href="../../css/homework.css" />
     <link rel="stylesheet" href="../../css/quizCreator.css" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -37,6 +38,9 @@
     <br>
 
     <section>
+    
+    <!-- Score bar -->
+
     <div class="score-box" style="height: 130px;">
         <div class="score-left tbl-header">
             <table cellpadding="0" cellspacing="0" border="0">
@@ -50,25 +54,71 @@
         </div>
         <div class="score-right tbl-header">
             <table cellpadding="0" cellspacing="0" border="0">
-                <th style="width:30%">min:</th>
-                <th style="width:30%">max:</th>
-                <th style="width:30%">average:</th>
+                <tr> 
+                    <th style="width:30%">min:</th>
+                    <th style="width:30%">max:</th>
+                    <th style="width:30%">average:</th>
+                </tr>
+                <tr >
+                    <th style="font-size: 250%;">10</th>
+                    <th style="font-size: 250%;">30</th>
+                    <th style="font-size: 250%;">20</th>
+                </tr>
             </table>
         </div>
     </div><br><br>
 
 
-    <div id="questionBox">
-        <h3>Question</h3><br>
-        <input type="checkbox">
-        <label>Answer1</label>
-        <input type="checkbox">
-        <label>Answer2</label>
-        <br><br>
-        <input type="checkbox">
-        <label>Answer3</label>
-        <input type="checkbox">
-        <label>Answer4</label>
+    <!-- Answer keys -->
+
+    <!-- 4 choise -->
+    <div class="card-holder">
+        <div class="card bg-gold" id="question${questionNumber} style="text-align:left;">
+            <label class="choiseHead">question 1</label>
+                <label class="choise" style="background-color: #28ed32;"> choise 1
+                    <input type="radio" disabled>
+                    <span class="checkmark"></span>
+                </label>
+                <label class="choise"> choise 2
+                    <input type="radio" disabled>
+                    <span class="checkmark"></span>
+                </label>
+                <label class="choise">choise 3
+                    <input type="radio" checked disabled>
+                    <span class="checkmark"></span>
+                </label>
+                <label class="choise">choise 4
+                    <input type="radio" disabled>
+                    <span class="checkmark"></span>
+                </label>
+            </label>
+        </div>
+    </div>
+
+    <!-- 2 choise -->
+    <div class="card-holder">    
+        <div class="card bg-gold" id="question${questionNumber} style="text-align:left;">
+            <label class="choiseHead">question 2 </label>
+                <label class="choise" style="background-color:#28ed32;">True
+                    <input type="radio"  checked disabled>
+                    <span class="checkmark"></span>
+                </label>
+                <label class="choise">False
+                    <input type="radio" disabled>
+                    <span class="checkmark"></span>
+                </label>
+            </label>
+        </div>
+    </div>
+
+    <!-- short answer -->
+    <div class="card-holder">
+        <div class="card bg-gold" id="question${questionNumber} style="text-align:left;">
+            <label class="choiseHead">question 3 </label>
+            <label class = "fText">Answer : 
+                <input type="text"  disabled="disabled"/ placeholder = "Answer">
+            </label>
+        </div>
     </div>
 
     <form action="/player/">

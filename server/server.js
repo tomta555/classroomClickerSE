@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const sharedsession = require("express-socket.io-session");
+const moment = require('moment');
 //Import classes
 const { LiveGames } = require('./utils/liveGames');
 const { Players } = require('./utils/players');
@@ -708,11 +709,12 @@ io.on('connection', (socket) => {
         });
     });
 
-    socket.on('ShowHW', function (data){
+    socket.on('ShowHW', function (params,udetail){
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            dbo.collection("Homeworks").findOne({ id : parseInt(data.id)},function (err, res) {
+            dbo.collection("Homeworks").updateOne({id: parseInt(params.id)},{$push:{startDoingStd:udetail.local.studentID}});
+            dbo.collection("Homeworks").findOne({ id : parseInt(params.id)},function (err, res) {
                 if (err) throw err;
                 socket.emit('DoHW',res);
                 // console.log(res[data.id-1]);

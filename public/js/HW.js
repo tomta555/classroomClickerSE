@@ -7,12 +7,6 @@ socket.on('connect', function() {
     document.getElementById('show-HW').innerHTML = ""
     socket.emit('get-user-detail');
     socket.emit('get-hw',params)
-
-    //HW done -> emit -> Show-hw-score -> paste score
-    //HW not done -> paste start button
-    //
-    // document.getElementById('show-HW').innerHTML = "";
-    // socket.emit('ShowHW',params);    
 });
 socket.on('user-detail',function(user){
     udetail = user;
@@ -22,12 +16,9 @@ socket.on('check-hw',function(hw){
     for (sc in hw.questions){
         maxScore += hw.questions[sc].score
     }
-    for(let i=0 ; i < hw.submittedStd.length;i++){
-        if (udetail.local.studentID == hw.submittedStd[i]){
-            socket.emit('get-already-done-hw',params)
-            flag = false
-            break;
-        }
+    if (hw.startDoingStd.includes(udetail.local.studentID)){
+        socket.emit('get-already-done-hw',params)
+        flag = false
     }
     if(flag){
         document.getElementById('show-HW').innerHTML += `<button onclick="DoHW()"> START </button> `
@@ -45,14 +36,12 @@ function DoHW(){
     document.getElementById('show-HW').innerHTML = "";
     document.getElementById('show-HW').innerHTML = `<input type="text" name="hwid" value="${params.id}" style="display:none">`;
     document.getElementById('show-HW').innerHTML += `<input type="text" name="courseid" value="${params.courseId}" style="display:none">`;
-    socket.emit('ShowHW',params);
+    socket.emit('ShowHW',params,udetail);
 };
 
 socket.on('DoHW', function (data) {
-    // console.log(data.questions[0]);
     var ansCount = 0;  
     while(data.questions[questionNumber-1]!=undefined){
-        
         switch(data.questions[questionNumber-1].type){
             case "4c" : document.getElementById('show-HW').innerHTML += `
                         <div class="card-holder">

@@ -7,7 +7,15 @@ var hwSchema = mongoose.Schema({
     // round:Number,
     answer:[String],
     score:[Number],
-    totalScore:Number
+    totalScore:Number,
+    earlyScore:Number,
+    fastScore:Number,
+    topNScore:Number,
+    extraScore:Number,
+    totalScore:Number,
+    startDatetime:Date,
+    submittedDatetime:Date,
+    isLate:Boolean,
     },{collection:'submittedHomework'});
 
 

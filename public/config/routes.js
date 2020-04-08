@@ -1,6 +1,6 @@
 const path = require('path');
-const hwModel = require('../models/homeworkSchema')
-
+const hwModel = require('../models/homeworkSchema');
+const moment = require('moment');
 
 
 
@@ -12,9 +12,6 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
     app.get('/profile', isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../profile/teacher.html'));
     });
-    // app.get('/profile',isLoggedIn, function(req, res) {
-    //     res.render('profile.ejs',{username : req.user.local.username});
-    // });
     //----------Quiz----------
     app.get('/create_quiz', function (req, res) {
         res.sendFile(path.join(__dirname, '../create/quiz-creator/index.html'));
@@ -73,7 +70,17 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
     });
     app.post('/DoHW', function (req, res) {
         var homework = new hwModel();
+        var earlyScore = 0
+        var fastScore = 0
+        var topNScore = 0
+        var extraScore = 0
         var totalScore = 0
+        // var startDatetime = req.startDatetime
+        var startDatetime = new Date() // dummy
+        var submittedDatetime = new Date()
+        // var doingTime = req.doingTime //min
+        var doingTime = 0 // dummy
+        var isLate = false
         var key = []
         for (k in req.body) key.push(k)
         key.shift();
@@ -96,9 +103,39 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
                         }
                         
                     }
+                    //do ExtraScore here
+                    if(resp.isEarlySub == true){
+                        //compare DatetimeNow with EarlyDatetime
+                        if(submittedDatetime < new Date(resp.earlyDate)){
+                            earlyScore = resp.earlyScore
+                        }
+                    }
+                    if(resp.isFastSub == true){
+                        if(doingTime < resp.fastTime){
+                            fastScore = resp.fastScore
+                        }
+                    }
+                    if(resp.isTopN == true){
+                        if(resp.submittedStd.length < resp.nStudent){
+                            topNScore = resp.topNScore
+                        }
+                    }
+                    if(submittedDatetime > new Date(resp.deadline)){
+                        isLate = true
+                    }
+                    extraScore += earlyScore
+                    extraScore += fastScore
+                    extraScore += topNScore
                     homework.courseId = req.body.courseid
                     homework.hwid = req.body.hwid
+                    homework.earlyScore = earlyScore
+                    homework.fastScore = fastScore
+                    homework.topNScore = topNScore
+                    homework.extraScore = extraScore
                     homework.totalScore = totalScore
+                    homework.startDatetime = startDatetime
+                    homework.submittedDatetime = submittedDatetime
+                    homework.isLate = isLate
                     homework.save(function (err) {
                         if (err)
                             throw err;

@@ -1,7 +1,11 @@
+table{
+    width:100%;
+    table-layout: fixed;
+  }
 .scoreBox{
     width: 100%;
     display: flex;
-    background-color: rgb(207, 140, 255);
+    background-color:rgb(179, 81, 224);
     border: 3px solid rebeccapurple;
 }
 
@@ -11,14 +15,7 @@
     display: block;
     position: relative;
     padding: 1%;
-    background-color: rgb(209, 81, 255);
-}
-
-.scoreBox .Line {
-    width: 0.5%;
-    display: block;
-    position: relative;
-    background-color: gray;
+    background-color: rgb(221, 195, 240);
 }
 
 .scoreBox .scoreDetail {
@@ -28,6 +25,27 @@
     padding: 1%;
     text-align: center;
 }
+
+th{
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-align: center;
+    padding: 15px 15px;
+    font-weight: 500;
+    font-size: 18px;
+    color: rgb(255, 255, 255);
+    text-transform: uppercase;
+    max-height: 50px;
+  }
+  td{
+    /* padding-top: 0%; */
+    padding: 15px;
+    text-align: center;
+    vertical-align:middle;
+    font-weight: 300;
+    font-size: 14px;
+    color: darkslategray;
+    border-bottom: solid 1px rgba(205,205,205,0.5);
+  }
 
 #questionBox{
     display: block;

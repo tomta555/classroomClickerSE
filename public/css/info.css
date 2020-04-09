@@ -165,3 +165,6 @@ table {
   display: flex;
 }
 
+.editSize {
+ font-size: 25px;
+}

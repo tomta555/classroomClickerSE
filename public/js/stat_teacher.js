@@ -22,6 +22,8 @@ $(document).ready(function () {
 
     socket.on('gameData-edit',function(data){
         // homework or quiz data 
+        document.getElementById('NAME').innerHTML = data.name
+        document.getElementById('mainTitle').innerHTML = data.name
         for(let k=0; k<courseDetail.tags.length; k++){
             tagScore.push({
                 "name":courseDetail.tags[k],
@@ -164,11 +166,13 @@ function showOverAllScore(full, max, min, mean){
     var M = document.getElementById('overallMax');
     var m = document.getElementById('overallMin');
     var me = document.getElementById('overallMean');
+    var ft = document.getElementById('fullScoreOnTable');
 
     f.innerHTML=full;
     M.innerHTML=max;
     m.innerHTML=min;
     me.innerHTML=mean;
+    ft.innerHTML = `Score (Full:${full})`;
 }
 
 function showTagScore(name, full, max, min, mean){

@@ -42,28 +42,36 @@
     <!-- Score bar -->
 
     <div class="score-box" style="height: 130px;">
-        <div class="score-left tbl-header">
+        <div class="score-left" style="padding: 0px;">
             <table cellpadding="0" cellspacing="0" border="0">
-                <tr>
-                    <th>Your score:</th>
-                </tr>
-                <tr>
-                    <th style="font-size: 250%;">30</th>
-                </tr>
+                <thead class = "tbl-header">
+                    <tr>
+                        <th>Your score:</th>
+                    </tr>
+                </thead>
+                <tbody class = "tb-content">
+                    <tr>
+                        <td id="yourScore">30</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
-        <div class="score-right tbl-header">
+        <div class="score-right" style="padding: 0px;">
             <table cellpadding="0" cellspacing="0" border="0">
-                <tr> 
-                    <th style="width:30%">min:</th>
-                    <th style="width:30%">max:</th>
-                    <th style="width:30%">average:</th>
-                </tr>
-                <tr >
-                    <th style="font-size: 250%;">10</th>
-                    <th style="font-size: 250%;">30</th>
-                    <th style="font-size: 250%;">20</th>
-                </tr>
+                <thead class = "tbl-header">
+                    <tr> 
+                        <th style="width:30%">min:</th>
+                        <th style="width:30%">max:</th>
+                        <th style="width:30%">average:</th>
+                    </tr>
+                </thead>
+                <tbody class = "tb-content">
+                    <tr >
+                        <td id="min">10</td>
+                        <td id="max">30</td>
+                        <td id="mean">20</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div><br><br>
@@ -71,11 +79,15 @@
 
     <!-- Answer keys -->
 
+    <div id="questionList">
+
+    </div>
+    
     <!-- 4 choise -->
     <div class="card-holder">
         <div class="card bg-gold" id="question${questionNumber} style="text-align:left;">
             <label class="choiseHead">question 1</label>
-                <label class="choise" style="background-color: #28ed32;"> choise 1
+                <label class="choise" style="background-color: greenyellow;"> choise 1
                     <input type="radio" disabled>
                     <span class="checkmark"></span>
                 </label>
@@ -99,7 +111,7 @@
     <div class="card-holder">    
         <div class="card bg-gold" id="question${questionNumber} style="text-align:left;">
             <label class="choiseHead">question 2 </label>
-                <label class="choise" style="background-color:#28ed32;">True
+                <label class="choise" style="background-color:rgb(40, 237, 50);">True
                     <input type="radio"  checked disabled>
                     <span class="checkmark"></span>
                 </label>

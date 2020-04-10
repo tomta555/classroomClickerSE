@@ -25,7 +25,11 @@ socket.on('check-hw',function(hw){
     }
 })
 socket.on('already-done-hw',function(doneHw){
-    document.getElementById('show-HW').innerHTML += `<div><label>Score:${doneHw.totalScore}/${maxScore}</label></div>
+    document.getElementById('show-HW').innerHTML += `
+    <div>
+        <label>Score:${doneHw.totalScore}/${maxScore}</label>
+        <label>Extra Score:${doneHw.extraScore}</label>
+    </div>
     <div><button type="button" onclick="backtoCourseinfo()">Back to course</button></div>
     `
 })
@@ -41,6 +45,34 @@ function DoHW(){
 
 socket.on('DoHW', function (data) {
     var ansCount = 0;  
+    var tMin = 0;
+    var tSec = 0; 
+    var tTextMin = "00";
+    var tTextSec = "00";
+    var dateTime = new Date()
+    document.getElementById('Timer').style.display = "block"
+    document.getElementById('startDatetime').value = dateTime
+    timer = setInterval(function () {
+        if(tSec == 59){
+            tSec = 0;
+            tMin += 1;
+        }else{
+            tSec += 1;
+        }
+        if(tMin < 10){
+            tTextMin = "0" + tMin.toString();
+        }else{
+            tTextMin = tMin.toString();
+        }
+        if(tSec < 10){
+            tTextSec = "0" + tSec.toString();
+        }else{
+            tTextSec = tSec.toString();
+        }
+        document.getElementById('sentTime').value = tMin
+        document.getElementById('timeValue').textContent = tTextMin +":"+tTextSec;
+    }, 1000);
+
     while(data.questions[questionNumber-1]!=undefined){
         switch(data.questions[questionNumber-1].type){
             case "4c" : document.getElementById('show-HW').innerHTML += `

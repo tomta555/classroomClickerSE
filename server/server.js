@@ -710,10 +710,26 @@ io.on('connection', (socket) => {
     });
 
     socket.on('ShowHW', function (params,udetail){
+        var startDoingHw = {
+            hwid:parseInt(params.id),
+            courseId:parseInt(params.courseId),
+            stdId:udetail.local.studentID,
+            answer:[],
+            score:[],
+            earlyScore:0,
+            fastScore:0,
+            topNScore:0,
+            extraScore:0,
+            totalScore:0,
+            startDatetime:new Date(),
+            submittedDatetime:new Date(),
+            isLate:false,
+        }
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
             dbo.collection("Homeworks").updateOne({id: parseInt(params.id)},{$push:{startDoingStd:udetail.local.studentID}});
+            dbo.collection("submittedHomework").insertOne(startDoingHw)
             dbo.collection("Homeworks").findOne({ id : parseInt(params.id)},function (err, res) {
                 if (err) throw err;
                 socket.emit('DoHW',res);

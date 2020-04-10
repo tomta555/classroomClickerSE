@@ -75,14 +75,14 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
         var topNScore = 0
         var extraScore = 0
         var totalScore = 0
-        // var startDatetime = req.startDatetime
-        var startDatetime = new Date() // dummy
+        var startDatetime = new Date(req.body.startDatetime)
         var submittedDatetime = new Date()
-        // var doingTime = req.doingTime //min
-        var doingTime = 0 // dummy
+        var doingTime = req.body.doingTime //min
         var isLate = false
         var key = []
         for (k in req.body) key.push(k)
+        key.shift();
+        key.shift();
         key.shift();
         key.shift();
         MongoClient.connect(url, function (err, db) {
@@ -90,6 +90,7 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
             var dbo = db.db('classroomClicker');
             dbo.collection('users').findOne({ _id: ObjectID(req.session.passport.user) }, function (err, result) {
                 if (err) throw err;
+                dbo.collection("submittedHomework").deleteOne( { $and:[{hwid:parseInt(req.body.hwid)},{stdId:result.local.studentID}] },true);
                 homework.stdId = result.local.studentID
                 dbo.collection('Homeworks').findOne({ id: parseInt(req.body.hwid) }, function (err, resp) {
                     if (err) throw err;

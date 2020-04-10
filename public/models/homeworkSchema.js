@@ -7,7 +7,6 @@ var hwSchema = mongoose.Schema({
     // round:Number,
     answer:[String],
     score:[Number],
-    totalScore:Number,
     earlyScore:Number,
     fastScore:Number,
     topNScore:Number,

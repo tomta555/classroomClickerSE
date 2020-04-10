@@ -166,9 +166,10 @@ io.on('connection', (socket) => {
                         a3: answer3,
                         a4: answer4,
                         correct: correctAnswer,
+                        allQuestions: res[0].questions.length,
                         playersInGame: playerData.length,
                         type: Q_type
-
+                        
                     });
                     // Q_type = "2c";
                     io.to(game.pin).emit('gameStartedPlayer', Q_type);
@@ -433,6 +434,7 @@ io.on('connection', (socket) => {
                         a3: answer3,
                         a4: answer4,
                         correct: correctAnswer,
+                        allQuestions: res[0].questions.length,
                         playersInGame: playerData.length,
                         type: Q_type
                     });

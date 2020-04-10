@@ -42,7 +42,7 @@ socket.on('course-detail', function(data){
     `;
     if(udetail.local.isTeacher){
         des.innerHTML += `
-            <button id='descButton' onclick='editDesc()' style='margin:0px 25px'>edit</button>
+            <button id='descButton' onclick='editDesc()' style='margin:0px 25px; '>edit</button>
         `;
     }
     socket.emit('get-users');

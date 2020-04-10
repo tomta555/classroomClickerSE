@@ -3,10 +3,6 @@
     --input-padding-y: .75rem;
   }
   body {
-      /* -webkit-animation: bgcolor 20s infinite;
-      animation: bgcolor 10s infinite;
-      -webkit-animation-direction: alternate;
-      animation-direction: alternate; */
       background-color: #f8d7ff!important;
       background-image: url("../img/kissingbird.png");
       background-repeat: no-repeat;

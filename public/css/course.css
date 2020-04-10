@@ -157,3 +157,11 @@ span.psw {
     width: 100%;
   }
 }
+
+.score{
+  color: darkslategray;
+  background-color: rgb(221, 195, 240);
+  border-radius: 8px;
+  padding:2%;
+
+}

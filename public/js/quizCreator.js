@@ -130,6 +130,7 @@ function updateDatabase(reqtype, Id){
                 break;
             case ("2c"):
                 correct = radioCheck(i);
+                answers = ['True', 'False'];
                 break;
             case("sa"):
                 for (var j = 1; j <= countCorrect; j++){

@@ -50,7 +50,7 @@ socket.on('course-detail', function(data){
     `;
     if(udetail.local.isTeacher){
         des.innerHTML += `
-        <button id='descButton' onclick='editDesc()' style='position:static; margin:0px 25px ; padding:2px; font-size:20px; right:20px'>edit description</button>
+        <button id='descButton' class='editSize' onclick='editDesc()'>edit description</button>
         `;
     }
     socket.emit('get-users');
@@ -85,8 +85,11 @@ socket.on('HWData', function(data){
         var button = document.createElement('button');
         var mydata = `id=${data[i].id}&courseId=${params.courseId}&type=editHw`;
         button.innerHTML = data[i].name;
-        if(udetail.local.isTeacher || data[i].submitedStd.includes(udetail.local.studentID)){
+        if(udetail.local.isTeacher ){
             button.setAttribute('onClick', `hwStat(${courseDetail.hw[i]}, ${courseDetail.id})`);
+        }else if(data[i].submitedStd.includes(udetail.local.studentID)){
+            var linkToStatPage = `/stat_studentPage?courseId=${params.courseId}&id=${data[i].id}&type=homework&stdId=${udetail.local.studentID}`
+            button.setAttribute('onClick', `window.location.href="${linkToStatPage}"`);
         }else{
             button.setAttribute('onClick', `DoHW(${data[i].id},${params.courseId})`);
         }
@@ -117,7 +120,12 @@ socket.on('gameNamesData', function(data){
         var mydata = `id=${data[i].id}&courseId=${params.courseId}&type=editQuiz`;
         
         button.innerHTML = data[i].name;
-        button.setAttribute('onClick', "startGame('" + data[i].id + "')");
+        if(udetail.local.isTeacher){
+            button.setAttribute('onClick', "startGame('" + data[i].id + "')");
+        }else{
+            var linkToStatPage = `/stat_studentPage?courseId=${params.courseId}&id=${data[i].id}&type=quiz&stdId=${udetail.local.studentID}`
+            button.setAttribute('onClick', `window.location.href="${linkToStatPage}"`);
+        }
         button.setAttribute('id', 'gameButton');
         
         div.appendChild(button);
@@ -303,7 +311,7 @@ socket.on('quiz-score', function(data){
         }
     }
     quizList.innerHTML = t
-    homework_score_innerhtml = t;
+    quiz_score_innerhtml = t;
 });
 
 function getEdit(){
@@ -373,17 +381,6 @@ function editDesc(){
     var desc = courseDetail.desc;
     var name = courseDetail.name;
     var descBox = document.getElementById('description');
-    // var descInput = document.createElement('input');
-    // descInput.setAttribute('class', 'question');
-    // descInput.setAttribute('id','descInput');
-    // descInput.setAttribute('value', desc);
-    // var confirmBut = document.createElement('button');
-    // confirmBut.innerText = 'save';
-    // confirmBut.setAttribute('onclick', 'updateCourseDesc()');
-    // confirmBut.setAttribute('style', 'margin:0px 25px');
-    // descBox.innerHTML = '';
-    // descBox.appendChild(descInput);
-    // descBox.appendChild(confirmBut);
     descBox.innerHTML = `
     <label>Course name :</label>
     <input id='nameInput' style="width:60%" type="text" value="${name}">
@@ -391,7 +388,7 @@ function editDesc(){
     <label>Course description :</label>
     <input id='descInput' style="width:60%" type="text" value="${desc}">
     <br>
-    <button id='descButton' onclick='updateCourseDesc()' style='position:static; margin:0px 25px ; padding:2px; font-size:20px right:20px'>save</button>
+    <button id='descButton' class='editSize' onclick='updateCourseDesc()'>save</button>
     `;
 }
 
@@ -409,7 +406,7 @@ function updateCourseDesc(){
     <br>
     <div id='desc' style="width:100%" >Description : ${newDesc}</div>
     <br>
-    <button id='descButton' onclick='editDesc()' style='position:static; margin:0px 25px ; padding:2px; font-size:20px right:20px'>edit description</button>
+    <button id='descButton' onclick='editDesc()' class='editSize' >edit description</button>
     `
     courseDetail.name = newName;
     courseDetail.desc = newDesc;

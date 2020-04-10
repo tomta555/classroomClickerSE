@@ -149,9 +149,15 @@ socket.on('questionOver', function (playerdata, correctAns, type) {
 });
 
 socket.on('newScore', function (data) {
+    var newdata = 0;
+    if(data > 0){
+        newdata = data - playedData.totalScore;
+        playedData.score.push(newdata);
+    }else{
+        playedData.score.push(newdata);
+    }
+    playedData.totalScore += newdata;
     document.getElementById('scoreText').innerHTML = "Score: " + data;
-    playedData.score.push(data - playedData.totalScore);
-    playedData.totalScore += data;
 });
 
 socket.on('nextQuestionPlayer', function (type) {

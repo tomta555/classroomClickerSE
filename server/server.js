@@ -717,6 +717,8 @@ io.on('connection', (socket) => {
             if (err) throw err;
             var dbo = db.db("classroomClicker");
             var query = { questionid: {$in: data}};
+            
+            // dbo.collection('PlayedQuizzes').aggregate({$group:{max:{$max:"$round"}}, query})
             dbo.collection('PlayedQuizzes').find(query).toArray(function (err, result) {
                 if (err) throw err;
                 //A quiz was found with the id passed in url
@@ -817,6 +819,26 @@ io.on('connection', (socket) => {
         }
     });
 
+    socket.on('updateStudentScore', function(data){
+        var newScore = parseInt(data.score);
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            if(data.type == 'homework'){
+                var query = {hwid: parseInt(data.qId), stdId: data.stdId}
+                dbo.collection("submittedHomework").update(query, {$set: {totalScore:newScore}}, function (err, result) {
+                    if (err) throw err;
+                    db.close();
+                })
+            }else{
+                var query = {questionid: parseInt(data.qid), stdId: data.stdId, round: parseInt(data.round)}
+                dbo.collection("PlayedQuizzes").updateOne({query}, {$set: {totalScore:newScore}}, function (err, result) {
+                    if (err) throw err;
+                    db.close();
+                })
+            }
+        })
+    });
     socket.on('get-users', function(){
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;

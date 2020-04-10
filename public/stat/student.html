@@ -4,6 +4,7 @@
 <head>
     <title>Homework score</title>
     <link rel="stylesheet" href="../../css/homework.css" />
+    <link rel = "stylesheet" href = "../css/course.css">
     <link rel="stylesheet" href="../../css/quizCreator.css" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -15,6 +16,15 @@
 <body>
 
 
+    <!-- Header -->
+
+    <header id="header">
+        <div class="logo container">
+            <div class="form-field">
+                <h1 id="mainTitle">Score</h1><br>
+            </div>
+        </div>
+    </header>
 
     <!-- Nav -->
     <nav id="nav">
@@ -25,33 +35,36 @@
         </ul>
     </nav>
 
-    <!-- Header -->
-
-    <header id="header">
-        <div class="logo container">
-            <div>
-                <p>HOMEWORK</p>
-                <!-- <h1><a style="color: rgb(82, 230, 95);" id = "logo" href = "quiz-creator/"><u>Course</u></a></h1> -->
-            </div>
-        </div>
-    </header>
-    <br>
 
     <section>
     
+        <div id = "editScorePopUp" class = "modal" style="display: none;">
+            <span onclick="document.getElementById('editScorePopUp').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <div class="modal-content animate">
+                
+                <div class="container questionBox" style = "padding: 16px 4%; width: 100%">
+                    <label style="font-size: large; padding-top: 20px; margin-right: 20px;">New Score :  </label>
+                    <input type='text' id='studentScore' style="width: 60%;">
+                </div>
+                <div class="confirm-container">
+                    <button onclick="updateStudentScore(document.getElementById('studentScore').value)">save</button>
+                    <button type="button" onclick="document.getElementById('editScorePopUp').style.display='none'" class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+        </div>
     <!-- Score bar -->
-
+        <br>
     <div class="score-box" style="height: 130px;">
         <div class="score-left" style="padding: 0px;">
             <table cellpadding="0" cellspacing="0" border="0">
                 <thead class = "tbl-header">
                     <tr>
-                        <th>Your score:</th>
+                        <th id="studentName">Your score:</th>
                     </tr>
                 </thead>
                 <tbody class = "tb-content">
                     <tr>
-                        <td id="yourScore">30</td>
+                        <td id="yourScore"><div style='background-color: red;'>you didn't play lastest game</div></td>
                     </tr>
                 </tbody>
             </table>
@@ -60,16 +73,18 @@
             <table cellpadding="0" cellspacing="0" border="0">
                 <thead class = "tbl-header">
                     <tr> 
-                        <th style="width:30%">min:</th>
-                        <th style="width:30%">max:</th>
-                        <th style="width:30%">average:</th>
+                        <th style="width:25%">full:</th>
+                        <th style="width:25%">max:</th>
+                        <th style="width:25%">min:</th>
+                        <th style="width:25%">average:</th>
                     </tr>
                 </thead>
                 <tbody class = "tb-content">
                     <tr >
-                        <td id="min">10</td>
-                        <td id="max">30</td>
-                        <td id="mean">20</td>
+                        <td id='overallFull'>100</td>
+                        <td id='overallMax'>10</td>
+                        <td id='overallMin'>30</td>
+                        <td id='overallMean'>20</td>
                     </tr>
                 </tbody>
             </table>
@@ -84,8 +99,8 @@
     </div>
     
     <!-- 4 choise -->
-    <div class="card-holder">
-        <div class="card bg-gold" id="question${questionNumber} style="text-align:left;">
+    <!-- <div class="card-holder">
+        <div class="card bg-gold" id="question${questionNumber}" style="text-align:left;">
             <label class="choiseHead">question 1</label>
                 <label class="choise" style="background-color: greenyellow;"> choise 1
                     <input type="radio" disabled>
@@ -105,11 +120,11 @@
                 </label>
             </label>
         </div>
-    </div>
+    </div> -->
 
     <!-- 2 choise -->
-    <div class="card-holder">    
-        <div class="card bg-gold" id="question${questionNumber} style="text-align:left;">
+    <!-- <div class="card-holder">    
+        <div class="card bg-gold" id="question${questionNumber}" style="text-align:left;">
             <label class="choiseHead">question 2 </label>
                 <label class="choise" style="background-color:rgb(40, 237, 50);">True
                     <input type="radio"  checked disabled>
@@ -121,34 +136,26 @@
                 </label>
             </label>
         </div>
-    </div>
+    </div> -->
 
     <!-- short answer -->
-    <div class="card-holder">
-        <div class="card bg-gold" id="question${questionNumber} style="text-align:left;">
+    <!-- <div class="card-holder">
+        <div class="card bg-gold" id="question${questionNumber}" style="text-align:left;">
             <label class="choiseHead">question 3 </label>
             <label class = "fText">Answer : 
                 <input type="text"  disabled="disabled"/ placeholder = "Answer">
             </label>
         </div>
-    </div>
+    </div> -->
 
-    <form action="/player/">
-        <table id="show-HW"></table>
-        <div class="form-field" style="text-align:right; margin-right: 8%">
-            <!-- <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = "window.location.href = 'index.html'" >Submit</button> -->
-            <!-- <button class="button2" style="background-color:#864cbf; font-size:22px; width:147.34px" onclick = DoHW() >Start</button> -->
-            <!-- <button onclick="DoHW()"> START </button> -->
-        </div>
-    </form>
     </section>
 
 
 
-    <script src="../../socket.io/socket.io.js"></script>
-    <script src="../../js/libs/jqueryLibrary.js"></script>
-    <script src="../../js/libs/deparam.js"></script>
-    <script src="../../js/quizCreator.js"></script>
+    <script src="../socket.io/socket.io.js"></script>
+    <script src="../js/libs/jqueryLibrary.js"></script>
+    <script src="../js/libs/deparam.js"></script>
+    <script src="../js/stat_student.js"></script>
 
     <script src="../../assets/js/jquery.min.js"></script>
     <script src="../../assets/js/jquery.dropotron.min.js"></script>

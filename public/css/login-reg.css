@@ -2,33 +2,37 @@
     --input-padding-x: 1.5rem;
     --input-padding-y: .75rem;
   }
-    @keyframes bgcolor {
-      0% {
-          background-color: #45a3e5
-      }
-
-      30% {
-          background-color: #66bf39
-      }
-
-      60% {
-          background-color: #eb670f
-      }
-
-      90% {
-          background-color: #f35
-      }
-
-      100% {
-          background-color: #864cbf
-      }
-  }
-
   body {
-      -webkit-animation: bgcolor 20s infinite;
+      /* -webkit-animation: bgcolor 20s infinite;
       animation: bgcolor 10s infinite;
       -webkit-animation-direction: alternate;
-      animation-direction: alternate;
+      animation-direction: alternate; */
+      background-color: #f8d7ff!important;
+      background-image: url("../img/kissingbird3.png");
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: 100% auto;
+      background-position-x: center;
+      background-position-y: 75%;
+  }
+  @media only screen and (max-width: 1200px){
+    body{
+      background-size: 100% 55vw;
+      background-position-y: center;
+    }
+  }
+  @media only screen and (max-width: 992px){
+    body{
+      background-position-y: center;
+    }
+  }
+  .mt-10{
+    margin-top: 10rem!important;
+  }
+  @media only screen and (max-width: 992px){
+    .mt-10{
+      margin-top: 3rem!important;
+    }
   }
 
   .card-signin {
@@ -130,6 +134,15 @@
   .btn-facebook {
     color: white;
     background-color: #3b5998;
+  }
+
+  .btn-noknoi{
+    color: white!important;
+    background-color: #8800a3!important;
+  }
+
+  .hyplk-noknoi{
+    color: #8800a3!important;
   }
   
   /* Fallback for Edge

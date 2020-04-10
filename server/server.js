@@ -321,18 +321,16 @@ io.on('connection', (socket) => {
                         }
                         
                     }
+                    io.to(game.pin).emit('updatePlayersAnswered', {
+                        playersInGame: playerNum.length,
+                        playersAnswered: game.gameData.playersAnswered
+                    });
                     //Checks if all players answered
                     if (game.gameData.playersAnswered == playerNum.length) {
                         game.gameData.questionLive = false; //Question has been ended bc players all answered under time
                         var playerData = players.getPlayers(game.hostId);
                         io.to(game.pin).emit('questionOver', playerData, correctAnswer);//Tell everyone that question is over
-                    } else {
-                        //update host screen of num players answered
-                        io.to(game.pin).emit('updatePlayersAnswered', {
-                            playersInGame: playerNum.length,
-                            playersAnswered: game.gameData.playersAnswered
-                        });
-                    }
+                    }               
 
                     db.close();
                 });
@@ -449,7 +447,7 @@ io.on('connection', (socket) => {
                     var fifth = { name: "", score: 0 };
 
                     for (var i = 0; i < playersInGame.length; i++) {
-                        console.log(playersInGame[i].gameData.score);
+                        // console.log(playersInGame[i].gameData.score);
                         if (playersInGame[i].gameData.score > fifth.score) {
                             if (playersInGame[i].gameData.score > fourth.score) {
                                 if (playersInGame[i].gameData.score > third.score) {

@@ -72,7 +72,6 @@ function answerSubmitted(num,type){
 
 function shortAnswerSubmitted(){
     answer= document.getElementById('inputanswer5').value;
-    console.log(answer)
     answerSubmitted(answer,"sa");
 }
 

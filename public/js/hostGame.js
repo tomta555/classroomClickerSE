@@ -6,7 +6,6 @@ var timer;
 var questionNumber = 0;
 var time;
 var type_Q;
-var latestPlayerCount = 0;
 var latestPlayerInGame = 0;
 //When host connects to server
 socket.on('connect', function () {
@@ -76,7 +75,6 @@ socket.on('gameQuestions', function (data) {
 
 socket.on('updatePlayersAnswered', function (data) {
     document.getElementById('playersAnswered').innerHTML = "Players Answered " + data.playersAnswered + " / " + data.playersInGame;
-    latestPlayerCount = data.playersAnswered + 1;
 });
 
 socket.on('questionOver', function (playerData, correct) {
@@ -90,8 +88,6 @@ socket.on('questionOver', function (playerData, correct) {
     var playerAns3 = 0;
     var playerAns4 = 0;
     var total = 0;
-
-    document.getElementById('playersAnswered').innerHTML = "Players Answered " + latestPlayerCount + " / " + latestPlayerInGame;
 
     if (type_Q == '4c') {
     

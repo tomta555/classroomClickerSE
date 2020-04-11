@@ -5,6 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../css/login-reg.css">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans|Open+Sans+Condensed:300&display=swap" rel="stylesheet">
   <link href="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.slim.min.js" rel="stylesheet">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js" rel="stylesheet">
@@ -16,8 +17,13 @@
 <body>
   <div class="container">
     <div class="row">
+      <div class="mx-auto mt-10 img-logo">
+        <!-- path starts from public -->
+        <img src="./img/askmelogo.png" width="500px" height="290px">
+      </div>
+
       <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-        <div class="card card-signin my-5">
+        <div class="card card-signin mt-5 mb-3">
           <div class="card-body">
             <h5 class="card-title text-center">Sign In</h5>
             <!-- show any messages that come back with authentication -->
@@ -41,16 +47,25 @@
                 <input type="checkbox" name="rememberCheck" class="custom-control-input" id="rememberCheck1">
                 <label class="custom-control-label" for="rememberCheck1">Remember password</label>
               </div>
-              <div class="mb-3">
-                <a href="/signup"> Don't have an account?</a>
-              </div>
-              <button class="btn btn-lg btn-primary btn-block text-uppercase" id="signIn" type="submit">Sign in</button>
+              <div class="mb-3"></div>
+              <button class="btn btn-lg btn-noknoi btn-block text-uppercase" id="signIn" type="submit">Sign in</button>
             </form>
+          </div>
+        </div>
+        
+        <div class="card card-signin">
+          <div class="card-body" style="text-align: center;">
+            <label style="margin: 0%;">Don't have an account?</label>
+            <span><a class="hyplk-noknoi" href="/signup">Sign Up</a></span>
           </div>
         </div>
       </div>
     </div>
+  
   </div>
+
+
+
   <script src="../socket.io/socket.io.js"></script>
   <script src="../js/libs/jqueryLibrary.js"></script>
   <script src="../js/libs//deparam.js"></script>

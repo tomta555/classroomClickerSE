@@ -22,6 +22,7 @@ socket.on('noGameFound', function () {
 socket.on('gameQuestions', function (data) {
     questionNumber += 1; 
     document.getElementById('timerText').style.display = "block";
+    console.log(data.type);
     switch (data.type) {
         case "4c":
             type_Q = "4c"
@@ -70,6 +71,7 @@ socket.on('gameQuestions', function (data) {
             document.getElementById('QA123').innerHTML = `
                 <h2 id = 'question'>${data.q1}</h2>
                 <div id = "SAAnsTable"></div>`
+            document.getElementById('foot-nav').style.display = "block";
             document.getElementById('foot-nav').style.webkitAnimation = "slide-up 500ms";
             document.getElementById('foot-nav').style.animation = "slide-up 500ms";
             document.getElementById('Inform').style.webkitAnimationDelay = "1s";
@@ -260,6 +262,7 @@ socket.on('questionOver', function (playerData, correct) {
         document.getElementById('foot-nav').style.webkitAnimation = "slide-down 500ms";
         document.getElementById('foot-nav').style.animation = "slide-down 500ms";
         document.getElementById('Inform').style.display = "none";
+        document.getElementById('foot-nav').style.display = "none";
     }
 });
 

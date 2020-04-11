@@ -52,7 +52,7 @@ app.use(sessionMiddleware);
 //Path
 const publicPath = path.join(__dirname, '../public');
 app.use(express.static(publicPath));
-
+// app.use(express.static("public"));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());

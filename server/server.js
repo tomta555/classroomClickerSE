@@ -61,12 +61,11 @@ require('../public/config/routes')(app, passport,MongoClient,url,ObjectID);
 io.use(sharedsession(sessionMiddleware, {
     autoSave: true
 }));
+function shuffle(array) {
+    array.sort(() => Math.random() - 0.5);
+  }
 
-
-
-
-
-//Starting server on port 3000
+//Starting server on port   
 server.listen(port, () => {
     console.log("Server started on port 3000");
 });
@@ -139,8 +138,8 @@ io.on('connection', (socket) => {
                 if (result[0] !== undefined) {
                     var gamePin = Math.floor(Math.random() * 90000) + 10000; //new pin for game
 
-                    games.addGame(gamePin, socket.id, false, { playersAnswered: 0, questionLive: false, gameid: data.id, question: 1 }); //Creates a game with pin and host id
-
+                    games.addGame(gamePin, socket.id, false, { playersAnswered: 0, questionLive: false, gameid: data.id, question: 1 ,randomArray :[] }); //Creates a game with pin and host id
+                    // ,randomArray :[] 
                     var game = games.getGame(socket.id); //Gets the game data
 
                     socket.join(game.pin);//The host is joining a room based on the pin
@@ -181,14 +180,20 @@ io.on('connection', (socket) => {
                 var query = { id: parseInt(gameid) };
                 dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                     if (err) throw err;
-
-                    var question = res[0].questions[0].question;
-                    var answer1 = res[0].questions[0].answers[0];
-                    var answer2 = res[0].questions[0].answers[1];
-                    var answer3 = res[0].questions[0].answers[2];
-                    var answer4 = res[0].questions[0].answers[3];
-                    var correctAnswer = res[0].questions[0].correct;
-                    Q_type = res[0].questions[0].type;
+                    // let temp = res[0].questions
+                    let shuffleArray = [] ;
+                    for (let x=0 ; x< res[0].questions.length;x++){
+                        shuffleArray.push(x);
+                    }
+                    shuffle(shuffleArray);
+                    game.randomArray = shuffleArray  
+                    var question = res[0].questions[shuffleArray[0]].question;
+                    var answer1 = res[0].questions[shuffleArray[0]].answers[0];
+                    var answer2 = res[0].questions[shuffleArray[0]].answers[1];
+                    var answer3 = res[0].questions[shuffleArray[0]].answers[2];
+                    var answer4 = res[0].questions[shuffleArray[0]].answers[3];
+                    var correctAnswer = res[0].questions[shuffleArray[0]].correct;
+                    Q_type = res[0].questions[shuffleArray[0]].type;
                     socket.emit('gameQuestions', {
                         q1: question,
                         a1: answer1,
@@ -196,8 +201,10 @@ io.on('connection', (socket) => {
                         a3: answer3,
                         a4: answer4,
                         correct: correctAnswer,
+                        allQuestions: res[0].questions.length,
                         playersInGame: playerData.length,
                         type: Q_type
+                        
                     });
                     // Q_type = "2c";
                     io.to(game.pin).emit('gameStartedPlayer', Q_type);
@@ -312,7 +319,7 @@ io.on('connection', (socket) => {
         if (game.gameData.questionLive == true) {//if the question is still live
             player.gameData.answer = num;
             game.gameData.playersAnswered += 1;
-
+            let gameArray = game.randomArray 
             var gameQuestion = game.gameData.question;
             var gameid = game.gameData.gameid;
             MongoClient.connect(url, function (err, db) {
@@ -322,37 +329,43 @@ io.on('connection', (socket) => {
                 var query = { id: parseInt(gameid) };
                 dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                     if (err) throw err;
-                    var correctAnswer = res[0].questions[gameQuestion - 1].correct;
-                    var NubAnsSA = res[0].questions[gameQuestion - 1].answers.length;
-                    var isCorrect = false;
-                    var score = res[0].questions[gameQuestion - 1].score;
+
+                    var correctAnswer = res[0].questions[gameArray[gameQuestion - 1] ].correct;
+                    var NubAnsSA = res[0].questions[gameArray[gameQuestion - 1] ].answers.length;
+                    var score = res[0].questions[gameArray[gameQuestion - 1] ].score;
                     //Checks player answer with correct answer
-                    if (type == "sa") {
-                        num = num.toUpperCase()
-                        for (var i = 0; i < NubAnsSA; i++) {
-                            tempCorrect = res[0].questions[gameQuestion - 1].answers[i];
-                            tempCorrect = tempCorrect.toUpperCase();
-                            if(num == tempCorrect) isCorrect = true;
+                    if(type == "4c" || type == "2c"){
+                        if (num == correctAnswer) {
+                            player.gameData.score += score;
+                            // player.answeredQuestion.push({});
+                            io.to(game.pin).emit('getTime', socket.id);
+                            socket.emit('answerResult', true);
                         }
+                    }else if(type == "sa"){
+                        const regex = / |,/gi;
+                        num = num.replace(regex,"").toUpperCase()
+                        for(var i=0 ;i<NubAnsSA;i++){
+                            tempCorrect = res[0].questions[gameQuestion-1].answers[i];
+                            tempCorrect = tempCorrect.replace(regex,"").toUpperCase();
+                            if(num == tempCorrect){
+                                player.gameData.score += score;
+                                // player.answeredQuestion.push({});
+                                io.to(game.pin).emit('getTime', socket.id);
+                                socket.emit('answerResult', true);
+                            }
+                        }
+                        
                     }
-                    if (num == correctAnswer || isCorrect) {
-                        player.gameData.score += score;
-                        // player.answeredQuestion.push({});
-                        io.to(game.pin).emit('getTime', socket.id);
-                        socket.emit('answerResult', true);
-                    }
+                    io.to(game.pin).emit('updatePlayersAnswered', {
+                        playersInGame: playerNum.length,
+                        playersAnswered: game.gameData.playersAnswered
+                    });
                     //Checks if all players answered
                     if (game.gameData.playersAnswered == playerNum.length) {
                         game.gameData.questionLive = false; //Question has been ended bc players all answered under time
                         var playerData = players.getPlayers(game.hostId);
-                        io.to(game.pin).emit('questionOver', playerData, correctAnswer, type);//Tell everyone that question is over
-                    } else {
-                        //update host screen of num players answered
-                        io.to(game.pin).emit('updatePlayersAnswered', {
-                            playersInGame: playerNum.length,
-                            playersAnswered: game.gameData.playersAnswered
-                        });
-                    }
+                        io.to(game.pin).emit('questionOver', playerData, correctAnswer);//Tell everyone that question is over
+                    }               
 
                     db.close();
                 });
@@ -432,17 +445,21 @@ io.on('connection', (socket) => {
             var query = { id: parseInt(gameid) };
             dbo.collection("Quizzes").find(query).toArray(function (err, res) {
                 if (err) throw err;
-
+                
+                
                 if (res[0].questions.length >= game.gameData.question) {
+                    // var questionNum = QuizShuffle[game.gameData.question];
                     var questionNum = game.gameData.question;
+                    // console.log("Qnum : " + questionNum)
                     questionNum = questionNum - 1;
-                    var question = res[0].questions[questionNum].question;
-                    var answer1 = res[0].questions[questionNum].answers[0];
-                    var answer2 = res[0].questions[questionNum].answers[1];
-                    var answer3 = res[0].questions[questionNum].answers[2];
-                    var answer4 = res[0].questions[questionNum].answers[3];
-                    var correctAnswer = res[0].questions[questionNum].correct;
-                    Q_type = res[0].questions[questionNum].type;
+                    shuffleArray = game.randomArray
+                    var question = res[0].questions[shuffleArray[questionNum]].question;
+                    var answer1 = res[0].questions[shuffleArray[questionNum]].answers[0];
+                    var answer2 = res[0].questions[shuffleArray[questionNum]].answers[1];
+                    var answer3 = res[0].questions[shuffleArray[questionNum]].answers[2];
+                    var answer4 = res[0].questions[shuffleArray[questionNum]].answers[3];
+                    var correctAnswer = res[0].questions[shuffleArray[questionNum]].correct;
+                    Q_type = res[0].questions[shuffleArray[questionNum]].type;
                     socket.emit('gameQuestions', {
                         q1: question,
                         a1: answer1,
@@ -450,6 +467,7 @@ io.on('connection', (socket) => {
                         a3: answer3,
                         a4: answer4,
                         correct: correctAnswer,
+                        allQuestions: res[0].questions.length,
                         playersInGame: playerData.length,
                         type: Q_type
                     });
@@ -464,7 +482,7 @@ io.on('connection', (socket) => {
                     var fifth = { name: "", score: 0 };
 
                     for (var i = 0; i < playersInGame.length; i++) {
-                        console.log(playersInGame[i].gameData.score);
+                        // console.log(playersInGame[i].gameData.score);
                         if (playersInGame[i].gameData.score > fifth.score) {
                             if (playersInGame[i].gameData.score > fourth.score) {
                                 if (playersInGame[i].gameData.score > third.score) {

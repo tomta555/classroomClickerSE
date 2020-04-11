@@ -347,7 +347,7 @@ function addQuestion() {
                     <br>
                     <br>
                     <label>Score : </label>
-                    <input id="score${questionNum}" type="text" class="Answer"></input>    
+                    <input id="score${questionNum}" type="number" min='0' class="Answer"></input>    
                 </div>
             </div>
         <br>`;

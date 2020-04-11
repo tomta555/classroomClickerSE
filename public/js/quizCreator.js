@@ -36,46 +36,7 @@ socket.on('connect', function () {
         case ("createHw"):
             mainTitle.innerHTML = "create Homework";
             addQuestion();
-            customScore = document.getElementById("customScore");
-            customScore.innerHTML = `           
-            <div>     
-                <label class="checkBoxContainer" style="width: 50%;">Deadline</label>
-                <div id="deadlineInput" style="display:block">
-                    <label>DateTime:</label>
-                    <input id="deadLine" type="datetime-local">
-                </div>        
-                <label class="checkBoxContainer" style="width: 50%;">Early Submission Score
-                    <input id="isEarly" type="checkbox" onclick="addInput(this)">
-                    <span class="checkmark"></span>
-                </label>
-                <div id="earlyInput" style="display:none">
-                    <label>DateTime:</label>
-                    <input id="erlSubmitDate" type="datetime-local">
-                    <label>Score:</label>
-                    <input id="erlScore" type="number" min="0" placeholder="0" value=0>
-                </div>
-                <label class="checkBoxContainer" style="width: 50%;">Fast Submission Score
-                    <input id="isFast" type="checkbox" onclick="addInput(this)">
-                    <span class="checkmark"></span>
-                </label>
-                <div id="fastInput" style="display:none">
-                    <label>Time (Min):</label>
-                    <input id="fastTime" type="number" min="0" placeholder="0" value=0>
-                    <label>Score:</label>
-                    <input id="fastScore" type="number" min="0" placeholder="0" value=0>
-                </div>                        
-                <label class="checkBoxContainer" style="width: 50%;">Top n Submitted
-                    <input id="isTopN" type="checkbox" onclick="addInput(this)">
-                    <span class="checkmark"></span>
-                </label>
-                <div id="topNInput" style="display:none">
-                    <label>n:</label>
-                    <input id="nStudent" type="number" min="0" placeholder="0" value=0>
-                    <label>Score:</label>
-                    <input id="nScore" type="number" min="0" placeholder="0" value=0>
-                </div>
-            </div>
-            `
+            customScore = document.getElementById("customScore").style.display = 'block';
             submitButton.setAttribute("onclick", "updateDatabase('createHw', 0)");
             submitButton.innerHTML = "Create Homework";
             cancleButton.innerHTML = "Cancle Homework";

@@ -7,7 +7,6 @@ var questionNumber = 0;
 var time;
 var type_Q;
 var SAcorrectAns;
-var latestPlayerCount = 0;
 var latestPlayerInGame = 0;
 //When host connects to server
 socket.on('connect', function () {
@@ -23,6 +22,7 @@ socket.on('noGameFound', function () {
 socket.on('gameQuestions', function (data) {
     questionNumber += 1; 
     document.getElementById('timerText').style.display = "block";
+    console.log(data.type);
     switch (data.type) {
         case "4c":
             type_Q = "4c"
@@ -44,7 +44,7 @@ socket.on('gameQuestions', function (data) {
                 <h3 id = "answer4">${data.a4}</h3></div>
             <div class="revealAns" id="revealAns4"></div>`
             var correctAnswer = data.correct;
-            document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / ";  // Add total number of questions
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / " + data.allQuestions;  // Add total number of questions
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
@@ -60,17 +60,18 @@ socket.on('gameQuestions', function (data) {
             <h3 id = 'answer2'>FALSE</h3></div>
             <div class="revealAns" id="revealAns2"></div>`
             var correctAnswer = data.correct;
-            document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / ";  // Add total number of questions
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / " + data.allQuestions;  // Add total number of questions
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             updateTimer();
             break;
 
         case "sa":
             type_Q = "sa"
-            document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / ";  // Add total number of questions
+            document.getElementById('questionNum').innerHTML = "Question " + questionNumber + " / " + data.allQuestions;;  // Add total number of questions
             document.getElementById('QA123').innerHTML = `
                 <h2 id = 'question'>${data.q1}</h2>
                 <div id = "SAAnsTable"></div>`
+            document.getElementById('foot-nav').style.display = "block";
             document.getElementById('foot-nav').style.webkitAnimation = "slide-up 500ms";
             document.getElementById('foot-nav').style.animation = "slide-up 500ms";
             document.getElementById('Inform').style.webkitAnimationDelay = "1s";
@@ -88,7 +89,6 @@ socket.on('gameQuestions', function (data) {
 
 socket.on('updatePlayersAnswered', function (data) {
     document.getElementById('playersAnswered').innerHTML = "Players Answered " + data.playersAnswered + " / " + data.playersInGame;
-    latestPlayerCount = data.playersAnswered + 1;
 });
 
 socket.on('questionOver', function (playerData, correct) {
@@ -103,7 +103,7 @@ socket.on('questionOver', function (playerData, correct) {
     var playerAns4 = 0;
     var total = 0;
 
-    document.getElementById('playersAnswered').innerHTML = "Players Answered " + latestPlayerCount + " / " + latestPlayerInGame;
+    // document.getElementById('playersAnswered').innerHTML = "Players Answered " + latestPlayerCount + " / " + latestPlayerInGame;
     var nextQTable = `<a onclick = "nextQuestion()">Next Question >></a>`;
     document.getElementById('timerText').style.display = "none";
     document.getElementById('nextQButton').innerHTML = nextQTable;
@@ -262,6 +262,7 @@ socket.on('questionOver', function (playerData, correct) {
         document.getElementById('foot-nav').style.webkitAnimation = "slide-down 500ms";
         document.getElementById('foot-nav').style.animation = "slide-down 500ms";
         document.getElementById('Inform').style.display = "none";
+        document.getElementById('foot-nav').style.display = "none";
     }
 });
 

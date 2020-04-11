@@ -1,6 +1,6 @@
 const path = require('path');
-const hwModel = require('../models/homeworkSchema')
-
+const hwModel = require('../models/homeworkSchema');
+const moment = require('moment');
 
 
 
@@ -12,9 +12,6 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
     app.get('/profile', isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../profile/teacher.html'));
     });
-    // app.get('/profile',isLoggedIn, function(req, res) {
-    //     res.render('profile.ejs',{username : req.user.local.username});
-    // });
     //----------Quiz----------
     app.get('/create_quiz', function (req, res) {
         res.sendFile(path.join(__dirname, '../create/quiz-creator/index.html'));
@@ -73,9 +70,19 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
     });
     app.post('/DoHW', function (req, res) {
         var homework = new hwModel();
+        var earlyScore = 0
+        var fastScore = 0
+        var topNScore = 0
+        var extraScore = 0
         var totalScore = 0
+        var startDatetime = new Date(req.body.startDatetime)
+        var submittedDatetime = new Date()
+        var doingTime = req.body.doingTime //min
+        var isLate = false
         var key = []
         for (k in req.body) key.push(k)
+        key.shift();
+        key.shift();
         key.shift();
         key.shift();
         MongoClient.connect(url, function (err, db) {
@@ -83,6 +90,7 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
             var dbo = db.db('classroomClicker');
             dbo.collection('users').findOne({ _id: ObjectID(req.session.passport.user) }, function (err, result) {
                 if (err) throw err;
+                dbo.collection("submittedHomework").deleteOne( { $and:[{hwid:parseInt(req.body.hwid)},{stdId:result.local.studentID}] },true);
                 homework.stdId = result.local.studentID
                 dbo.collection('Homeworks').findOne({ id: parseInt(req.body.hwid) }, function (err, resp) {
                     if (err) throw err;
@@ -96,15 +104,46 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
                         }
                         
                     }
+                    //do ExtraScore here
+                    if(resp.isEarlySub == true){
+                        //compare DatetimeNow with EarlyDatetime
+                        if(submittedDatetime < new Date(resp.earlyDate)){
+                            earlyScore = resp.earlyScore
+                        }
+                    }
+                    if(resp.isFastSub == true){
+                        if(doingTime < resp.fastTime){
+                            fastScore = resp.fastScore
+                        }
+                    }
+                    if(resp.isTopN == true){
+                        if(resp.submittedStd.length < resp.nStudent){
+                            topNScore = resp.topNScore
+                        }
+                    }
+                    if(submittedDatetime > new Date(resp.deadline)){
+                        isLate = true
+                    }
+                    extraScore += earlyScore
+                    extraScore += fastScore
+                    extraScore += topNScore
+                    homework.courseId = req.body.courseid
                     homework.hwid = req.body.hwid
+                    homework.earlyScore = earlyScore
+                    homework.fastScore = fastScore
+                    homework.topNScore = topNScore
+                    homework.extraScore = extraScore
                     homework.totalScore = totalScore
+                    homework.startDatetime = startDatetime
+                    homework.submittedDatetime = submittedDatetime
+                    homework.isLate = isLate
                     homework.save(function (err) {
                         if (err)
                             throw err;
                     });
-                    dbo.collection('Homeworks').updateOne({id:parseInt(req.body.hwid)}, {$push:{submitedStd:homework.stdId}})
+                    dbo.collection('Homeworks').updateOne({id:parseInt(req.body.hwid)}, {$push:{submittedStd:homework.stdId}})
                     db.close();
-                    res.redirect("/courseInfoStu?courseId="+req.body.courseid);
+                    res.redirect("/DoHW?id="+req.body.hwid+"&courseId="+req.body.courseid);
                 })
             })
         })

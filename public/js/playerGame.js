@@ -9,9 +9,10 @@ var params = jQuery.deparam(window.location.search); //Gets the id from url
 var playedData = {
     questionid : 0, 
     answer : [],
+    score :[],
     stdId    : '',
     round  : 0, 
-    score  : 0
+    totalScore  : 0
 }
 
 socket.on('connect', function () {
@@ -148,8 +149,15 @@ socket.on('questionOver', function (playerdata, correctAns, type) {
 });
 
 socket.on('newScore', function (data) {
+    var newdata = 0;
+    if(data > 0){
+        newdata = data - playedData.totalScore;
+        playedData.score.push(newdata);
+    }else{
+        playedData.score.push(newdata);
+    }
+    playedData.totalScore += newdata;
     document.getElementById('scoreText').innerHTML = "Score: " + data;
-    playedData.score += data
 });
 
 socket.on('nextQuestionPlayer', function (type) {

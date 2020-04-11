@@ -152,3 +152,11 @@
     .single-class-area:focus .hover-content h4, .single-class-area:hover .hover-content h5,
     .single-class-area:focus .hover-content h5 {
     color: #fff; }
+
+    .bg-gold {
+        background: -webkit-linear-gradient(110deg,#8c65a5 60%, #b390ca 60%);
+        background: -o-linear-gradient(110deg, #8c65a5 60%, #b390ca 60%);
+        background: -moz-linear-gradient(110deg, #8c65a5 60%, #b390ca 60%);
+        background: linear-gradient(110deg, #8c65a5 30%, #b390ca 70%);
+        border-radius: 25px;
+      }

@@ -50,11 +50,7 @@ socket.on('course-detail', function(data){
     `;
     if(udetail.local.isTeacher){
         des.innerHTML += `
-<<<<<<< HEAD
         <button id='descButton' class='editSize' onclick='editDesc()'>edit description</button>
-=======
-            <button id='descButton' onclick='editDesc()' style='margin:0px 25px; '>edit</button>
->>>>>>> c0a47ce3d3b7a77fdb35306d301803d51dec36fc
         `;
     }
     socket.emit('get-users');

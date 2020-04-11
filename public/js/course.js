@@ -232,7 +232,7 @@ socket.on('hw-score', function(data){
         for(let j = 0; j < hw.length; j++){
             if(hw[j].id == courseDetail.hw[i]){
                 t += `
-                    <div style="background-color: red">
+                    <div class="score">
                         student answered : ${hw[j].student}/${courseDetail.students.length} 
                         <br>
                         min/max : ${hw[j].min}/${hw[j].max} 
@@ -288,7 +288,7 @@ socket.on('quiz-score', function(data){
             if(quiz[j].id == courseDetail.quiz[i]){
                 if(udetail.local.isTeacher){
                     t += `
-                        <div style="background-color: red">
+                        <div class="score">
                             student answered : ${quiz[j].student}/${courseDetail.students.length} 
                             <br>
                             min/max : ${quiz[j].min}/${quiz[j].max} 
@@ -298,7 +298,7 @@ socket.on('quiz-score', function(data){
                     `;
                 }else{
                     t += `
-                        <div style="background-color: red">
+                        <div class="score">
                             your score : ${thisStudentScore} 
                             <br>
                             min/max : ${quiz[j].min}/${quiz[j].max} 

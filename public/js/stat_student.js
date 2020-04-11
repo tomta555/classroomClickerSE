@@ -253,20 +253,20 @@ function showQuestion(data,questionNum){
     card.setAttribute('style', 'text-align: left;');
 
     var choiseHead = document.createElement('label');
-    choiseHead.setAttribute('class', 'choiseHead');
+    choiseHead.setAttribute('class', 'choiceHead');
     choiseHead.innerText  = data.question;
     card.appendChild(choiseHead);
     if(data.type == "4c" || data.type == "2c"){
         for(var i=0; i< data.answers.length; i++){
             if(data.correct == i+1){
                 card.innerHTML += `
-                <label class="choise correct-answer"> ${data.answers[i]}
+                <label class="choice correct-answer"> ${data.answers[i]}
                     <input id="answer${questionNum}_radio${i}" type="radio" disabled>
                     <span class="checkmark"></span>
                 </label>`;
             }else{
                 card.innerHTML += `
-                <label class="choise"> ${data.answers[i]}
+                <label class="choice"> ${data.answers[i]}
                     <input id="answer${questionNum}_radio${i}" type="radio" disabled>
                     <span class="checkmark"></span>
                 </label>`;

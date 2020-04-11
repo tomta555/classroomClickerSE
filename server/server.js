@@ -586,7 +586,7 @@ io.on('connection', (socket) => {
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            query = { courseId: String(data.courseId) }
+            query = { courseId: data.courseId }
             dbo.collection("Homeworks").find(query).toArray(function (err, res) {
                 if (err) throw err;
                 socket.emit('HWData', res);

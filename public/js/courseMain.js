@@ -43,7 +43,7 @@ $(document).ready(function () {
                     if(allHomework[j].courseId == data[i].id){
                         if(udetail.local.isTeacher){
                             n++;
-                        }else if (!allHomework[j].submitedStd.includes(udetail.local.studentID) ){
+                        }else if (!allHomework[j].submittedStd.includes(udetail.local.studentID) ){
                             n++;
                         }
                     } 

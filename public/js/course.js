@@ -71,6 +71,7 @@ socket.on('users-detail', function(data){
 });
 
 socket.on('HWData', function(data){
+    console.log(data);
     var div;
     courseDetail.hw = [];
     courseDetail.hwName = [];

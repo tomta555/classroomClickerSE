@@ -11,6 +11,7 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const sharedsession = require("express-socket.io-session");
+const moment = require('moment');
 //Import classes
 const { LiveGames } = require('./utils/liveGames');
 const { Players } = require('./utils/players');
@@ -777,14 +778,30 @@ io.on('connection', (socket) => {
         });
     });
 
-    socket.on('ShowHW', function (data){
+    socket.on('ShowHW', function (params,udetail){
+        var startDoingHw = {
+            hwid:parseInt(params.id),
+            courseId:parseInt(params.courseId),
+            stdId:udetail.local.studentID,
+            answer:[],
+            score:[],
+            earlyScore:0,
+            fastScore:0,
+            topNScore:0,
+            extraScore:0,
+            totalScore:0,
+            startDatetime:new Date(),
+            submittedDatetime:new Date(),
+            isLate:false,
+        }
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            query = {id:parseInt(data.id)};
-            dbo.collection("Homeworks").find(query).toArray(function (err, res) {
+            dbo.collection("Homeworks").updateOne({id: parseInt(params.id)},{$push:{startDoingStd:udetail.local.studentID}});
+            dbo.collection("submittedHomework").insertOne(startDoingHw)
+            dbo.collection("Homeworks").findOne({ id : parseInt(params.id)},function (err, res) {
                 if (err) throw err;
-                socket.emit('DoHW',res[0]);
+                socket.emit('DoHW',res);
                 // console.log(res[data.id-1]);
                 db.close();
             });
@@ -871,8 +888,32 @@ io.on('connection', (socket) => {
                 socket.emit('course-detail', result)
                 db.close();
             })
-        })
-    });
+        })    
+    })
+    socket.on('get-hw',(params)=>{
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("Homeworks").findOne({$and: [{courseId:parseInt(params.courseId)},{id:parseInt(params.id)}]}, function (err, result) {
+                if (err) throw err;
+                socket.emit('check-hw',result)
+                db.close();
+            })
+        })   
+    })
+    socket.on('get-already-done-hw',function(params){
+        MongoClient.connect(url, function (err, db) {
+            if (err) throw err;
+            var dbo = db.db('classroomClicker');
+            dbo.collection("submittedHomework").findOne({$and: [{courseId:parseInt(params.courseId)},{hwid:parseInt(params.id)}]}, function (err, result) {
+                if (err) throw err;
+                socket.emit('already-done-hw',result)
+                db.close();
+            })
+        })  
+
+    })
+
     socket.on('update-course', function(data){
         data.id = parseInt(data.id);
         delete data._id;

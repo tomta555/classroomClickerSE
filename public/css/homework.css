@@ -1,7 +1,7 @@
 
 
 /* Customize the label (the container) */
-.choise {
+.choice {
     display: block;
     position: relative;
     padding-left: 35px;
@@ -16,7 +16,7 @@
   }
   
   /* Hide the browser's default radio button */
-  .choise input {
+  .choice input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
@@ -24,7 +24,7 @@
     width: 0;
   }
 
-  .choiseHead {
+  .choiceHead {
     display: block;
     position: relative;
     padding-left: 5px;
@@ -39,7 +39,7 @@
   }
   
   /* Hide the browser's default radio button */
-  .choiseHead input {
+  .choiceHead input {
     position: absolute;
     opacity: 0;
     cursor: pointer;
@@ -59,12 +59,12 @@
   }
   
   /* On mouse-over, add a grey background color */
-  .choise:hover input ~ .checkmark {
+  .choice:hover input ~ .checkmark {
     background-color: #ccc;
   }
   
   /* When the radio button is checked, add a blue background */
-  .choise input:checked ~ .checkmark {
+  .choice input:checked ~ .checkmark {
     background-color: #ffed4b;
   }
   
@@ -76,12 +76,12 @@
   }
   
   /* Show the indicator (dot/circle) when checked */
-  .choise input:checked ~ .checkmark:after {
+  .choice input:checked ~ .checkmark:after {
     display: block;
   }
   
   /* Style the indicator (dot/circle) */
-  .choise .checkmark:after {
+  .choice .checkmark:after {
     top: 9px;
     left: 9px;
     width: 8px;

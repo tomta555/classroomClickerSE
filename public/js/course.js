@@ -54,8 +54,8 @@ socket.on('course-detail', function(data){
         `;
     }
     socket.emit('get-users');
-    socket.emit('requestDbHW', {"courseId": params.courseId});//Get database names to display to user
-    socket.emit('requestDbNames', {"courseId": params.courseId});
+    socket.emit('requestDbHW', {"courseId": parseInt(params.courseId) });//Get database names to display to user
+    socket.emit('requestDbNames', {"courseId": parseInt(params.courseId)});
 });
 
 socket.on('users-detail', function(data){
@@ -77,7 +77,7 @@ socket.on('HWData', function(data){
     for(var i = 0; i < Object.keys(data).length; i++){
         courseDetail.hw.push(data[i].id);
         courseDetail.hwName.push(data[i].name);
-        if(udetail.local.isTeacher || data[i].submitedStd.includes(udetail.local.studentID)){
+        if(udetail.local.isTeacher || data[i].startDoingStd.includes(udetail.local.studentID)){
             div = document.getElementById('hw-list');
         }else{
             div = document.getElementById('doing-hw-list');
@@ -87,7 +87,7 @@ socket.on('HWData', function(data){
         button.innerHTML = data[i].name;
         if(udetail.local.isTeacher ){
             button.setAttribute('onClick', `hwStat(${courseDetail.hw[i]}, ${courseDetail.id})`);
-        }else if(data[i].submitedStd.includes(udetail.local.studentID)){
+        }else if(data[i].startDoingStd.includes(udetail.local.studentID)){
             var linkToStatPage = `/stat_studentPage?courseId=${params.courseId}&id=${data[i].id}&type=homework&stdId=${udetail.local.studentID}`
             button.setAttribute('onClick', `window.location.href="${linkToStatPage}"`);
         }else{

@@ -1,13 +1,13 @@
 var socket = io();
 var params = jQuery.deparam(window.location.search);
-var courseId = params.courseId;
 var courseData;
 var questionNum = 0;
 var questionCounter = 0;
 var countCorrect = 1;
+var courseId = parseInt(params.courseId);
 var uName;
 // var quizId;
-socket.on('connect',function(){
+socket.on('connect', function () {
     socket.emit('get-user-detail');
     socket.emit('get-course-detail',{"id":params.courseId});
     var mainTitle = document.getElementById('mainTitle');
@@ -15,35 +15,75 @@ socket.on('connect',function(){
     var submitButton = document.getElementById('submitButton');
     var cancleButton = document.getElementById('cancleButton');
     var deleteQuizButton
-    switch( params.type.toString() ){
-        case("createQuiz"):
-            mainTitle.innerHTML="create Quiz";
+    switch (params.type.toString()) {
+        case ("createQuiz"):
+            mainTitle.innerHTML = "create Quiz";
             addQuestion();
-            submitButton.setAttribute("onclick","updateDatabase('createQuiz', 0)");
-            submitButton.innerHTML="Create Quiz";
-            cancleButton.innerHTML="Cancle Quiz";
-            mainTitle.innerHTML="Create Quiz";
+            submitButton.setAttribute("onclick", "updateDatabase('createQuiz', 0)");
+            submitButton.innerHTML = "Create Quiz";
+            cancleButton.innerHTML = "Cancle Quiz";
+            mainTitle.innerHTML = "Create Quiz";
             break;
-        case("editQuiz"):
-            mainTitle.innerHTML="edit Quiz";
+        case ("editQuiz"):
+            mainTitle.innerHTML = "edit Quiz";
             submitButton.setAttribute("onclick", `updateDatabase('editQuiz', ${params.id})`);
-            submitButton.innerHTML="Save";
-            cancleButton.innerHTML="cancle";
-            mainTitle.innerHTML="Edit Quiz";
+            submitButton.innerHTML = "Save";
+            cancleButton.innerHTML = "cancle";
+            mainTitle.innerHTML = "Edit Quiz";
             document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteQuiz(${params.id})`)
             socket.emit('req-quiz-data', params);
             break;
-        case("createHw"):
-            mainTitle.innerHTML="create Homework";
+        case ("createHw"):
+            mainTitle.innerHTML = "create Homework";
             addQuestion();
-            submitButton.setAttribute("onclick","updateDatabase('createHw', 0)");
-            submitButton.innerHTML="Create Homework";
-            cancleButton.innerHTML="Cancle Homework";
-            mainTitle.innerHTML="Create Homework";
+            customScore = document.getElementById("customScore");
+            customScore.innerHTML = `           
+            <div>     
+                <label class="checkBoxContainer" style="width: 50%;">Deadline</label>
+                <div id="deadlineInput" style="display:block">
+                    <label>DateTime:</label>
+                    <input id="deadLine" type="datetime-local">
+                </div>        
+                <label class="checkBoxContainer" style="width: 50%;">Early Submission Score
+                    <input id="isEarly" type="checkbox" onclick="addInput(this)">
+                    <span class="checkmark"></span>
+                </label>
+                <div id="earlyInput" style="display:none">
+                    <label>DateTime:</label>
+                    <input id="erlSubmitDate" type="datetime-local">
+                    <label>Score:</label>
+                    <input id="erlScore" type="number" min="0" placeholder="0" value=0>
+                </div>
+                <label class="checkBoxContainer" style="width: 50%;">Fast Submission Score
+                    <input id="isFast" type="checkbox" onclick="addInput(this)">
+                    <span class="checkmark"></span>
+                </label>
+                <div id="fastInput" style="display:none">
+                    <label>Time (Min):</label>
+                    <input id="fastTime" type="number" min="0" placeholder="0" value=0>
+                    <label>Score:</label>
+                    <input id="fastScore" type="number" min="0" placeholder="0" value=0>
+                </div>                        
+                <label class="checkBoxContainer" style="width: 50%;">Top n Submitted
+                    <input id="isTopN" type="checkbox" onclick="addInput(this)">
+                    <span class="checkmark"></span>
+                </label>
+                <div id="topNInput" style="display:none">
+                    <label>n:</label>
+                    <input id="nStudent" type="number" min="0" placeholder="0" value=0>
+                    <label>Score:</label>
+                    <input id="nScore" type="number" min="0" placeholder="0" value=0>
+                </div>
+            </div>
+            `
+            submitButton.setAttribute("onclick", "updateDatabase('createHw', 0)");
+            submitButton.innerHTML = "Create Homework";
+            cancleButton.innerHTML = "Cancle Homework";
+            mainTitle.innerHTML = "Create Homework";
             quizTitle.innerHTML="Homework title";
             break;
-        case("editHw"):
-            mainTitle.innerHTML="Edit Homework";
+        case ("editHw"):
+            mainTitle.innerHTML = "Edit Homework";
             submitButton.setAttribute("onclick", `updateDatabase('editHw', ${params.id})`);
             submitButton.innerHTML="Save";
             cancleButton.innerHTML="cancle";
@@ -68,14 +108,29 @@ socket.on('course-detail', function(data){
     }
 });
 
-socket.on('gameData-edit',function(data){
-    document.getElementById("name").value=`${data.name}`;
-    for(q in data.questions){
+socket.on('gameData-edit', function (data) {
+    document.getElementById("name").value = `${data.name}`;
+    for (q in data.questions) {
         addQuestion();
         openTab("newQuestion", data.questions[String(q)].type, questionNum);
         addDataToQuestion(questionNum, data.questions[String(q)])
     }
 });
+function addInput(loc) {
+    let inputField
+    if (loc.id == "isEarly") {
+        inputField = document.getElementById("earlyInput");
+    } else if (loc.id == "isTopN") {
+        inputField = document.getElementById("topNInput");
+    } else if (loc.id == "isFast") {
+        inputField = document.getElementById("fastInput");
+    }
+    if (loc.checked == true) {
+        inputField.style.display = "block";
+    } else {
+        inputField.style.display = "none";
+    }
+}
 
 function updateDatabase(reqtype, Id){
     var questions = [];
@@ -105,18 +160,18 @@ function updateDatabase(reqtype, Id){
             parseInt(baseScore);
         }
         var answers = [];
-        var qtype = document.getElementById('type'+i).innerText;
+        var qtype = document.getElementById('type' + i).innerText;
         var correct;
         // tags 
-        for(k=0;k<messages.length;k++){
+        for (k = 0; k < messages.length; k++) {
             tags.push(messages[k].innerText);
             if(!courseData.tags.includes(messages[k].innerText)){
                 courseData.tags.push(messages[k].innerText);
             }
         }
         // answer & correct 
-        switch(qtype){
-            case("4c"):
+        switch (qtype) {
+            case ("4c"):
                 var answer1 = document.getElementById(i + 'a1').value;
                 var answer2 = document.getElementById(i + 'a2').value;
                 var answer3 = document.getElementById(i + 'a3').value;
@@ -132,9 +187,9 @@ function updateDatabase(reqtype, Id){
                 correct = radioCheck(i);
                 answers = ['True', 'False'];
                 break;
-            case("sa"):
-                for (var j = 1; j <= countCorrect; j++){
-                    answers[j-1] = document.getElementById(j + 'correct' + i).value;
+            case ("sa"):
+                for (var j = 1; j <= countCorrect; j++) {
+                    answers[j - 1] = document.getElementById(j + 'correct' + i).value;
                 }
                 break;
         }
@@ -146,27 +201,67 @@ function updateDatabase(reqtype, Id){
     }
     var data = { id: 0, "name": name, "questions": questions,"courseId": courseId,"creator": uName};
     socket.emit('update-course',courseData);
+    
+    if (reqtype == 'createHw') {
+        let Deadline = document.getElementById("deadLine").value + ":00"
+        let isEarlySub = document.getElementById("isEarly").checked
+        let EarlyDate = document.getElementById("erlSubmitDate").value + ":00"
+        let EarlyScore = parseInt(document.getElementById("erlScore").value)
+        let isFast = document.getElementById("isFast").checked
+        let FastMin = parseInt(document.getElementById("fastTime").value)
+        let FastScore = parseInt(document.getElementById("fastScore").value)
+        let isTopN = document.getElementById("isTopN").checked
+        let NStudent = parseInt(document.getElementById("nStudent").value)
+        let TopNScore = parseInt(document.getElementById("nScore").value)
+        if(Deadline == ":00"){
+            Deadline = new Date();
+            Deadline.setDate(Deadline.getDate() + 7);
+        }
+        if(EarlyDate == ":00"){
+            EarlyDate = new Date();
+            EarlyDate.setDate(EarlyDate.getDate() + 7);
+        }
+        data = {
+            id: 0, 
+            "name": name, 
+            "questions": questions, 
+            "courseId": courseId,
+            "creator": uName, 
+            "deadline": new Date(Deadline), 
+            "isEarlySub": isEarlySub,
+            "earlyDate": new Date(EarlyDate), 
+            "earlyScore": EarlyScore,
+            "isFastSub": isFast, 
+            "fastTime": FastMin, 
+            "fastScore": FastScore, 
+            "isTopN": isTopN,
+            "nStudent": NStudent, 
+            "topNScore": TopNScore,
+        };
+        console.log(data)
+    }
     switch(reqtype){
         case('createQuiz'):
             data.roundPlayed = 0;
-            socket.emit('newQuiz',data);
+            socket.emit('newQuiz', data);
             break;
-        case('editQuiz'):
+        case ('editQuiz'):
             data.id = Id;
-            socket.emit('editQuiz',data);
+            socket.emit('editQuiz', data);
             break;
-        case('createHw'):
-            data.submitedStd = [];
+        case ('createHw'):
+            data.submittedStd = [];
+            data.startDoingStd = [];
             socket.emit('newHw', data);
             break;
-        case('editHw'):
+        case ('editHw'):
             data.id = Id;
-            socket.emit('editHw',data);
+            socket.emit('editHw', data);
             break;
-        }
+    }
 };
-function addTagBox(questionNum, tagInput, tagNum){
-    if(tagInput.value == ''){
+function addTagBox(questionNum, tagInput, tagNum) {
+    if (tagInput.value == '') {
         alert("tag must not be blank");
         return;
     }
@@ -186,19 +281,19 @@ function addTagBox(questionNum, tagInput, tagNum){
     Message.className += "tag-message";
     delBut.innerText = 'x';
     delBut.setAttribute("onclick", `document.getElementById('tag${questionNum}_${tagNum}').remove()`)
-    thistag.className += ` tag${questionNum}`; 
+    thistag.className += ` tag${questionNum}`;
     thistag.className += " questionTag";
     thistag.appendChild(Message);
     thistag.appendChild(delBut);
     thistag.setAttribute('id', `tag${questionNum}_${tagNum}`)
     tagbox.appendChild(thistag);
     tagNum += 1;
-    document.getElementsByClassName('addTagBut')[questionNum-1].setAttribute('onclick', `addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), ${tagNum})`);
+    document.getElementsByClassName('addTagBut')[questionNum - 1].setAttribute('onclick', `addTagBox(${questionNum},document.getElementById('tagInput${questionNum}'), ${tagNum})`);
     tagInput.value = "";
     
 }
 
-function addQuestion(){
+function addQuestion() {
     var questionTable = "";
     questionCounter += 1;
     questionNum += 1;
@@ -275,51 +370,51 @@ function deleteQuestion(i) {
 function radioCheck(i) {
     var allRadio = document.getElementsByName(`correct${i}`);
     var found;
-    for(var j=0; j<4; j++){
-        if(allRadio[j].checked == true){
+    for (var j = 0; j < 4; j++) {
+        if (allRadio[j].checked == true) {
             found = true;
             return allRadio[j].value;
-        } 
+        }
     }
-    if(!found) return "not found";
+    if (!found) return "not found";
 }
 
-function addDataToQuestion(questionNum, data){
+function addDataToQuestion(questionNum, data) {
     var tablinks = document.getElementsByClassName(`tablinks${questionNum}`);
     var tagInput = document.getElementById(`tagInput${questionNum}`);
     var scoreInput = document.getElementById(`score${questionNum}`);
     var tags = data.tag;
     document.getElementById(`q${questionNum}`).value = data.question;
-    switch(data.type){
-        case("4c"):
+    switch (data.type) {
+        case ("4c"):
             quizType = "4 choices";
             document.getElementById(`${questionNum}a1`).value = data.answers[0];
             document.getElementById(`${questionNum}a2`).value = data.answers[1];
             document.getElementById(`${questionNum}a3`).value = data.answers[2];
             document.getElementById(`${questionNum}a4`).value = data.answers[3];
             break;
-        case("2c"):
+        case ("2c"):
             quizType = "true or false";
             break;
-        case("sa"):
+        case ("sa"):
             quizType = "Short Answer";
-            for (i in data.answers){
-                document.getElementById(`${parseInt(i)+1}correct${questionNum}`).value = data.answers[i];
-                if(i != data.answers.length-1) addbuttonAns();
+            for (i in data.answers) {
+                document.getElementById(`${parseInt(i) + 1}correct${questionNum}`).value = data.answers[i];
+                if (i != data.answers.length - 1) addbuttonAns();
             }
             break;
     }
-    if(data.type == "4c" || data.type == "2c"){
+    if (data.type == "4c" || data.type == "2c") {
         document.getElementById(`radio${data.correct}${questionNum}`).checked = true;
     }
     for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className.replace(" active", "");
-        if(tablinks[i].innerHTML == quizType){
+        if (tablinks[i].innerHTML == quizType) {
             tablinks[i].className += " active";
         }
     }
-    
-    for(i=0; i<tags.length; i++){
+
+    for (i = 0; i < tags.length; i++) {
         tagInput.value = tags[i];
         addTagBox(questionNum, tagInput, i);
     }
@@ -329,14 +424,14 @@ function addDataToQuestion(questionNum, data){
 
 }
 
-function openTab(evt, quizType, id){
+function openTab(evt, quizType, id) {
     var evtTarget = evt.currentTarget;
     //unactive all tablinks
-    
-    if(evtTarget != undefined){
-        if(evtTarget.className == "active"){
+
+    if (evtTarget != undefined) {
+        if (evtTarget.className == "active") {
             return;
-        }else{
+        } else {
             tablinks = document.getElementsByClassName(`tablinks${id}`);
             for (i = 0; i < tablinks.length; i++) {
                 tablinks[i].className = tablinks[i].className.replace(" active", "");
@@ -396,17 +491,17 @@ function addbuttonAns() {
     AnsDiv.getElementsByTagName("input")[0].setAttribute("id", `${countCorrect}correct${questionNum}`);
 }
 
-function deleteQuiz(quizId){
+function deleteQuiz(quizId) {
     if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
         window.location.href = `/courseInfo?courseId=${courseId}`;
-        socket.emit('deleteQuiz',{"id":quizId});
+        socket.emit('deleteQuiz', { "id": quizId });
     }
 }
 
-function deleteHw(Id){
+function deleteHw(Id) {
     if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
         window.location.href = `/courseInfo?courseId=${courseId}`;
-        socket.emit('deleteHw',{"id":Id});
+        socket.emit('deleteHw', { "id": Id });
     }
 }
 
@@ -418,7 +513,7 @@ function cancelQuiz() {
 }
 
 socket.on('backToHostPage', function (data) {
-    window.location.href = `/courseInfo?courseId=`+courseId;
+    window.location.href = `/courseInfo?courseId=` + courseId;
 });
 
 function randomColor() {

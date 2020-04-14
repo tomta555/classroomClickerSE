@@ -53,24 +53,24 @@
         </datalist>
         
         <div class="container">
-            <div id="customScore" style="font-family: 'Open Sans Condensed', sans-serif; margin: 25px 0px;display : none">
-                <div>     
-                    <label class="checkBoxContainer" style="width: 50%;">Deadline</label>
-                    <div id="deadlineInput" style="display:block">
-                        <label>DateTime:</label>
-                        <input id="deadLine" type="datetime-local">
-                    </div>        
-                    <label class="checkBoxContainer" style="width: 50%;">Early Submission Score
-                        <input id="isEarly" type="checkbox" onclick="addInput(this)">
-                        <span class="checkmark"></span>
-                    </label>
+            <div id="customScore" style="font-family: 'Open Sans Condensed', sans-serif; margin: 25px 0px;display : none ">
+                <div class = "bg-gold">     
+                        <label class="checkBoxContainer" style="width: 50%; font-size: 30px;">Deadline</label>
+                        <div id="deadlineInput" style="display:block">
+                            <label>DateTime:</label>
+                            <input id="deadLine" type="datetime-local">
+                        </div><br>
+                        <label class="checkBoxContainer" style="width: 50%; font-size: 30px;">Early Submission Score
+                            <input id="isEarly" type="checkbox" onclick="addInput(this)">
+                            <span class="checkmark"></span>
+                        </label>
                     <div id="earlyInput" style="display:none">
                         <label>DateTime:</label>
                         <input id="erlSubmitDate" type="datetime-local">
                         <label>Score:</label>
                         <input id="erlScore" type="number" min="0" placeholder="0" value=0>
-                    </div>
-                    <label class="checkBoxContainer" style="width: 50%;">Fast Submission Score
+                    </div><br>
+                    <label class="checkBoxContainer" style="width: 50%; font-size: 30px;">Fast Submission Score
                         <input id="isFast" type="checkbox" onclick="addInput(this)">
                         <span class="checkmark"></span>
                     </label>
@@ -79,13 +79,13 @@
                         <input id="fastTime" type="number" min="0" placeholder="0" value=0>
                         <label>Score:</label>
                         <input id="fastScore" type="number" min="0" placeholder="0" value=0>
-                    </div>                        
-                    <label class="checkBoxContainer" style="width: 50%;">Top n Submitted
+                    </div><br>            
+                    <label class="checkBoxContainer" style="width: 50%; font-size: 30px;">Top n Submitted
                         <input id="isTopN" type="checkbox" onclick="addInput(this)">
                         <span class="checkmark"></span>
                     </label>
                     <div id="topNInput" style="display:none">
-                        <label>n:</label>
+                        <label>number (n):</label>
                         <input id="nStudent" type="number" min="0" placeholder="0" value=0>
                         <label>Score:</label>
                         <input id="nScore" type="number" min="0" placeholder="0" value=0>

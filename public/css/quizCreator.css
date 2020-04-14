@@ -178,3 +178,13 @@
     height: 50%;
     padding: 5%;
 }
+
+.bg-gold {
+  background: -webkit-linear-gradient(110deg,#8c65a5 60%, #b390ca 60%);
+  background: -o-linear-gradient(110deg, #8c65a5 60%, #b390ca 60%);
+  background: -moz-linear-gradient(110deg, #8c65a5 60%, #b390ca 60%);
+  background: linear-gradient(110deg, #8c65a5 30%, #b390ca 70%);
+  border-radius: 25px;
+  color: rgb(240, 232, 232);
+  padding:20px 50px;
+}

@@ -28,7 +28,9 @@ socket.on('retrieve-game-id',function(gameid,round){
     playedData.round = round 
 
 })
-
+socket.on('no-game-id',function(){
+    window.location.href = "/join"
+})
 
 socket.on('user-detail', function (udetail) {
     playedData.stdId += udetail.local.studentID

@@ -149,8 +149,13 @@ function updateDatabase(reqtype, Id){
                 answers = ['True', 'False'];
                 break;
             case ("sa"):
+                var x = 0;
                 for (var j = 1; j <= countCorrect; j++) {
-                    answers[j - 1] = document.getElementById(j + 'correct' + i).value;
+                    var correct_i_j = document.getElementById(j + 'correct' + i);
+                    if(correct_i_j != undefined){
+                        answers[x] = correct_i_j.value;
+                        x++;
+                    }
                 }
                 break;
         }
@@ -199,7 +204,6 @@ function updateDatabase(reqtype, Id){
             "nStudent": NStudent, 
             "topNScore": TopNScore,
         };
-        console.log(data)
     }
     switch(reqtype){
         case('createQuiz'):
@@ -360,8 +364,8 @@ function addDataToQuestion(questionNum, data) {
         case ("sa"):
             quizType = "Short Answer";
             for (i in data.answers) {
-                document.getElementById(`${parseInt(i) + 1}correct${questionNum}`).value = data.answers[i];
-                if (i != data.answers.length - 1) addbuttonAns();
+                document.getElementById(`${countCorrect}correct${questionNum}`).value = data.answers[i];
+                if (i != data.answers.length - 1) addbuttonAns(questionNum);
             }
             break;
     }
@@ -432,24 +436,27 @@ function openTab(evt, quizType, id) {
             tabcontent = `
             <div id="type${questionNum}" style = "display:none">sa</div>
             <label>Correct Answer :</label>
-            <div id="allCorrect">
-            <div id="countCorrect">
-            <input class = "correct" id = "${countCorrect}correct${questionNum}" type = "text" autofocus/>
-            <br>
-            <br>
+            <div id="allCorrect${questionNum}">
+                <div id="countCorrect">
+                    <input class = "correct" id = "${countCorrect}correct${questionNum}" type = "text" autofocus/>
+                    <br>
+                    <br>
+                </div>
             </div>
-            </div>
-            <button class="tablinks${questionNum}" onclick="addbuttonAns()">AddAnswer</button> 
+            <button id="addbuttonAns${questionNum}" class="tablinks${questionNum}" onclick="addbuttonAns(${questionNum})">AddAnswer</button> 
             <br>`
     }
     targetQuestion.innerHTML = tabcontent;
 }
-function addbuttonAns() {
+function addbuttonAns(qNum) {
     countCorrect++;
-    var AnsDiv = document.createElement("div");
-    AnsDiv.innerHTML = document.getElementById('countCorrect').innerHTML;
-    document.getElementById('allCorrect').appendChild(AnsDiv);
-    AnsDiv.getElementsByTagName("input")[0].setAttribute("id", `${countCorrect}correct${questionNum}`);
+    var newAns = document.createElement('div');
+    newAns.innerHTML = `
+    <input class = "correct" id = "${countCorrect}correct${qNum}" type = "text" autofocus/>
+    <br>
+    <br>
+    `;
+    document.getElementById(`allCorrect${qNum}`).appendChild(newAns);
 }
 
 function deleteQuiz(quizId) {

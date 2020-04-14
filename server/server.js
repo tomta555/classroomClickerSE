@@ -193,6 +193,7 @@ io.on('connection', (socket) => {
                     var answer3 = res[0].questions[shuffleArray[0]].answers[2];
                     var answer4 = res[0].questions[shuffleArray[0]].answers[3];
                     var correctAnswer = res[0].questions[shuffleArray[0]].correct;
+                    var allCorrectAns = res[0].questions[shuffleArray[0]].answers
                     Q_type = res[0].questions[shuffleArray[0]].type;
                     socket.emit('gameQuestions', {
                         q1: question,
@@ -201,6 +202,7 @@ io.on('connection', (socket) => {
                         a3: answer3,
                         a4: answer4,
                         correct: correctAnswer,
+                        allCorrectAns: allCorrectAns,
                         allQuestions: res[0].questions.length,
                         playersInGame: playerData.length,
                         type: Q_type
@@ -459,6 +461,7 @@ io.on('connection', (socket) => {
                     var answer3 = res[0].questions[shuffleArray[questionNum]].answers[2];
                     var answer4 = res[0].questions[shuffleArray[questionNum]].answers[3];
                     var correctAnswer = res[0].questions[shuffleArray[questionNum]].correct;
+                    var allCorrectAns = res[0].questions[shuffleArray[0]].answers
                     Q_type = res[0].questions[shuffleArray[questionNum]].type;
                     socket.emit('gameQuestions', {
                         q1: question,
@@ -467,6 +470,7 @@ io.on('connection', (socket) => {
                         a3: answer3,
                         a4: answer4,
                         correct: correctAnswer,
+                        allCorrectAns: allCorrectAns,
                         allQuestions: res[0].questions.length,
                         playersInGame: playerData.length,
                         type: Q_type
@@ -946,17 +950,23 @@ io.on('connection', (socket) => {
     })
     socket.on('get-game-id',function(){
         var player = players.getPlayer(socket.id);
-        var hostId = player.hostId;
-        var game = games.getGame(hostId)
-        MongoClient.connect(url, function (err, db) {
-            if (err) throw err;
-            var dbo = db.db('classroomClicker');
-            dbo.collection("Quizzes").findOne({id:parseInt(game.gameData.gameid)}, function (err, result) {
+        if (player != undefined){
+            var hostId = player.hostId;
+            var game = games.getGame(hostId)
+            MongoClient.connect(url, function (err, db) {
                 if (err) throw err;
-                socket.emit('retrieve-game-id',game.gameData.gameid,result.roundPlayed)
-                db.close();
+                var dbo = db.db('classroomClicker');
+                dbo.collection("Quizzes").findOne({id:parseInt(game.gameData.gameid)}, function (err, result) {
+                    if (err) throw err;
+                    socket.emit('retrieve-game-id',game.gameData.gameid,result.roundPlayed)
+                    db.close();
+                })
             })
-        })    
+        }else{
+            socket.emit('no-game-id')
+        }
+        
+    
     })
     
 });

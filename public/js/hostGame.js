@@ -6,7 +6,7 @@ var timer;
 var questionNumber = 0;
 var time;
 var type_Q;
-var SAcorrectAns;
+var SAcorrectAns = [];
 var latestPlayerInGame = 0;
 //When host connects to server
 socket.on('connect', function () {
@@ -79,8 +79,9 @@ socket.on('gameQuestions', function (data) {
             document.getElementById('Inform').style.display = "block";
             
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
-            SAcorrectAns = data.correct // show correct answer but it still bug with undefined
-    
+            SAcorrectAns = []
+            SAcorrectAns = data.allCorrectAns; // show correct answer but it still bug with undefined
+            console.log(data)
             updateTimer();
             break;
     }
@@ -255,7 +256,14 @@ socket.on('questionOver', function (playerData, correct) {
         
         document.getElementById('nextQButton').style.display = "block";
     } else if (type_Q == 'sa') {
-        var SAAnsTable = `<br><br><h3>Correct Answer:<br><br><span id = "SAcorrectAns">${SAcorrectAns}</span></h3>`;
+        var showSACorrect = ""
+        for(let i = 0 ; i < SAcorrectAns.length ; i++){
+            showSACorrect += SAcorrectAns[i]
+            if(i != SAcorrectAns.length-1){
+                showSACorrect += ", "
+            }
+        }
+        var SAAnsTable = `<br><br><h3>Correct Answer<br><br><span id = "SAcorrectAns">${showSACorrect}</span></h3>`;
         document.getElementById('SAAnsTable').innerHTML = SAAnsTable;
         document.getElementById('SAAnsTable').style.display = "block";
         document.getElementById('nextQButton').style.display = "block";

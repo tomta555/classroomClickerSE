@@ -347,7 +347,7 @@ io.on('connection', (socket) => {
                         const regex = / |,/gi;
                         num = num.replace(regex,"").toUpperCase()
                         for(var i=0 ;i<NubAnsSA;i++){
-                            tempCorrect = res[0].questions[gameQuestion-1].answers[i];
+                            tempCorrect = res[0].questions[gameArray[gameQuestion - 1] ].answers[i];
                             tempCorrect = tempCorrect.replace(regex,"").toUpperCase();
                             if(num == tempCorrect){
                                 player.gameData.score += score;
@@ -461,7 +461,7 @@ io.on('connection', (socket) => {
                     var answer3 = res[0].questions[shuffleArray[questionNum]].answers[2];
                     var answer4 = res[0].questions[shuffleArray[questionNum]].answers[3];
                     var correctAnswer = res[0].questions[shuffleArray[questionNum]].correct;
-                    var allCorrectAns = res[0].questions[shuffleArray[0]].answers
+                    var allCorrectAns = res[0].questions[shuffleArray[questionNum]].answers
                     Q_type = res[0].questions[shuffleArray[questionNum]].type;
                     socket.emit('gameQuestions', {
                         q1: question,

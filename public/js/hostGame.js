@@ -80,8 +80,7 @@ socket.on('gameQuestions', function (data) {
             
             document.getElementById('playersAnswered').innerHTML = "Players Answered 0 / " + data.playersInGame;
             SAcorrectAns = []
-            SAcorrectAns = data.allCorrectAns; // show correct answer but it still bug with undefined
-            console.log(data)
+            SAcorrectAns = [...data.allCorrectAns]; // show correct answer but it still bug with undefined
             updateTimer();
             break;
     }

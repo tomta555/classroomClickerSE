@@ -41,7 +41,7 @@ function startGame(){
 }
 
 function endGame(){
-    window.location.href = "../../create/index.html";
+    window.location.href = "/host_quiz";
 }
 
 //When server starts the game

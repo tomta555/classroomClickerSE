@@ -25,6 +25,8 @@ $(document).ready(function () {
 
     socket.on('user-detail',function(user){
         udetail = user.local;
+        
+        if(!user.local.isTeacher) document.getElementById('quizlink').setAttribute('href', '/join');
     })
 
     socket.on('course-detail', function(data){

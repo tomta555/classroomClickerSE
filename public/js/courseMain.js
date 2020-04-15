@@ -21,6 +21,7 @@ $(document).ready(function () {
     socket.on('user-detail',function(user){
         udetail = user;
         socket.emit('get-all-homework');
+        if(!user.local.isTeacher) document.getElementById('quizlink').setAttribute('href', '/join');
     })
     socket.on('allHw', function(data){
         allHomework = data;

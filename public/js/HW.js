@@ -21,16 +21,18 @@ socket.on('check-hw',function(hw){
         flag = false
     }
     if(flag){
+    
         document.getElementById('show-HW').innerHTML += `<button onclick="DoHW()"> START </button> `
     }
 })
 socket.on('already-done-hw',function(doneHw){
     document.getElementById('show-HW').innerHTML += `
-    <div>
-        <label>Score:${doneHw.totalScore}/${maxScore}</label>
-        <label>Extra Score:${doneHw.extraScore}</label>
+    <div style = 'text-align: center'>
+    <br>
+        <label><h2>Score:${doneHw.totalScore}/${maxScore}</h2></label>
+        <label><h2>Extra Score:${doneHw.extraScore}</h2></label>
     </div>
-    <div><button type="button" onclick="backtoCourseinfo()">Back to course</button></div>
+    <div style = 'text-align: center'><button type="button" onclick="backtoCourseinfo()">Back to course</button></div>
     `
 })
 function backtoCourseinfo(){
@@ -130,5 +132,5 @@ socket.on('DoHW', function (data) {
         
     }
     
-    document.getElementById('show-HW').innerHTML +=`<button type="submit">Submit</button>`
+    document.getElementById('show-HW').innerHTML +=`<button type="submit" style ="background-color:#18E218;">Submit</button>`
 });

@@ -54,7 +54,6 @@ function addQuiz(quiz){
 }
 
 socket.on('gameNamesData', function(data){
-    console.log(data);
     for(var i = 0; i < data.length; i++){
         var div = document.getElementById('game-list');
         var class_area =  document.createElement('div');

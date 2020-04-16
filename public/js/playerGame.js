@@ -185,7 +185,6 @@ socket.on('playerGameData', function (data) {
 });
 
 socket.on('GameOver', function (playerData, correctAnswer, type) {
-    console.log(playedData)
     document.body.style.backgroundColor = "#c70011";
     document.getElementById('finish').style.display = "block";
     document.getElementById('finish').innerText = "FINISH!";

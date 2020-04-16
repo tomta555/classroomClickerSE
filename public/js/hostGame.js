@@ -22,7 +22,6 @@ socket.on('noGameFound', function () {
 socket.on('gameQuestions', function (data) {
     questionNumber += 1; 
     document.getElementById('timerText').style.display = "block";
-    console.log(data.type);
     switch (data.type) {
         case "4c":
             type_Q = "4c"

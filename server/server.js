@@ -325,8 +325,7 @@ io.on('connection', (socket) => {
             var gameQuestion = game.gameData.question;
             var gameid = game.gameData.gameid;
             MongoClient.connect(url, function (err, db) {
-                if (err) throw err;
-                // console.log(num.toUpperCase())        
+                if (err) throw err;       
                 var dbo = db.db('classroomClicker');
                 var query = { id: parseInt(gameid) };
                 dbo.collection("Quizzes").find(query).toArray(function (err, res) {
@@ -452,7 +451,6 @@ io.on('connection', (socket) => {
                 if (res[0].questions.length >= game.gameData.question) {
                     // var questionNum = QuizShuffle[game.gameData.question];
                     var questionNum = game.gameData.question;
-                    // console.log("Qnum : " + questionNum)
                     questionNum = questionNum - 1;
                     shuffleArray = game.randomArray
                     var question = res[0].questions[shuffleArray[questionNum]].question;
@@ -486,7 +484,6 @@ io.on('connection', (socket) => {
                     var fifth = { name: "", score: 0 };
 
                     for (var i = 0; i < playersInGame.length; i++) {
-                        // console.log(playersInGame[i].gameData.score);
                         if (playersInGame[i].gameData.score > fifth.score) {
                             if (playersInGame[i].gameData.score > fourth.score) {
                                 if (playersInGame[i].gameData.score > third.score) {
@@ -824,11 +821,9 @@ io.on('connection', (socket) => {
             dbo.collection("Homeworks").findOne({ id : parseInt(params.id)},function (err, res) {
                 if (err) throw err;
                 socket.emit('DoHW',res);
-                // console.log(res[data.id-1]);
                 db.close();
             });
         });
-        // console.log("I'm here with id = " + data.id);
     });
 
     socket.on('pushPlayedData', function (playedData) {

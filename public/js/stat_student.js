@@ -289,7 +289,6 @@ function showQuestion(data,questionNum){
 }
 
 function showPlayerAnswer(questionNum, i){
-    console.log('showed')
     var tag = document.getElementById(`answer${questionNum}`);
     if(tag==undefined){
         playerAnswer = parseInt(i)-1

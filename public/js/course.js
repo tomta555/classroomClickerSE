@@ -71,7 +71,6 @@ socket.on('users-detail', function(data){
 });
 
 socket.on('HWData', function(data){
-    console.log(data);
     var div;
     courseDetail.hw = [];
     courseDetail.hwName = [];
@@ -200,7 +199,7 @@ function getScore(){
     }
     
     scoreButton.setAttribute('onclick', 'getEdit()');
-    scoreButton.innerHTML = 'back to edit';
+    scoreButton.innerHTML = 'Hide Score';
 }
 
 socket.on('hw-score', function(data){
@@ -321,7 +320,7 @@ function getEdit(){
     var scoreButton = document.getElementById('pageButton');
     
     scoreButton.setAttribute('onclick', 'getScore()');
-    scoreButton.innerHTML = 'score';
+    scoreButton.innerHTML = 'Show Score';
 }
 
 function hwStat(hwid, courseId){

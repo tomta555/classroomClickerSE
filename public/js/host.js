@@ -46,7 +46,6 @@ function endGame(){
 
 //When server starts the game
 socket.on('gameStarted', function(id){
-    console.log('Game Started!');
     window.location.href="/host/game/" + "?id=" + id;
 });
 

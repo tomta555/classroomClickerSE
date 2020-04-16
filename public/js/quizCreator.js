@@ -14,10 +14,10 @@ socket.on('connect', function () {
     var quizTitle = document.getElementById('quizTitle');
     var submitButton = document.getElementById('submitButton');
     var cancleButton = document.getElementById('cancleButton');
-    var deleteQuizButton
+    var deleteButton = document.getElementById('deleteQuizButton');
     switch (params.type.toString()) {
         case ("createQuiz"):
-            mainTitle.innerHTML = "create Quiz";
+            mainTitle.innerHTML = "New Quiz";
             addQuestion();
             submitButton.setAttribute("onclick", "updateDatabase('createQuiz', 0)");
             submitButton.innerHTML = "Create Quiz";
@@ -34,14 +34,14 @@ socket.on('connect', function () {
             socket.emit('req-quiz-data', params);
             break;
         case ("createHw"):
-            mainTitle.innerHTML = "create Homework";
+            mainTitle.innerHTML = "New Homework";
             addQuestion();
             customScore = document.getElementById("customScore").style.display = 'block';
             submitButton.setAttribute("onclick", "updateDatabase('createHw', 0)");
             submitButton.innerHTML = "Create Homework";
             cancleButton.innerHTML = "Cancle Homework";
-            mainTitle.innerHTML = "Create Homework";
             quizTitle.innerHTML="Homework title";
+            deleteButton.innerHTML = 'Cancle Homework';
             break;
         case ("editHw"):
             mainTitle.innerHTML = "Edit Homework";
@@ -51,6 +51,7 @@ socket.on('connect', function () {
             document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteHw(${params.id})`);
             quizTitle.innerHTML="Homework title";
             socket.emit('req-hw-data', params);
+            deleteButtonl.innerHTML = 'Delete Homework';
             break;
     }
 });
@@ -97,14 +98,14 @@ function updateDatabase(reqtype, Id){
     var questions = [];
     var name = document.getElementById('name').value;
     if(name == "" || name == undefined){
-        alert("name must not blank");
+        alert("Title must not be blank.");
         return;
     }
     for (let i = 1; i <= questionNum; i++) {
         if (document.getElementById('q' + i) == undefined) continue;
         var question = document.getElementById('q' + i).value;
         if(question == "" || question == undefined){
-            alert(`at question${i} : question must not blank`);
+            alert(`At question${i} : Question must not be blank.`);
             return;
         }
         var qtag = document.getElementById(`tagbox${i}`);
@@ -112,7 +113,7 @@ function updateDatabase(reqtype, Id){
         var tags = [];
         var baseScore = document.getElementById(`score${i}`).value;
         if(baseScore == ''){
-            if(confirm(`at question${i} : if you don't inseart score the score will be 0`)){
+            if(confirm(`At question${i} : If you don't insert score the score will be 0.`)){
                 baseScore = 0;
             }else{
                 return ;
@@ -140,7 +141,7 @@ function updateDatabase(reqtype, Id){
                 correct = radioCheck(i);
                 answers = [answer1, answer2, answer3, answer4];
                 if(answer1 == '' || answer2 == '' || answer3 == '' || answer4 == ''){
-                    alert(`at question${i} : every answer must not blank`);
+                    alert(`At question${i} : Every answer must not be blank.`);
                     return;
                 } 
                 break;
@@ -160,7 +161,7 @@ function updateDatabase(reqtype, Id){
                 break;
         }
         if(correct == "not found" || answers[0] == ''){
-            alert(`at question${i} : the question must have at least 1 correct answer`);
+            alert(`At question${i} : The question must have at least 1 correct answer.`);
             return;
         }
         questions.push({"question": question, "tag":tags, "type":qtype, "answers": answers, "correct": correct, "score": parseInt(baseScore)})
@@ -474,7 +475,7 @@ function deleteHw(Id) {
 }
 
 //Called when user wants to exit quiz creator
-function cancelQuiz() {
+function cancleQuiz() {
     if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
         window.location.href = `/courseInfo?courseId=${courseId}`;
     }

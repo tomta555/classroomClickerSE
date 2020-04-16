@@ -21,7 +21,9 @@ $(document).ready(function () {
     socket.on('user-detail',function(user){
         udetail = user;
         socket.emit('get-all-homework');
-        if(!user.local.isTeacher) document.getElementById('quizlink').setAttribute('href', '/join');
+        if(!user.local.isTeacher){
+           document.getElementById('quizlink').setAttribute('href', '/join');
+        } 
     })
     socket.on('allHw', function(data){
         allHomework = data;
@@ -82,7 +84,6 @@ function addCourse(){
 }
 
 function showCourse(data, n){
-    console.log(data);
     var link;
     if(udetail.local.isTeacher){
         link = `/courseInfo?courseId=${data.id}`; 
@@ -100,13 +101,19 @@ function showCourse(data, n){
 
 function showAddCourseButton(){
     var courseList = document.getElementById("courseList");
-    var addCourseButton = `
+    var addCourseButtonTeacher = `
         <button id="addCourseButton" class = "createCard" onclick="document.getElementById('createPopUp').style.display='block'">
-            <div>Add New Course</div><br>
+            <div>New Course</div><br>
             <div class = "plus"><img src = "../img/plus.png"></div>
         </button>
     `;
-    courseList.innerHTML += addCourseButton;
+    var addCourseButtonStudent = `
+        <button id="addCourseButton" class = "createCard" onclick="document.getElementById('createPopUp').style.display='block'">
+            <div>Enroll new Course</div><br>
+            <div class = "plus"><img src = "../img/plus.png"></div>
+        </button>
+    `;
+    udetail.local.isTeacher ? courseList.innerHTML += addCourseButtonTeacher : courseList.innerHTML += addCourseButtonStudent;
 
 }
 

@@ -13,7 +13,7 @@ socket.on('connect', function () {
     var mainTitle = document.getElementById('mainTitle');
     var quizTitle = document.getElementById('quizTitle');
     var submitButton = document.getElementById('submitButton');
-    var cancleButton = document.getElementById('cancleButton');
+    var cancelButton = document.getElementById('cancelButton');
     var deleteButton = document.getElementById('deleteQuizButton');
     switch (params.type.toString()) {
         case ("createQuiz"):
@@ -21,14 +21,14 @@ socket.on('connect', function () {
             addQuestion();
             submitButton.setAttribute("onclick", "updateDatabase('createQuiz', 0)");
             submitButton.innerHTML = "Create Quiz";
-            cancleButton.innerHTML = "Cancle Quiz";
+            cancelButton.innerHTML = "cancel Quiz";
             mainTitle.innerHTML = "Create Quiz";
             break;
         case ("editQuiz"):
             mainTitle.innerHTML = "edit Quiz";
             submitButton.setAttribute("onclick", `updateDatabase('editQuiz', ${params.id})`);
             submitButton.innerHTML = "Save";
-            cancleButton.innerHTML = "cancle";
+            cancelButton.innerHTML = "cancel";
             mainTitle.innerHTML = "Edit Quiz";
             document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteQuiz(${params.id})`)
             socket.emit('req-quiz-data', params);
@@ -39,19 +39,19 @@ socket.on('connect', function () {
             customScore = document.getElementById("customScore").style.display = 'block';
             submitButton.setAttribute("onclick", "updateDatabase('createHw', 0)");
             submitButton.innerHTML = "Create Homework";
-            cancleButton.innerHTML = "Cancle Homework";
+            cancelButton.innerHTML = "cancel Homework";
             quizTitle.innerHTML="Homework title";
-            deleteButton.innerHTML = 'Cancle Homework';
+            deleteButton.innerHTML = 'cancel Homework';
             break;
         case ("editHw"):
             mainTitle.innerHTML = "Edit Homework";
             submitButton.setAttribute("onclick", `updateDatabase('editHw', ${params.id})`);
             submitButton.innerHTML="Save";
-            cancleButton.innerHTML="cancle";
+            cancelButton.innerHTML="cancel";
             document.getElementById('deleteQuizButton').setAttribute("onclick", `deleteHw(${params.id})`);
             quizTitle.innerHTML="Homework title";
             socket.emit('req-hw-data', params);
-            deleteButtonl.innerHTML = 'Delete Homework';
+            deleteButton.innerHTML = 'Delete Homework';
             break;
     }
 });
@@ -475,7 +475,7 @@ function deleteHw(Id) {
 }
 
 //Called when user wants to exit quiz creator
-function cancleQuiz() {
+function cancelQuiz() {
     if (confirm("Are you sure you want to exit? All work will be DELETED!")) {
         window.location.href = `/courseInfo?courseId=${courseId}`;
     }

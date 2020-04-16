@@ -17,7 +17,7 @@ socket.on('check-hw',function(hw){
         maxScore += hw.questions[sc].score
     }
     if (hw.startDoingStd.includes(udetail.local.studentID)){
-        socket.emit('get-already-done-hw',params)
+        socket.emit('get-already-done-hw',params,udetail.local.studentID)
         flag = false
     }
     if(flag){

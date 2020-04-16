@@ -918,11 +918,11 @@ io.on('connection', (socket) => {
             })
         })   
     })
-    socket.on('get-already-done-hw',function(params){
+    socket.on('get-already-done-hw',function(params,uid){
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
-            dbo.collection("submittedHomework").findOne({$and: [{courseId:parseInt(params.courseId)},{hwid:parseInt(params.id)}]}, function (err, result) {
+            dbo.collection("submittedHomework").findOne({$and: [{stdId:uid},{courseId:parseInt(params.courseId)},{hwid:parseInt(params.id)}]}, function (err, result) {
                 if (err) throw err;
                 socket.emit('already-done-hw',result)
                 db.close();

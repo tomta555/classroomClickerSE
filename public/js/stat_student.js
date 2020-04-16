@@ -86,9 +86,15 @@ $(document).ready(function () {
             });
             if(data[i].stdId == params.stdId){
                 var yourScore = document.getElementById('yourScore');
-                yourScore.innerHTML = data[i].totalScore;
+                var extraScore = document.getElementById('extraScore');
+                var late = document.getElementById('late');
+                if(data[i].isLate){
+                    late.innerHTML = `<div style="background-color:pink; margin: 1px 5px;">late</div>`;
+                }
+                extraScore.innerHTML = `extra : ${data[i].extraScore}`;
+                yourScore.innerHTML = `score : ${data[i].totalScore}`;
                 if(udetail.isTeacher){
-                    yourScore.innerHTML += `<button onclick="openEditScore(${data[i].totalScore})">edit</button>`;
+                    yourScore.innerHTML += `<button onclick="openEditScore(${data[i].totalScore})" class='editSize'>edit</button>`;
                 }
                 for(let j=0; j< data[i].score.length; j++){
                     showPlayerAnswer(j, data[i].answer[j]);
@@ -163,9 +169,11 @@ $(document).ready(function () {
             });
             if(screenedData[i].stdId == params.stdId){
                 var yourScore = document.getElementById('yourScore');
-                yourScore.innerHTML = screenedData[i].totalScore;
+                var extraScore = document.getElementById('extraScore');
+                extraScore.innerHTML = `extra : ${screenedData[i].extraScore}`;
+                yourScore.innerHTML = `score : ${screenedData[i].totalScore}`;
                 if(udetail.isTeacher){
-                    yourScore.innerHTML += `<button onclick="openEditScore(${screenedData[i].totalScore})">edit</button>`;
+                    yourScore.innerHTML += `<button onclick="openEditScore(${screenedData[i].totalScore})" class='editSize'>edit</button>`;
                 }
                 for(let j=0; j< screenedData[i].score.length; j++){
                     showPlayerAnswer(j, screenedData[i].answer[j]);
@@ -315,6 +323,6 @@ function updateStudentScore(score){
     var round = questionDetail.round;
     var query = {'stdId':stdId, 'qId': qId, 'score': score, 'type':type, 'round':round};
     document.getElementById('editScorePopUp').style.display='none';
-    document.getElementById('yourScore').innerHTML = score;
+    document.getElementById('yourScore').innerHTML = yourScore.innerHTML += `${score}<button onclick="openEditScore(${screenedData[i].totalScore})" class='editSize'>edit</button>`;
     socket.emit('updateStudentScore', query);
 }

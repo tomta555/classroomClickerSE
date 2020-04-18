@@ -85,7 +85,6 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
         key.shift();
         key.shift();
         key.shift();
-        console.log(key)
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');

@@ -158,6 +158,7 @@ function updateDatabase(reqtype, Id){
                         x++;
                     }
                 }
+                correct = [...answers]
                 break;
         }
         if(correct == "not found" || answers[0] == ''){

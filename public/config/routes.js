@@ -85,6 +85,7 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
         key.shift();
         key.shift();
         key.shift();
+        console.log(key)
         MongoClient.connect(url, function (err, db) {
             if (err) throw err;
             var dbo = db.db('classroomClicker');
@@ -96,13 +97,12 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
                     if (err) throw err;
                     for (ans in key) {
                         homework.answer.push(req.body[key[ans]])
-                        if (resp.questions[ans].correct == req.body[key[ans]]) {
+                        if (resp.questions[ans].correct.includes(req.body[key[ans]])) {
                             homework.score.push(resp.questions[ans].score)
                             totalScore += parseInt(resp.questions[ans].score)
                         } else {
                             homework.score.push(0)
-                        }
-                        
+                        }            
                     }
                     //do ExtraScore here
                     if(resp.isEarlySub == true){

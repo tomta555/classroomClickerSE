@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Course</title>
+        <link rel = "stylesheet" href = "../css/course.css">
+        <link rel = "stylesheet" href = "../css/info.css" />
+        <link rel = "stylesheet" href = "../css/quizCreator.css" /> 
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel = "stylesheet" href = "../assets/css/course.css" />
+    </head>
+    
+    <body>
+
+        <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li ><a href="/profile">profile</a></li>
+				<li class="current"><a href="/courses">courses</a></li>
+                <li ><a id="quizlink" href="/host_quiz">quiz</a></li>
+                <li><a href="/logout" >logout</a></li>
+            </ul>
+		</nav>
+        
+        <!-- Header -->
+        <header id="header">
+			<div class="logo container">
+                <div >
+                    <h1 id="mainTitle">Courses</h1><br>
+                </div>
+            </div>
+        </header>
+        
+            <!-- <a style="background-color: rgb(202, 26, 13);" id = "back" class="button" href = "../" >Back</a> -->
+            <br>
+        
+            <div id = "game-list"></div> 
+                <div class="form-field" id="courseList">
+                            
+                    <div id = "createPopUp" class = "modal">
+                        <span onclick="document.getElementById('createPopUp').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <form class="modal-content animate">
+                                
+                            <div class="container" style = "padding: 16px 4%; width: 100%">
+                                <br>
+                                <label for="coursename"><b>Course Name</b></label>
+                                <input style="width: 100%;" type="text" name="coursename" id="coursename" required>
+
+                                <label for="coursedesc"><b>Course Description</b></label>
+                                <textarea style="width: 100%;" name="coursedesc" id="coursedesc" ></textarea>
+                                <br>
+                            </div>
+                            <div class="confirm-container">
+                                <button id='newCourse'onclick="addCourse()">New Course</button>
+                                <button type="button" onclick="document.getElementById('createPopUp').style.display='none'" class="cancelbtn">Cancel</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    
+                    <div id = "addmePopUp" class = "modal">
+                        <span onclick="document.getElementById('addmePopUp').style.display='none'" class="close" title="Close Modal">&times;</span>
+                        <form class="modal-content animate">
+            
+                            <div class="container" style = "padding: 16px 4%; width: 100%">
+                                <br>
+                                <label for="coursename"><b>Course ID</b></label>
+                                <input style="width: 100%;" type="text" name="coursename" id="courseidToFind" required>
+                                <br>
+                            </div>
+                            <div class="confirm-container">
+                                <button type="button" onclick="findCourse(document.getElementById('courseidToFind').value)">Add</button>
+                                <button type="button" onclick="document.getElementById('addmePopUp').style.display='none'" class="cancelbtn">Cancel</button>
+                            </div>
+                            
+                        </form>
+                    </div>
+                    <!-- <button style="background-color:#864cbf; font-size:22px; " onclick = "window.location.href = '/create_course'" >create new course</button> -->
+                </div>
+        <br>
+        <br>
+
+        <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../js/libs/jqueryLibrary.js"></script>
+        <script src = "../js/libs/deparam.js"></script>
+        <script src = "../js/courseMain.js"></script>
+        <!-- <script src = "../../js/create.js"></script> -->
+
+        <script src="../../assets/js/jquery.min.js"></script>
+        <script src="../../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../../assets/js/browser.min.js"></script>
+        <script src="../../assets/js/breakpoints.min.js"></script>
+        <script src="../../assets/js/util.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        
+    </body>
+</html>

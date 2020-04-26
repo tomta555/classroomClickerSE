@@ -2,55 +2,154 @@
 <html>
     <head>
         <title>Creator</title>
-        <link rel = "stylesheet" href = "../../css/quizCreator.css">
-        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+        <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel = "stylesheet" href = "../../assets/css/main.css" />
+        <link rel = "stylesheet" href = "../../assets/sass/libs/_vendor.scss" />
+     
     </head>
-    <body onload = "setBGColor()">
-        <!-- <h1 id = "title">Kahoot Quiz Creator Studio</h1> -->
+    
+    <body>
+        <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li ><a href="/profile">profile</a></li>
+				<li class="current"><a href="/courses">courses</a></li>
+                <li ><a id="quizlink" href="/host_quiz">quiz</a></li>
+                <li><a href="/logout" >logout</a></li>
+            </ul>
+		</nav>
         
-        <div class="form-field">
-            <label id = "quizTitle">Quiz Title</label>
-            <input id = "name" type = "text" name="name" autofocus/>
+        <!-- Header -->
+        <header id="header">
+			<div class="logo container">
+                <div >
+                    <h1 id="mainTitle">New Quiz</h1><br>
+                </div>
+            </div>
+        </header>
+        <!--=== Quiz Title ===-->
+        <div class= "container" style="text-align:center;">
+            <br>
+            <form >
+                <label><h3 id = "quizTitle">Quiz Title :</h3></label>
+                <input id = "name" type = "text" name="name" style="font-size: larger; font-weight: 1000;" autofocus>
+            </form>
         </div>
-        <br>
-        <br>
-        <div id = "allQuestions">
-            <div id="question-field">
-                <label>Question 1: </label>
-                <input class = "question" id = "q1" type = "text" autofocus/>
-                <br>
-                <br>
-                <label>Answer 1: </label>
-                <input id = "1a1" type = "text" autofocus/>
-                <label>Answer 2: </label>
-                <input id = "1a2" type = "text" autofocus/>
-                <br>
-                <br>
-                <label>Answer 3: </label>
-                <input id = "1a3"  type = "text"autofocus/>
-                <label>Answer 4: </label>
-                <input id = "1a4"  type = "text" autofocus/>
-                <br>
-                <br>
-                <label>Correct Answer (1-4) :</label>
-                <input class = "correct" id = "correct1"  type = "number" autofocus/>
+        <!--=== All questions ===-->
+        <div class="container">
+            <div id = "allQuestions" style="font-family: 'Open Sans Condensed', sans-serif; margin: 25px 0px;">
+            </div>
+            <button onclick="addQuestion()" style="margin-bottom: 5%;">Add another question</button>
+            <button onclick="deleteQuiz()" id="deleteQuizButton" class = "redButton">Delete Quiz</button>
+        </div>
+        
+        <datalist id="browsers">
+        </datalist>
+        
+        <div class="container">
+            <div id="customScore" style="font-family: 'Open Sans Condensed', sans-serif; margin: 25px 0px;display : none ">
+                <div class = "bg-gold">     
+                        <label class="checkBoxContainer" style="width: 50%; font-size: 30px;">Deadline</label>
+                        <div id="deadlineInput" style="display:block">
+                            <label>DateTime:</label>
+                            <input id="deadLine" type="datetime-local">
+                        </div><br>
+                        <label class="checkBoxContainer" style="width: 50%; font-size: 30px;">Early Submission Score
+                            <input id="isEarly" type="checkbox" onclick="addInput(this)">
+                            <span class="checkmark"></span>
+                        </label>
+                    <div id="earlyInput" style="display:none">
+                        <label>DateTime:</label>
+                        <input id="erlSubmitDate" type="datetime-local">
+                        <label>Score:</label>
+                        <input id="erlScore" type="number" min="0" placeholder="0" value=0>
+                    </div><br>
+                    <label class="checkBoxContainer" style="width: 50%; font-size: 30px;">Fast Submission Score
+                        <input id="isFast" type="checkbox" onclick="addInput(this)">
+                        <span class="checkmark"></span>
+                    </label>
+                    <div id="fastInput" style="display:none">
+                        <label>Time (Min):</label>
+                        <input id="fastTime" type="number" min="0" placeholder="0" value=0>
+                        <label>Score:</label>
+                        <input id="fastScore" type="number" min="0" placeholder="0" value=0>
+                    </div><br>            
+                    <label class="checkBoxContainer" style="width: 50%; font-size: 30px;">Top N Submission Score
+                        <input id="isTopN" type="checkbox" onclick="addInput(this)">
+                        <span class="checkmark"></span>
+                    </label>
+                    <div id="topNInput" style="display:none">
+                        <label>number (n):</label>
+                        <input id="nStudent" type="number" min="0" placeholder="0" value=0>
+                        <label>Score:</label>
+                        <input id="nScore" type="number" min="0" placeholder="0" value=0>
+                    </div>
+                </div>
             </div>
         </div>
-        <br>
-        <button onclick = "addQuestion()">Add another question</button>
-        
-        <br>
-        <br>
-        
-        <div class="form-field">
-            <button onclick = "updateDatabase()">Create Quiz</button>
+        <!-- pop up -->
+        <div style="text-align: center;">
+        <div id="scoreDetail" class="popup">
+            <div class="box">
+                <label class="checkBoxContainer" style="width: 50%;">Doing time
+                    <input type="checkbox" checked="checked">
+                    <span class="checkmark"></span>
+                </label>
+                <input type="text" id="doingTimeScore" style="width: 50%;">
+            </div>
+            <div class="box">
+                <label class="checkBoxContainer" style="width: 50%;">Top n player
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+                <input type="text" id="nPlaceScore" style="width: 50%;">
+            </div>
+            <div class="box">
+                <label class="checkBoxContainer" style="width: 50%;">In time 
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                    <input type="text" id="InTime" style="width: 50%;">
+                </label>
+                <input type="text" id="InTimeScore" style="width: 50%;">
+            </div>
+            <div class="box">
+                <label class="checkBoxContainer" style="width:50%">Death Line
+                    <input type="checkbox">
+                    <span class="checkmark"></span>
+                </label>
+                <input type="text" id="DeathLineTime" style="width: 50%;">
+            </div>
         </div>
+        </div>
+        <!-- score bar -->
+        <!-- <a id="scrollUp" class = "tree" style="position: fixed;z-index: 100;display: block;">
+            <button id="nextButton" style="background-color: orange;" onclick = "document.getElementById('scoreDetail').style='display:block'" >Create Quiz</button>
+        <i aria-hidden="true"></i></a> -->
+        <a id="scrollUp" class = "two" style="position: fixed;z-index: 100;display: block;">
+            <button id="submitButton" style="background-color: rgb(24, 226, 24);" onclick = "updateDatabase('create')">New Quiz</button>
+        <i aria-hidden="true"></i></a>
+        <a id="scrollUp" class = "one" style="position: fixed;z-index: 100;display: block;">
+            <button id="cancelButton" style="background-color: rgb(209, 61, 24);" onclick = 'cancelQuiz()'>cancel quiz</button>
+        <i aria-hidden="true"></i></a>
+
         
-        <br>
+
         
-        <button onclick = 'cancelQuiz()'>Cancel quiz and return to quiz selection</button>
         
         <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../../js/libs/jqueryLibrary.js"></script>
+        <script src = "../../js/libs/deparam.js"></script>
         <script src = "../../js/quizCreator.js"></script>
+      
+        <script src="../../assets/js/jquery.min.js"></script>
+        <script src="../../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../../assets/js/browser.min.js"></script>
+        <script src="../../assets/js/breakpoints.min.js"></script>
+        <script src="../../assets/js/util.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        
     </body>
 </html>

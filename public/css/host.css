@@ -1,30 +1,42 @@
+.col-count-3 { column-count: 3; }
+.col-lg-4 { 
+    -ms-flex:0 0 33.333333%;
+    flex:0 0 33.333333%; 
+    max-width: 33.333333% 
+}
+
 @keyframes bgcolor {
     0% {
-        background-color: #45a3e5
+        background-color: #b7b3ec
     }
 
-    30% {
-        background-color: #66bf39
+    25% {
+        background-color: #fbad63
     }
 
-    60% {
-        background-color: #eb670f
+    50% {
+        background-color: #ffc3d4
     }
 
-    90% {
-        background-color: #f35
+    75% {background-color: #a9ec7c
+        /* background-color: rgb(235, 65, 212) */
     }
 
     100% {
-        background-color: #864cbf
+        background-color: #d690f1
     }
 }
 
 body {
-    -webkit-animation: bgcolor 20s infinite;
-    animation: bgcolor 10s infinite;
+    -webkit-animation: bgcolor 40s infinite;
+    animation: bgcolor 50s infinite;
     -webkit-animation-direction: alternate;
     animation-direction: alternate;
+}
+.icon {
+    display: block;
+    margin-left: 3%;
+    margin-top: 1%;
 }
 #title{
     color:white;
@@ -38,29 +50,53 @@ body {
     font-family: 'Tajawal', sans-serif;
     font-size: 50px;
 }
-#players{
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.counter{
+    width: 200px;
+    margin-left: 5%;
     text-align: center;
+    display: inline-block;
+}
+
+.counter h3{
+    font-family: 'Open Sans Condensed', sans-serif;
     font-size: 20px;
+    color: rgb(75, 73, 73);
+}
+
+#playerCount{
+    font-size: 50px;
+
+
+}
+  
+
+.joincontainer{
+    margin: 0% 10%;
+    padding: 1% 2%;
+    width: 80%;
+    position: relative;
+
+}
+  td{
+    width: 33.33%;
+    text-align: center;
+  }
+
+#players{
+    font-family: 'Raleway', sans-serif;
+    font-size: 20px;
+    color: #FFFFFF;
     resize: none;
 }
 
 #start{
-    background-color: #3A3B3A;
-    border: none;
-    color: white;
-    padding: 15px 100px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    font-size: 25px;
-    font-family: 'Raleway', sans-serif;
+    background-color: rgb(82, 230, 95); 
+    font-family: 'Open Sans Condensed', sans-serif;;
+    float: right;
+}
+
+#count {
+    width: auto;
+    height: auto;
+    background-color: rgb(82, 230, 95);
 }

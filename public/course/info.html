@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Course</title>
+        <link rel = "stylesheet" href = "../css/course.css">
+        <link rel = "stylesheet" href = "../css/info.css" />
+        <link rel = "stylesheet" href = "../css/quizCreator.css"/> 
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel = "stylesheet" href = "../assets/css/course.css" />
+        
+    </head>
+
+    <body>
+
+        <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li ><a href="/profile">profile</a></li>
+				<li class="current"><a href="/courses">courses</a></li>
+                <li><a id="quizlink" href="/host_quiz">quiz</a></li>
+                <li><a href="/logout" >logout</a></li>
+            </ul>
+		</nav>
+        
+        <!-- Header -->
+        <header id="header">
+			<div class="logo container">
+                <div >
+                    <h1 id="mainTitle">Course</h1><br>
+                </div>
+            </div>
+        </header>
+        
+        
+            <!-- <a style="background-color: rgb(202, 26, 13);" id = "back" class="button" href = "../" >Back</a> -->
+            <br>
+        
+            <!-- <div id = "game-list"></div> -->
+            <div class = "collection">
+                <div class "card-holder" style = "margin-left:20px">
+                    <div class="card bg-gold homeworkList" id="description">
+                    </div>  
+                </div>
+            </div>
+
+            <div class = "collection">
+                <div class="card-holder">
+                    <div class="card bg-gold " style="text-align:left;">
+                        HOMEWORK<br><br>
+                        <div style = "font-size: 18px ">
+                            <div id = "hw-list" class="homeworkList"></div>
+                        </div>
+                    </div>
+                    <div style = "text-align: left">
+                        <button id="createHwButton" style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '../create?courseId=1'" >New HOMEWORK</button>
+                    </div>
+                </div>
+                <div class="card-holder">
+                    <div class="card bg-gold " style="text-align:left;">
+                        QUIZ<br><br>
+                        <div style = "font-size: 18px ">
+                            <div id = "quiz-list" class="homeworkList"></div>
+                        </div>
+                    </div>
+                    <div style = "text-align: left">
+                        <button id="createQuizButton" style="background-color:#864cbf; font-size:22px;" onclick = "window.location.href = '../create?courseId=1'" >New QUIZ</button>
+                    </div>                
+                </div>
+                <div class ="card-holder">
+                    
+                        <div style="width: 100%; text-align: center;">
+                            <button onclick="getTeacher()">Manage Instructors</button>
+                            <button onclick="getStudent()">Manage Students</button>
+                            <button onclick="getScore()" id="pageButton">Show Score</button>
+                        </div>
+                    
+                </div>        
+            </div>
+           
+        <br>
+        <br>
+        <div id = "addPopUp" class = "modal" style="display: none;">
+            <span onclick="document.getElementById('addPopUp').style.display='none'" class="close" title="Close Modal">&times;</span>
+            <div class="modal-content animate">
+                <div class= "questionBox">
+                    <div class="questionMain" style="width: 49.75%; background-color: rgb(179, 108, 247); text-align: center; color: aliceblue;"> 
+                        <h2>Potential</h2>  
+                    </div>
+                    <div class="Line"></div>
+                    <div class="questionMain" style="width: 49.75%; background-color: rgb(179, 108, 247); text-align: center; color: aliceblue;">
+                        <h2>Enrolled</h2>
+                    </div>
+                    <br>
+                </div>
+                <div class="container questionBox" style = "padding: 16px 4%; width: 100%">
+                    <div class="questionMain listHolder" id="notInCourse" style="width: 49.75%; text-align: right;" >
+                        
+                    </div>
+                    <div class="Line"></div>
+                    <div class="questionMain listHolder" id="InCourse" style="width: 49.75%;">
+                        
+                    </div>
+                </div>
+                <div class="confirm-container">
+                    <button id='updateCourse' onclick="updateCourse()">save</button>
+                    <button type="button" onclick="document.getElementById('addPopUp').style.display='none'" class="cancelbtn">Cancel</button>
+                </div>
+            </div>
+        </div>
+        
+       
+
+        <script src = "../js/libs/jqueryLibrary.js"></script>
+        <script src = "../js/libs/deparam.js"></script>
+        <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../js/course.js"></script>
+
+        <script src="../assets/js/jquery.min.js"></script>
+        <script src="../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../assets/js/browser.min.js"></script>
+        <script src="../assets/js/breakpoints.min.js"></script>
+        <script src="../assets/js/util.js"></script>
+        <script src="../assets/js/main.js"></script>
+        
+    </body>
+</html>

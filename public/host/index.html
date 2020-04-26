@@ -1,24 +1,42 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Host</title>
-        <link rel = "stylesheet" href = "../css/host.css">
-        <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css?family=Tajawal" rel="stylesheet">
-    </head>
-    <body>
-        <button id = "cancel" onclick = "endGame()">Cancel Game</button>
-        <h2 id = "title">Join this Game using the Game Pin: </h2>
-        <h1 id = "gamePinText"></h1>
-        <textarea style = "width: 700px; height: 500px;" readonly id = 'players'></textarea>
-        <br>
-        <button id = 'start' onclick = "startGame()">Start Game</button>
-        <br>
-        <br>
-        <script src = "../socket.io/socket.io.js"></script>
-        <script src = "../js/libs/jqueryLibrary.js"></script>
-        <script src = "../js/libs//deparam.js"></script>
-        <script src = "../js/host.js"></script>
-    </body>
-</html>
 
+<head>
+    <title>Host</title>
+    <link rel="stylesheet" href="../css/host.css">
+    <!-- <meta charset="utf-8" /> -->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /> -->
+    <link rel="stylesheet" href="../assets/css/main.css" />
+</head>
+
+<body>
+    <a style="background-color: rgb(255, 153, 37);" class = "button" id = "cancel" onclick="endGame()"><img src="../img/back.png" width="30px" height="30px"></a>
+    <button id='start' onclick="startGame()">Start Quiz</button><br><br><br>
+
+    <!-- <button id = "cancel" onclick = "endGame()">Cancel Game</button> -->
+    <h2 id="title" style="font-family: 'Open Sans Condensed', sans-serif;">Join this Quiz using the Pin :</h2>
+    <h1 id="gamePinText"></h1>
+
+    <div class="counter button" style="background-color: beige; height: 100px;">
+        <h3>Player joined: <p id="playerCount"></p></h3>
+    </div>
+    <br>
+    <table class="joincontainer">
+        <tbody id="players" style = "margin:10%; padding:75px; height: 75%;">
+        </tbody>
+    </table>
+
+
+
+    <!-- <textarea style = "width: 700px; height: 500px;" readonly id = 'players'></textarea> -->
+    <br>
+    <br>
+
+    <script src="../socket.io/socket.io.js"></script>
+    <script src="../js/libs/jqueryLibrary.js"></script>
+    <script src="../js/libs//deparam.js"></script>
+    <script src="../js/host.js"></script>
+
+</body>
+
+</html>

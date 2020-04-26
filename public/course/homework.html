@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Course</title>
+        <link rel = "stylesheet" href = "../css/homework.css" />
+        <link rel = "stylesheet" href = "../css/quizCreator.css" /> 
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel = "stylesheet" href = "../assets/css/course.css" />
+    </head>
+
+    <body>
+
+       <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li ><a href="/profile">profile</a></li>
+				<li class="current"><a href="/courses">courses</a></li>
+                <li><a id="quizlink" href="/host_quiz">quiz</a></li>
+                <li><a href="/logout" >logout</a></li>
+            </ul>
+		</nav>
+        
+        <!-- Header -->
+        <header id="header">
+			<div class="logo container">
+                <div >
+                    <h1 id="mainTitle">HOMEWORK</h1><br>
+                </div>
+            </div>
+        </header>
+
+        <div id="Timer" style="display: none; margin: 40px">
+            <h2 id = "timerText">Time: <span id = "timeValue">00:00</span></h2>
+        </div>
+        <form action='/DoHW' method='post'>
+            <input id="startDatetime" type="text" name="startDatetime" style="display:none">
+            <input id="sentTime" type="number" name="doingTime" value="0" style="display:none">
+            <table style = "text-align:center" id="show-HW">
+
+            </table>
+        </form> 
+        
+        
+
+        <script src = "../../socket.io/socket.io.js"></script>
+        <script src = "../../js/libs/jqueryLibrary.js"></script>
+        <script src = "../../js/libs/deparam.js"></script>
+
+        <script src = "../js/HW.js"></script>
+        <script src="../../assets/js/jquery.min.js"></script>
+        <script src="../../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../../assets/js/browser.min.js"></script>
+        <script src="../../assets/js/breakpoints.min.js"></script>
+        <script src="../../assets/js/util.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        
+        
+    </body>
+    
+</html>

@@ -1,33 +1,185 @@
-html, body { height: 90%; padding: 0; margin: 0; }
-button{
-    width: 50%; height: 50%; float: left;
+body { padding: 0; margin: 115px 0px 0px 0px; }
+/* height: 83%; */
+
+.col-count-2 { column-count: 2; }
+.col-lg-4 { 
+    -ms-flex:0 0 33.333333%;
+    flex:0 0 33.333333%; 
+    max-width: 33.333333% 
 }
+.col-lg-6 {
+    -ms-flex:0 0 50%;
+    flex:0 0 50%; 
+    max-width: 50% 
+}
+.col-lg-8 { 
+    -ms-flex:0 0 66.666667%;
+    flex:0 0 66.666667%; 
+    max-width: 66.666667% 
+}
+.col-lg-12 { 
+    -ms-flex:0 0 100%;
+    flex:0 0 100%; 
+    max-width: 100% 
+}
+
+.navbar {
+    background-color: rgb(63, 63, 63);
+    color: #FFFFFF;
+    overflow: hidden;
+    position: fixed; /* Set the navbar to fixed position */
+    top: 0; /* Position the navbar at the top of the page */
+    width: 100%; /* Full width */
+    height: 115px;
+    max-height: 115px;
+}
+  .navbar table tbody tr td {
+    width: 1%;
+  }
+    .navbar table tbody tr td #stats {
+        position: relative;
+        display: block;
+        padding: 0% 5%;
+        font-size: 20px;
+    }
+
+.cardcontent {
+    margin-top: 0px;
+}
+  .cardcontent #card a img {
+    width: 195px;
+    height: 195px;
+  }
+  .cardcontent #card .button4c {
+    padding: 2.3% 0%;
+    width: 50%;
+    height: 100%;
+    float: left;
+    text-align: center;
+  }
+  .cardcontent #card .button2c {
+    padding: 11.75% 0%;
+    width: 50%;
+    height: 100%;
+    float: left;
+    text-align: center;
+  }
+
+.short{
+    font-family: 'Open Sans', sans-serif;
+    margin-top: 250px;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+  .short .shortansbutton{
+    font-family: 'Open Sans Condensed', sans-serif;
+    text-align: center;
+    width: 25%;
+    height: 60px;
+    padding: 2% 0%;
+  }
+  .short .shortanswertext{
+    font-family: 'Open Sans', sans-serif;
+    font-size: 32px;
+    text-align: center;
+    width: 100%; 
+    float: center;
+    margin-bottom: 1%;
+  }
+
 #answer1{
-    background-color: #4CAF50;
-}
+    background-color: #00cc5f;}
+  #answer1:hover{
+    background-color: #007a39;
+    -webkit-transition-duration: 100ms;
+    transition-duration: 100ms;
+  }
 #answer2{
-    background-color: #f94a1e;
-}
+    background-color: rgb(241, 48, 48);}
+  #answer2:hover{
+    background-color: rgb(172, 35, 35);
+    -webkit-transition-duration: 100ms;
+    transition-duration: 100ms;
+  }
 #answer3{
-    background-color: #3399ff;
-}
+    background-color: #f57deb;}
+  #answer3:hover{
+    background-color: #a854a1;
+    -webkit-transition-duration: 100ms;
+    transition-duration: 100ms;
+  }
 #answer4{
-    background-color: #ff9933;
-}
+    background-color: #4dacc8;}
+  #answer4:hover{
+    background-color: #326f81;
+    -webkit-transition-duration: 100ms;
+    transition-duration: 100ms;
+  }
 
 #buttons{
     text-align: center;
 }
+#backButton{
+  display: none;
+  -webkit-appearance: none;
+  font-family: 'Press Start 2P', sans-serif;
+  font-weight: 700;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #ffffff;
+  border: 0;
+  line-height: 1em;
+  border-radius: 8px;
+  outline: 0;
+  cursor: pointer;
+  -moz-transition: color .2s ease-in-out;
+  -webkit-transition: color .2s ease-in-out;
+  -o-transition: color .2s ease-in-out;
+  -ms-transition: color .2s ease-in-out;
+  transition: color .2s ease-in-out;
+  font-size: 1.25em;
+  padding: 0.85em 1.85em;
+  text-align: center;
+  margin: 0% 20%;
+}
+#backButton:hover{
+  color: rgb(255, 251, 0);
+  -webkit-transition-duration: 100ms;
+  transition-duration: 100ms;
+}
+
 #nameText{
-    font-family: 'Raleway', sans-serif;
-    padding: 0px 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
 }
 #scoreText{
-    font-family: 'Raleway', sans-serif;
-    padding: 0px 10px;
+    font-family: 'Open Sans', sans-serif;
+    font-size: 16px;
 }
 #message{
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Open Sans', sans-serif;
     text-align: center;
+    padding-top:8%;
     font-size: 35px;
+    color: white;
 }
+
+#waitans{
+  font-family: 'Press Start 2P',sans-serif;
+  text-align: center ;
+  padding-top: 10%;
+  color: white;
+}
+
+#finish{
+  font-family: 'Press Start 2P',sans-serif;
+  text-align: center;
+  padding-top: 90px;
+  color: #ffff00;
+  font-size: 60px;
+}
+
+.container {
+    background: #FFFAF0;
+    width: 100%; height: 100%; 
+  }

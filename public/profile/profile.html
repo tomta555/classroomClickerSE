@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Profile</title>
+        <link rel = "stylesheet" href = "../../css/quizCreator.css" /> 
+        <meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+        <link rel = "stylesheet" href = "../../assets/css/main.css" />
+    </head>
+
+    <body>
+
+        <!-- Nav -->
+		<nav id="nav">
+			<ul>
+				<li class="current"><a href="/profile">profile</a></li>
+				<li><a href="/courses">courses</a></li>
+                <li><a id="quizlink" href="/host_quiz">quiz</a></li>
+                <li><a href="/logout" >logout</a></li>
+            </ul>        
+		</nav>
+
+        <!-- Header -->
+
+        <header id="header">
+			<div class="logo container">
+                <div class="form-field">
+                    <h1 id="mainTitle">PROFILE</h1><br>
+                </div>
+            </div>
+        </header>
+        
+            <br>
+            
+            <div class="form-field" style="text-align:center;" id="greeting">
+            </div>
+            <!-- <span class="image centered img"><img src="../../assets/css/images/teacher1.jpg"  alt="" /></span> -->
+           
+            
+
+        <br>
+        <br>
+
+
+        <script src = "../../socket.io/socket.io.js"></script>
+
+        <script src="../../assets/js/jquery.min.js"></script>
+        <script src="../../assets/js/jquery.dropotron.min.js"></script>
+        <script src="../../assets/js/jquery.scrolly.min.js"></script>
+        <script src="../../assets/js/browser.min.js"></script>
+        <script src="../../assets/js/breakpoints.min.js"></script>
+        <script src="../../assets/js/util.js"></script>
+        <script src="../../assets/js/main.js"></script>
+        <script src="../../js/profile.js"></script>
+        
+    </body>
+</html>

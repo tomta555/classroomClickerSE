@@ -1,25 +1,24 @@
 const path = require('path');
 const hwModel = require('../models/homeworkSchema');
-const moment = require('moment');
+// const moment = require('moment');
 
 
 
 module.exports = function (app, passport, MongoClient, url, ObjectID) {
 
-    app.get('/', function (req, res) {
-        res.sendFile(path.join(__dirname, '../index.html'));
+    app.get('/',isLoggedIn, function (req, res) {
+        res.sendFile(path.join(__dirname, '../profile/profile.html'));
     });
     app.get('/profile', isLoggedIn, function (req, res) {
-        res.sendFile(path.join(__dirname, '../profile/teacher.html'));
+        res.sendFile(path.join(__dirname, '../profile/profile.html'));
     });
-    //----------Quiz----------
-    app.get('/create_quiz', function (req, res) {
+    app.get('/create_quiz',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../create/quiz-creator/index.html'));
     });
-    app.get('/create', function (req, res) {
+    app.get('/create',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../create/quiz-creator/index.html'));
     });
-    app.get('/edit_quiz', function (req, res) {
+    app.get('/edit_quiz',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../create/quiz-creator/index.html'));
     });
     app.get('/create_course', isLoggedIn, function (req, res) {
@@ -28,25 +27,25 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
     app.get('/create_homework', isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../create/HW-creator/create_homework.html'));
     });
-    app.get('/host_quiz', function (req, res) {
+    app.get('/host_quiz',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../create/host_quiz.html'));
     });
     app.get('/courses', isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../course/course.html'));
     });
-    app.get('/courseInfo', function (req, res) {
+    app.get('/courseInfo',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../course/info.html'));
     });
-    app.get('/courseInfoStu', function (req, res) {
+    app.get('/courseInfoStu',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../course/info-stu.html'));
     });
-    app.get('/join', function (req, res) {
+    app.get('/join',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../join.html'));
     });
-    app.get('/stat_teacherPage', function (req, res) {
+    app.get('/stat_teacherPage',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../stat/teacher.html'));
     });
-    app.get('/stat_studentPage', function (req, res) {
+    app.get('/stat_studentPage',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../stat/student.html'));
     });
     app.get('/signup', function (req, res) {
@@ -63,12 +62,12 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
     });
     app.get('/logout', function (req, res) {
         req.logout();
-        res.redirect('/');
+        res.redirect('/signin');
     });
-    app.get('/DoHW', function (req, res) {
+    app.get('/DoHW',isLoggedIn, function (req, res) {
         res.sendFile(path.join(__dirname, '../course/homework.html'));
     });
-    app.post('/DoHW', function (req, res) {
+    app.post('/DoHW',isLoggedIn, function (req, res) {
         var homework = new hwModel();
         var earlyScore = 0
         var fastScore = 0
@@ -159,7 +158,7 @@ module.exports = function (app, passport, MongoClient, url, ObjectID) {
         failureFlash: true // allow flash messages
     }));
     app.get('*', function (req, res) {
-        res.status(404).send("WTF 404 Not Found");
+        res.status(404).send("404 Not Found");
     });
 }
 
@@ -170,7 +169,7 @@ function isLoggedIn(req, res, next) {
         return next();
     }
 
-    // if they aren't redirect them to the home page
+    // if they aren't redirect them to sign in page
     res.redirect('/signin');
 }
 

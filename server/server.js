@@ -11,7 +11,6 @@ const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const sharedsession = require("express-socket.io-session");
-const moment = require('moment');
 //Import classes
 const { LiveGames } = require('./utils/liveGames');
 const { Players } = require('./utils/players');
@@ -52,7 +51,6 @@ app.use(sessionMiddleware);
 //Path
 const publicPath = path.join(__dirname, '../public');
 app.use(express.static(publicPath));
-// app.use(express.static("public"));
 app.use(passport.initialize());
 app.use(passport.session()); // persistent login sessions
 app.use(flash());
